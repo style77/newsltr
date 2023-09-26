@@ -9,6 +9,11 @@ djangorestframework = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 social-auth-app-django = "*"
+black = "*"
+flake8 = "*"
+dj-database-url = "*"
+python-dotenv = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
