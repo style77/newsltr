@@ -23,7 +23,7 @@ jobs:
         uses: bump-sh/github-action@v1
         with:
           doc: newsltr-api
-          token: $BUMP_TOKEN
+          token: ${{secrets.BUMP_TOKEN}}
           file: newsltr/openapi-schema.yml
   api-diff:
     if: ${{ github.event_name == 'pull_request' }}
@@ -36,7 +36,7 @@ jobs:
         uses: bump-sh/github-action@v1
         with:
           doc: newsltr-api
-          token: $BUMP_TOKEN
+          token: ${{secrets.BUMP_TOKEN}}
           file: newsltr/openapi-schema.yml
           command: diff
         env:
