@@ -16,6 +16,11 @@ python-dotenv = "*"
 psycopg2 = "*"
 pyyaml = "*"
 uritemplate = "*"
+gunicorn = "*"
+django-health-check = "*"
+psutil = "*"
+django-cors-headers = "*"
+django-redis = "*"
 
 [dev-packages]
 
