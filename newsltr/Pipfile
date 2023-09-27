@@ -14,6 +14,8 @@ flake8 = "*"
 dj-database-url = "*"
 python-dotenv = "*"
 psycopg2 = "*"
+pyyaml = "*"
+uritemplate = "*"
 
 [dev-packages]
 
