@@ -18,7 +18,7 @@ import dj_database_url
 
 DEVELOPMENT = os.getenv("DJANGO_DEVELOPMENT", True)
 if DEVELOPMENT:
-    load_dotenv(".env")
+    load_dotenv("../.env")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # DRF
-    'corsheaders',
+    "corsheaders",
     "rest_framework",
     "djoser",
     "djoser.social",
@@ -152,7 +152,7 @@ CACHES = {
         "LOCATION": REDIS_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        },
     }
 }
 
