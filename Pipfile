@@ -9,8 +9,6 @@ djangorestframework = "*"
 djoser = "*"
 djangorestframework-simplejwt = "*"
 social-auth-app-django = "*"
-black = "*"
-flake8 = "*"
 dj-database-url = "*"
 python-dotenv = "*"
 psycopg2 = "*"
@@ -23,6 +21,9 @@ django-cors-headers = "*"
 django-redis = "*"
 
 [dev-packages]
+pre-commit = "*"
+flake8 = "*"
+black = "*"
 
 [requires]
 python_version = "3.11"
