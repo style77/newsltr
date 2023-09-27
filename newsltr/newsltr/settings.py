@@ -18,7 +18,7 @@ import dj_database_url
 
 DEVELOPMENT = os.getenv("DJANGO_DEVELOPMENT", True)
 if DEVELOPMENT:
-    load_dotenv("../.env")
+    load_dotenv(".env")
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
