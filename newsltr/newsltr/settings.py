@@ -34,8 +34,14 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEVELOPMENT
 
-ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"] if DEVELOPMENT else []
-
+if DEVELOPMENT:
+    ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
+else:
+    RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
+    if RENDER_EXTERNAL_HOSTNAME:
+        ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME]
+    else:
+        ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -46,12 +52,27 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # DRF
+    'corsheaders',
     "rest_framework",
     "djoser",
     "djoser.social",
+    # Health Check
+    "health_check",
+    "health_check.db",
+    "health_check.cache",
+    "health_check.storage",
+    "health_check.contrib.migrations",
+    # "health_check.contrib.celery",
+    # "health_check.contrib.celery_ping",
+    "health_check.contrib.psutil",
+    # "health_check.contrib.rabbitmq",
+    "health_check.contrib.redis",
     # Apps
     "authorization.apps.AuthorizationConfig",
 ]
+
+REDIS_URL = os.getenv("REDIS_URL")
 
 # Rest Framework
 
@@ -123,6 +144,16 @@ DATABASES["default"] = dj_database_url.config(
     conn_max_age=600,
     conn_health_checks=True,
 )
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": REDIS_URL,
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 
 # Password validation
