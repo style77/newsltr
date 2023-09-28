@@ -86,14 +86,17 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     # To include additional security let refresh_tokens be blacklisted
     # after using one of them
     "ROTATE_REFRESH_TOKENS": True,
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
 }
 
 DJOSER = {
@@ -106,6 +109,7 @@ DJOSER = {
     "TOKEN_MODEL": None,
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
+        "user": "authorization.serializers.CustomUserSerializer",
     },
 }
 
