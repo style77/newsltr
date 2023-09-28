@@ -21,9 +21,9 @@ django-cors-headers = "*"
 django-redis = "*"
 
 [dev-packages]
-pre-commit = "*"
 flake8 = "*"
 black = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.11"
