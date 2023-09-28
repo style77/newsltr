@@ -14,12 +14,5 @@ class CustomUserCreateSerliazier(UserCreatePasswordRetypeSerializer):
             style={"input_type": "text"},
         )
 
-    def __validate_username(self, username):
-        if username.strip().count(" ") <= 1:
-            return username
-        else:
-            self.fail("username_invalid")
-
     def validate(self, attrs):
-        attrs["username"] = self.__validate_username(attrs["username"])
         return super().validate(attrs)
