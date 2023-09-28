@@ -19,6 +19,7 @@ django-health-check = "*"
 psutil = "*"
 django-cors-headers = "*"
 django-redis = "*"
+djet = "*"
 
 [dev-packages]
 flake8 = "*"
