@@ -27,19 +27,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UserCreatePasswordRetype'
+              $ref: '#/components/schemas/CustomUserCreateSerliazier'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/UserCreatePasswordRetype'
+              $ref: '#/components/schemas/CustomUserCreateSerliazier'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/UserCreatePasswordRetype'
+              $ref: '#/components/schemas/CustomUserCreateSerliazier'
       responses:
         '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserCreatePasswordRetype'
+                $ref: '#/components/schemas/CustomUserCreateSerliazier'
           description: ''
       tags:
       - api
@@ -567,7 +567,7 @@ components:
         user:
           type: string
           readOnly: true
-    UserCreatePasswordRetype:
+    CustomUserCreateSerliazier:
       type: object
       properties:
         email:
@@ -582,9 +582,12 @@ components:
           writeOnly: true
         re_password:
           type: string
+        username:
+          type: string
       required:
       - password
       - re_password
+      - username
     Activation:
       type: object
       properties:
