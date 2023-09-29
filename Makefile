@@ -19,3 +19,8 @@ runserver:
 generateschema:
 	@echo Generating schema...
 	cd newsltr && pipenv run python manage.py generateschema --file openapi-schema.yml
+
+up-dev:
+	@echo Building dev image...
+	docker build -t "newsltr-api:latest" -f newsltr/dev.Dockerfile .
+	docker run -p 8000:8000 --name "newsltr-api" newsltr-api:latest

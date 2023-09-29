@@ -6,10 +6,10 @@ ENV DJANGO_DEVELOPMENT 1
 
 WORKDIR /app
 
-COPY requirements.txt /app/
+COPY newsltr/requirements.txt /app/
 RUN pip install -r requirements.txt
 
-COPY . /app/
+COPY ./newsltr /app/
 
 RUN python manage.py migrate
 
