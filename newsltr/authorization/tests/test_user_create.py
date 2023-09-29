@@ -20,7 +20,8 @@ class UserCreateViewTest(
 
     def test_post_create_user_without_login(self):
         data = {
-            "username": TEST_DATA["username"],
+            "first_name": TEST_DATA["first_name"],
+            "last_name": TEST_DATA["last_name"],
             "email": TEST_DATA["email"],
             "password": TEST_DATA["password"],
             "re_password": TEST_DATA["password"],
@@ -35,21 +36,27 @@ class UserCreateViewTest(
 
     def test_post_not_create_new_user_if_email_exists(self):
         data = {
-            "username": TEST_DATA["username"],
+            "first_name": TEST_DATA["first_name"],
+            "last_name": TEST_DATA["last_name"],
             "email": TEST_DATA["email"],
             "password": TEST_DATA["password"],
+            "re_password": TEST_DATA["password"],
         }
-        create_user(**data)
+        # create user with **data but without re_password field
+        user_data = data.copy()
+        user_data.pop("re_password")
+
+        create_user(**user_data)
         response = self.client.post(self.base_url, TEST_DATA)
         self.assert_status_equal(response, status.HTTP_400_BAD_REQUEST)
 
     def test_post_not_register_if_password_common(self):
         data = {
-            "username": TEST_DATA["username"],
+            "first_name": TEST_DATA["first_name"],
+            "last_name": TEST_DATA["last_name"],
             "email": TEST_DATA["email"],
             "password": "12345678",
             "re_password": "12345678",
-            "csrftoken": "asdf",
         }
         response = self.client.post(self.base_url, data)
 
@@ -62,11 +69,11 @@ class UserCreateViewTest(
 
     def test_post_not_register_if_password_mismatch(self):
         data = {
-            "username": TEST_DATA["username"],
+            "first_name": TEST_DATA["first_name"],
+            "last_name": TEST_DATA["last_name"],
             "email": TEST_DATA["email"],
             "password": "#Secret1234",
             "re_password": "#Wrong1234",
-            "csrftoken": "asdf",
         }
         response = self.client.post(self.base_url, data)
 
@@ -84,7 +91,8 @@ class UserCreateViewTest(
     def test_post_return_400_for_integrity_error(self, perform_create):
         data = {
             "integrity_error": "true",
-            "username": "Test Test",
+            "first_name": TEST_DATA["first_name"],
+            "last_name": TEST_DATA["last_name"],
             "email": "john@beatles.com",
             "password": "Secret1234",
             "re_password": "Secret1234",
