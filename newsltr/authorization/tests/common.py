@@ -22,7 +22,7 @@ TEST_DATA = {
 }
 
 
-def create_user(first_name, last_name, email, password, **kwargs):
+def create_user(first_name=None, last_name=None, email=None, password=None, **kwargs):
     data = {
         "first_name": first_name or TEST_DATA["first_name"],
         "last_name": last_name or TEST_DATA["last_name"],
