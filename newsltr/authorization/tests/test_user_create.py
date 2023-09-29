@@ -35,18 +35,7 @@ class UserCreateViewTest(
         self.assertTrue(user.check_password(TEST_DATA["password"]))
 
     def test_post_not_create_new_user_if_email_exists(self):
-        data = {
-            "first_name": TEST_DATA["first_name"],
-            "last_name": TEST_DATA["last_name"],
-            "email": TEST_DATA["email"],
-            "password": TEST_DATA["password"],
-            "re_password": TEST_DATA["password"],
-        }
-        # create user with **data but without re_password field
-        user_data = data.copy()
-        user_data.pop("re_password")
-
-        create_user(**user_data)
+        create_user()
         response = self.client.post(self.base_url, TEST_DATA)
         self.assert_status_equal(response, status.HTTP_400_BAD_REQUEST)
 

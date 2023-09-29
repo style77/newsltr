@@ -85,7 +85,7 @@ class UserViewSetMeDeleteTest(
         }
 
     def test_delete_user_if_logged_in(self):
-        user = create_user(**self.data)
+        user = create_user()
         self.assert_instance_exists(User, email=self.data["email"])
         data = {"current_password": self.data["password"]}
         login_user(self.client, user.email, self.data["password"])
@@ -95,7 +95,7 @@ class UserViewSetMeDeleteTest(
         self.assert_instance_does_not_exist(User, email=self.data["email"])
 
     def test_not_delete_if_fails_password_validation(self):
-        user = create_user(**self.data)
+        user = create_user()
         self.assert_instance_exists(User, email=self.data["email"])
         data = {"current_password": "incorrect"}
         login_user(self.client, user.email, self.data["password"])
