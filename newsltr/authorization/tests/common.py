@@ -7,9 +7,6 @@ __all__ = [
     "get_user_model",
     "IntegrityError",
     "mock",
-    "RunCheck",
-    "PermCheckClass",
-    "SerializerCheckClass",
     "TEST_DATA",
 ]
 
@@ -45,20 +42,3 @@ def login_user(client, email, password):
 
 def perform_create_mock(x):
     raise IntegrityError
-
-
-class RunCheck(Exception):
-    pass
-
-
-class PermCheckClass:
-    def has_permission(self, *args, **kwargs):
-        raise RunCheck("working")
-
-    def has_object_permission(self, *args, **kwargs):
-        raise RunCheck("working")
-
-
-class SerializerCheckClass:
-    def __init__(self, *args, **kwargs):
-        raise RunCheck("working")
