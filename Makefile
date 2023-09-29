@@ -8,6 +8,10 @@ migrate:
 	@echo "Running migrations..."
 	cd newsltr && pipenv run python manage.py migrate
 
+makemigrations:
+	@echo "Making migrations..."
+	cd newsltr && pipenv run python manage.py makemigrations
+
 runserver:
 	@echo "Running server..."
 	cd newsltr && pipenv run python manage.py runserver
