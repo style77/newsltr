@@ -24,10 +24,10 @@ TEST_DATA = {
 
 def create_user(first_name, last_name, email, password, **kwargs):
     data = {
-        "first_name": first_name,
-        "last_name": last_name,
-        "email": email,
-        "password": password,
+        "first_name": first_name or TEST_DATA["first_name"],
+        "last_name": last_name or TEST_DATA["last_name"],
+        "email": email or TEST_DATA["email"],
+        "password": password or TEST_DATA["password"],
     }
     data.update(kwargs)
     user = get_user_model().objects.create_user(**data)
