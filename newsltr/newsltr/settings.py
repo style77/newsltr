@@ -76,6 +76,8 @@ REDIS_URL = os.getenv("REDIS_URL")
 
 # Rest Framework
 
+AUTH_USER_MODEL = "authorization.User"
+
 REST_FRAMEWORK = {
     "DEFAULT_VERSIONING_CLASS": "rest_framework.versioning.AcceptHeaderVersioning",
     "ALLOWED_VERSIONS": ["1.0"],
@@ -97,6 +99,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
+    "TOKEN_OBTAIN_SERIALIZER": "authorization.serializers.CustomTokenObtainSerializer",
 }
 
 DJOSER = {
