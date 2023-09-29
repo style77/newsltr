@@ -15,7 +15,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/User'
+                  $ref: '#/components/schemas/CustomUser'
           description: ''
       tags:
       - api
@@ -122,7 +122,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: A unique integer value identifying this user.
+        description: A unique value identifying this user.
         schema:
           type: string
       responses:
@@ -130,7 +130,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/CustomUser'
           description: ''
       tags:
       - api
@@ -141,26 +141,26 @@ paths:
       - name: id
         in: path
         required: true
-        description: A unique integer value identifying this user.
+        description: A unique value identifying this user.
         schema:
           type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CustomUser'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CustomUser'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CustomUser'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/CustomUser'
           description: ''
       tags:
       - api
@@ -171,26 +171,26 @@ paths:
       - name: id
         in: path
         required: true
-        description: A unique integer value identifying this user.
+        description: A unique value identifying this user.
         schema:
           type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CustomUser'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CustomUser'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/CustomUser'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/CustomUser'
           description: ''
       tags:
       - api
@@ -201,7 +201,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: A unique integer value identifying this user.
+        description: A unique value identifying this user.
         schema:
           type: string
       responses:
@@ -359,7 +359,7 @@ paths:
           description: ''
       tags:
       - api
-  /api/v1/auth/users/reset_username/:
+  /api/v1/auth/users/reset_email/:
     post:
       operationId: resetUsernameUser
       description: ''
@@ -384,7 +384,7 @@ paths:
           description: ''
       tags:
       - api
-  /api/v1/auth/users/reset_username_confirm/:
+  /api/v1/auth/users/reset_email_confirm/:
     post:
       operationId: resetUsernameConfirmUser
       description: ''
@@ -434,7 +434,7 @@ paths:
           description: ''
       tags:
       - api
-  /api/v1/auth/users/set_username/:
+  /api/v1/auth/users/set_email/:
     post:
       operationId: setUsernameUser
       description: ''
@@ -456,34 +456,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SetUsername'
-          description: ''
-      tags:
-      - api
-  /api/v1/auth/jwt/create/:
-    post:
-      operationId: createTokenObtainPair
-      description: 'Takes a set of user credentials and returns an access and refresh
-        JSON web
-
-        token pair to prove the authentication of those credentials.'
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TokenObtainPair'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/TokenObtainPair'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/TokenObtainPair'
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TokenObtainPair'
           description: ''
       tags:
       - api
@@ -543,17 +515,80 @@ paths:
           description: ''
       tags:
       - api
+  /api/v1/auth/jwt/create/:
+    post:
+      operationId: createCustomTokenObtainPair
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CustomTokenObtainPair'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomTokenObtainPair'
+          description: ''
+      tags:
+      - api
 components:
   schemas:
-    User:
+    CustomUser:
       type: object
       properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        date_joined:
+          type: string
+          format: date-time
+          readOnly: true
+        last_login:
+          type: string
+          format: date-time
+          readOnly: true
+          nullable: true
+        id:
+          type: string
+          readOnly: true
         email:
           type: string
           format: email
           readOnly: true
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        date_joined:
+          type: string
+          format: date-time
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
         id:
-          type: integer
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
           readOnly: true
     ProviderAuth:
       type: object
@@ -570,24 +605,35 @@ components:
     CustomUserCreateSerliazier:
       type: object
       properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        date_joined:
+          type: string
+          format: date-time
+        last_login:
+          type: string
+          format: date-time
+          nullable: true
         email:
           type: string
           format: email
           maxLength: 254
         id:
-          type: integer
+          type: string
           readOnly: true
         password:
           type: string
           writeOnly: true
         re_password:
           type: string
-        username:
-          type: string
       required:
+      - first_name
+      - last_name
+      - email
       - password
       - re_password
-      - username
     Activation:
       type: object
       properties:
@@ -629,6 +675,8 @@ components:
           type: string
           format: email
           maxLength: 254
+      required:
+      - new_email
     SetPasswordRetype:
       type: object
       properties:
@@ -653,18 +701,7 @@ components:
           maxLength: 254
       required:
       - current_password
-    TokenObtainPair:
-      type: object
-      properties:
-        username:
-          type: string
-          writeOnly: true
-        password:
-          type: string
-          writeOnly: true
-      required:
-      - username
-      - password
+      - new_email
     TokenRefresh:
       type: object
       properties:
@@ -683,3 +720,15 @@ components:
           writeOnly: true
       required:
       - token
+    CustomTokenObtainPair:
+      type: object
+      properties:
+        email:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - email
+      - password
