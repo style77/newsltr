@@ -26,8 +26,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
+        uses: bahmutov/npm-install@v1.4.5
       - name: 🔬 Lint
         run: npm run lint
 
@@ -46,8 +45,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
+        uses: bahmutov/npm-install@v1.4.5
       - name: 🔎 Type check
         run: npm run typecheck
 
@@ -66,7 +64,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+        uses: bahmutov/npm-install@v1.4.5
 
       - name: 🃏 Run vitest
         run: npm run test
