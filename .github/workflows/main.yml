@@ -25,8 +25,9 @@ jobs:
         with:
           node-version: 16
 
-      - name: 📥 Download deps
+      - name: Change directory
         run: cd client
+      - name: 📥 Download deps
         run: npm ci
       - name: 🔬 Lint
         run: npm run lint
@@ -36,7 +37,7 @@ jobs:
     # needs: [changes]
     # if: needs.changes.outputs.DEPLOYABLE == 'true'
     runs-on: ubuntu-latest
-    steps: 
+    steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
 
