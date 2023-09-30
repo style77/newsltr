@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "next": "latest",
+    "npm-install": "^1.4.5",
     "react": "latest",
     "react-dom": "latest",
     "ts-node": "^10.9.1"
