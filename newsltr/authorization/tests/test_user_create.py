@@ -13,6 +13,7 @@ User = get_user_model()
 class UserCreateViewTest(
     APITestCase,
     assertions.StatusCodeAssertionsMixin,
+    assertions.EmailAssertionsMixin,
     assertions.InstanceAssertionsMixin,
 ):
     def setUp(self):
@@ -31,8 +32,12 @@ class UserCreateViewTest(
         self.assert_status_equal(response, status.HTTP_201_CREATED)
         self.assertTrue("password" not in response.data)
         self.assert_instance_exists(User, email=TEST_DATA["email"])
+
         user = User.objects.get(email=TEST_DATA["email"])
         self.assertTrue(user.check_password(TEST_DATA["password"]))
+        self.assert_emails_in_mailbox(1)
+        self.assert_email_exists(to=[data["email"]])
+        self.assertFalse(user.is_active)
 
     def test_post_not_create_new_user_if_email_exists(self):
         create_user()
