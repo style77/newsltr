@@ -26,7 +26,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: npm ci
+        run: npm ci
       - name: 🔬 Lint
         run: npm run lint
 
@@ -45,7 +45,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: npm ci
+        run: npm ci
 
       - name: 🔎 Type check
         run: npm run typecheck
@@ -65,7 +65,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: npm ci
+        run: npm ci
 
       - name: 🃏 Run vitest
         run: npm run test
