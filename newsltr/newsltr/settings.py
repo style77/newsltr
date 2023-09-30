@@ -72,7 +72,30 @@ INSTALLED_APPS = [
     "authorization.apps.AuthorizationConfig",
 ]
 
+if DEVELOPMENT:
+    INSTALLED_APPS += [
+        "drf_yasg",
+    ]
+    SWAGGER_SETTINGS = {
+        "SECURITY_DEFINITIONS": {
+            "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+        }
+    }
+
+# Redis
+
 REDIS_URL = os.getenv("REDIS_URL")
+
+# Email
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_TIMEOUT = 300  # in seconds
+DEFAULT_FROM_EMAIL = f"Newsltr <{EMAIL_HOST_USER}>"
 
 # Rest Framework
 
@@ -104,7 +127,8 @@ SIMPLE_JWT = {
 
 DJOSER = {
     "LOGIN_FIELD": "email",
-    "SEND_ACTIVATION_EMAIL": False,
+    "SEND_ACTIVATION_EMAIL": True,
+    "ACTIVATION_URL": "/activate/{uid}/{token}",
     "SEND_CONFIRMATION_EMAIL": False,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_PASSWORD_RETYPE": True,
@@ -142,6 +166,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# Cors
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
 CORS_ORIGIN_WHITELIST = [
