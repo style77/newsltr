@@ -72,16 +72,6 @@ INSTALLED_APPS = [
     "authorization.apps.AuthorizationConfig",
 ]
 
-if DEVELOPMENT:
-    INSTALLED_APPS += [
-        "drf_yasg",
-    ]
-    SWAGGER_SETTINGS = {
-        "SECURITY_DEFINITIONS": {
-            "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
-        }
-    }
-
 # Redis
 
 REDIS_URL = os.getenv("REDIS_URL")
@@ -110,6 +100,23 @@ REST_FRAMEWORK = {
     ],
 }
 
+if DEVELOPMENT:
+    INSTALLED_APPS += ["drf_spectacular", "drf_spectacular_sidecar"]
+
+    REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
+
+    SPECTACULAR_SETTINGS = {
+        "TITLE": "Newsltr",
+        "DESCRIPTION": "Newsltr API Documentation",
+        "VERSION": "1.0.0",
+        "SERVE_INCLUDE_SCHEMA": False,
+        "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
+        "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+        "REDOC_DIST": "SIDECAR",
+        # OTHER SETTINGS
+    }
+
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
@@ -117,7 +124,6 @@ SIMPLE_JWT = {
     # after using one of them
     # "ROTATE_REFRESH_TOKENS": True,
     # "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
@@ -127,6 +133,7 @@ SIMPLE_JWT = {
 
 DJOSER = {
     "LOGIN_FIELD": "email",
+    "UPDATE_LAST_LOGIN": True,
     "SEND_ACTIVATION_EMAIL": True,
     "ACTIVATION_URL": "/activate/{uid}/{token}",
     "SEND_CONFIRMATION_EMAIL": False,
