@@ -8,6 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|jsx|ts|tsx|json|css)\"",
+    "check-format": "prettier --ignore-path .gitignore --check \"**/*.+(js|jsx|ts|tsx|json|css)\"",
     "test": "vitest",
     "cypress:open": "cypress open"
   },
@@ -31,6 +33,7 @@
     "eslint-config-next": "latest",
     "jsdom": "^22.1.0",
     "postcss": "latest",
+    "prettier": "^3.0.3",
     "tailwindcss": "latest",
     "typescript": "latest",
     "vitest": "^0.34.5"
