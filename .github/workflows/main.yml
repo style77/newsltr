@@ -12,9 +12,9 @@ on:
       - master
       - develop
 
-defaults:
-  run:
-    working-directory: newsltr/client
+# defaults:
+#   run:
+#     working-directory: newsltr/client
 
 jobs:
   lint:
