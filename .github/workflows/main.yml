@@ -36,6 +36,7 @@ jobs:
     # needs: [changes]
     # if: needs.changes.outputs.DEPLOYABLE == 'true'
     runs-on: ubuntu-latest
+    steps: 
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
 
