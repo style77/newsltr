@@ -10,8 +10,10 @@
     "lint": "next lint",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|jsx|ts|tsx|json|css)\"",
     "check-format": "prettier --ignore-path .gitignore --check \"**/*.+(js|jsx|ts|tsx|json|css)\"",
+    "typecheck": "tsc -b .",
     "test": "vitest",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "prepare": "cd .. && husky install client/.husky"
   },
   "dependencies": {
     "next": "latest",
@@ -31,6 +33,7 @@
     "cypress": "^13.3.0",
     "eslint": "latest",
     "eslint-config-next": "latest",
+    "husky": "^8.0.3",
     "jsdom": "^22.1.0",
     "postcss": "latest",
     "prettier": "^3.0.3",
