@@ -12,16 +12,15 @@ on:
       - master
       - develop
 
-defaults:
-  run:
-    shell: bash
-    working-directory: ./src
 jobs:
   lint:
     name: ⬣ ESLint
     #needs: [changes]
     #if: needs.changes.outputs.DEPLOYABLE == 'true'
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: client
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
