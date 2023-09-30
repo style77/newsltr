@@ -361,7 +361,7 @@ paths:
       - api
   /api/v1/auth/users/reset_email/:
     post:
-      operationId: resetUsernameUser
+      operationId: resetEmailUser
       description: ''
       parameters: []
       requestBody:
@@ -386,7 +386,7 @@ paths:
       - api
   /api/v1/auth/users/reset_email_confirm/:
     post:
-      operationId: resetUsernameConfirmUser
+      operationId: resetEmailConfirmUser
       description: ''
       parameters: []
       requestBody:
@@ -436,7 +436,7 @@ paths:
       - api
   /api/v1/auth/users/set_email/:
     post:
-      operationId: setUsernameUser
+      operationId: setEmailUser
       description: ''
       parameters: []
       requestBody:
