@@ -20,6 +20,7 @@ psutil = "*"
 django-cors-headers = "*"
 django-redis = "*"
 djet = "*"
+drf-yasg = "*"
 
 [dev-packages]
 flake8 = "*"
