@@ -33,7 +33,7 @@ jobs:
 
       - name: 📥 Download deps
         run: |
-          ls -a
+          cd client
           npm ci
       - name: 🔬 Lint
         run: npm run lint
