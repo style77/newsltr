@@ -5,6 +5,7 @@ on:
       - main
       - master
       - develop
+      - project-setup
   pull_request:
     branches:
       - main
@@ -13,7 +14,7 @@ on:
 
 defaults:
   run:
-    working-directory: ../../client/
+    working-directory: newsltr/client
 
 jobs:
   lint:
