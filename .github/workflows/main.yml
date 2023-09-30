@@ -31,8 +31,6 @@ jobs:
         with:
           node-version: 16
 
-      - name: Change directory
-        run: cd client
       - name: 📥 Download deps
         run: npm ci
       - name: 🔬 Lint
