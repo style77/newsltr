@@ -32,7 +32,9 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        run: npm ci
+        run: |
+          ls -a
+          npm ci
       - name: 🔬 Lint
         run: npm run lint
 
