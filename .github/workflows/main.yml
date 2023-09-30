@@ -12,9 +12,8 @@ on:
       - master
       - develop
 
-# defaults:
-#   run:
-#     working-directory: newsltr/client
+defaults:
+  run: ls -a
 
 jobs:
   lint:
