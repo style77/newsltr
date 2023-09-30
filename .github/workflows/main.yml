@@ -26,12 +26,8 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        run: |
-          if [ -e package-lock.json ]; then
-          npm ci
-          else
-          npm i
-          fi
+        run: cd client
+        run: npm ci
       - name: 🔬 Lint
         run: npm run lint
 
@@ -40,7 +36,6 @@ jobs:
     # needs: [changes]
     # if: needs.changes.outputs.DEPLOYABLE == 'true'
     runs-on: ubuntu-latest
-    steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
 
