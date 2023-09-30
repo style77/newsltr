@@ -13,8 +13,9 @@ on:
       - develop
 
 defaults:
-  run: ls -a
-
+  run:
+    shell: bash
+    working-directory: ./src
 jobs:
   lint:
     name: ⬣ ESLint
