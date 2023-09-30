@@ -35,10 +35,15 @@
     "eslint-config-next": "latest",
     "husky": "^8.0.3",
     "jsdom": "^22.1.0",
+    "lint-staged": "^14.0.1",
     "postcss": "latest",
     "prettier": "^3.0.3",
     "tailwindcss": "latest",
     "typescript": "latest",
     "vitest": "^0.34.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint",
+    "*.{js,jsx,ts,tsx,css,md}": "prettier --write"
   }
 }
