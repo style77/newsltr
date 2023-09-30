@@ -12,6 +12,10 @@ on:
       - master
       - develop
 
+defaults:
+  run:
+    working-directory: client
+
 jobs:
   lint:
     name: ⬣ ESLint
@@ -31,9 +35,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        run: |
-          # cd client
-          npm ci
+        run: npm ci
       - name: 🔬 Lint
         run: npm run lint
 
