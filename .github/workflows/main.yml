@@ -10,6 +10,11 @@ on:
       - main
       - master
       - develop
+
+defaults:
+  run:
+    working-directory: ../../client/
+
 jobs:
   lint:
     name: ⬣ ESLint
@@ -26,8 +31,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
-
+        run: npm ci
       - name: 🔬 Lint
         run: npm run lint
 
@@ -46,7 +50,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: 🔎 Type check
         run: npm run typecheck
@@ -66,7 +70,7 @@ jobs:
           node-version: 16
 
       - name: 📥 Download deps
-        uses: bahmutov/npm-install@v1
+        run: npm ci
 
       - name: 🃏 Run vitest
         run: npm run test
