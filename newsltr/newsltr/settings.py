@@ -72,7 +72,20 @@ INSTALLED_APPS = [
     "authorization.apps.AuthorizationConfig",
 ]
 
+# Redis
+
 REDIS_URL = os.getenv("REDIS_URL")
+
+# Email
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_TIMEOUT = 300  # in seconds
+DEFAULT_FROM_EMAIL = f"Newsltr <{EMAIL_HOST_USER}>"
 
 # Rest Framework
 
@@ -87,6 +100,23 @@ REST_FRAMEWORK = {
     ],
 }
 
+if DEVELOPMENT:
+    INSTALLED_APPS += ["drf_spectacular", "drf_spectacular_sidecar"]
+
+    REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
+
+    SPECTACULAR_SETTINGS = {
+        "TITLE": "Newsltr",
+        "DESCRIPTION": "Newsltr API Documentation",
+        "VERSION": "1.0.0",
+        "SERVE_INCLUDE_SCHEMA": False,
+        "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
+        "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
+        "REDOC_DIST": "SIDECAR",
+        # OTHER SETTINGS
+    }
+
+
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
@@ -94,7 +124,6 @@ SIMPLE_JWT = {
     # after using one of them
     # "ROTATE_REFRESH_TOKENS": True,
     # "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
@@ -104,7 +133,9 @@ SIMPLE_JWT = {
 
 DJOSER = {
     "LOGIN_FIELD": "email",
-    "SEND_ACTIVATION_EMAIL": False,
+    "UPDATE_LAST_LOGIN": True,
+    "SEND_ACTIVATION_EMAIL": True,
+    "ACTIVATION_URL": "/activate/{uid}/{token}",
     "SEND_CONFIRMATION_EMAIL": False,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_PASSWORD_RETYPE": True,
@@ -142,6 +173,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# Cors
 
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
 CORS_ORIGIN_WHITELIST = [

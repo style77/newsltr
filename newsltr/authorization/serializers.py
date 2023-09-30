@@ -2,7 +2,10 @@ from django.contrib.auth import get_user_model
 from rest_framework import serializers
 from djoser.serializers import UserCreatePasswordRetypeSerializer, UserSerializer
 from djoser.conf import settings
-from rest_framework_simplejwt.serializers import TokenObtainSerializer
+from rest_framework_simplejwt.serializers import (
+    TokenObtainSerializer,
+    update_last_login,
+)
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -86,5 +89,8 @@ class CustomTokenObtainPairSerializer(EmailTokenObtainSerializer):
 
         data["refresh"] = str(refresh)
         data["access"] = str(refresh.access_token)
+
+        if settings.UPDATE_LAST_LOGIN:
+            update_last_login(None, self.user)
 
         return data
