@@ -66,53 +66,53 @@ const Page = () => {
           </div>
         </div>
         <div>
-          <label htmlFor="">Last Name</label>
+          <label htmlFor="last_name">Last Name</label>
           <div>
             <input
               onChange={handleChange}
               value={last_name}
               type="text"
               name="last_name"
-              id=""
+              id="last_name"
               required
             />
           </div>
         </div>
         <div>
-          <label htmlFor="">Email</label>
+          <label htmlFor="email">Email</label>
           <div>
             <input
               onChange={handleChange}
               value={email}
               type="email"
               name="email"
-              id=""
+              id="email"
               required
             />
           </div>
         </div>
         <div>
-          <label htmlFor="">Password</label>
+          <label htmlFor="password">Password</label>
           <div>
             <input
               onChange={handleChange}
               value={password}
               type="password"
               name="password"
-              id=""
+              id="password"
               required
             />
           </div>
         </div>
         <div>
-          <label htmlFor="">Confirm Password</label>
+          <label htmlFor="re_password">Confirm Password</label>
           <div>
             <input
               onChange={handleChange}
               value={re_password}
               type="password"
               name="re_password"
-              id=""
+              id="re_password"
               required
             />
           </div>
