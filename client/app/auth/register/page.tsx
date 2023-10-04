@@ -2,7 +2,7 @@
 import { useRegisterMutation } from "@/redux/features/authApiSlice";
 import { useState, ChangeEvent, FormEvent } from "react";
 
-import { useToast } from "@/components/ui/toast/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import Spinner from "@/components/ui/spinner";
 
 const Page = () => {
@@ -17,7 +17,8 @@ const Page = () => {
     re_password: "",
   });
 
-  console.log(registerFormData);
+  const [error, setError] = useState<undefined | string[]>();
+  const [errorblur, setErrorblur] = useState(false);
 
   const { first_name, last_name, email, password, re_password } =
     registerFormData;
@@ -26,6 +27,13 @@ const Page = () => {
     const { name, value } = event.target;
     setRegisterFormData({ ...registerFormData, [name]: value });
   };
+
+  interface RegisterError {
+    data: {
+      password: string[];
+    };
+    status: number;
+  }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     try {
@@ -41,16 +49,23 @@ const Page = () => {
       toast({
         title: "Your account was succesfully created!",
       });
-    } catch {
+    } catch (error) {
       toast({
+        variant: "destructive",
         title: "Failed to sign up!",
       });
+
+      // let message;
+      // if (error instanceof RegisterError) message = error;
+      // else message = String(error);
+      console.log((error as RegisterError).data);
+      setError((error as RegisterError).data.password);
     }
   };
 
   return (
     <div>
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="first_name">First Name</label>
           <div>
@@ -95,7 +110,11 @@ const Page = () => {
           <label htmlFor="password">Password</label>
           <div>
             <input
+              className={`${errorblur ? "border-red-300 border" : ""}`}
               onChange={handleChange}
+              onBlur={() => {
+                password.length < 8 ? setErrorblur(true) : setErrorblur(false);
+              }}
               value={password}
               type="password"
               name="password"
@@ -103,6 +122,7 @@ const Page = () => {
               required
             />
           </div>
+          <div>{error ? error.map((e) => <div key={e}>{e}</div>) : null}</div>
         </div>
         <div>
           <label htmlFor="re_password">Confirm Password</label>
@@ -117,7 +137,9 @@ const Page = () => {
             />
           </div>
         </div>
-        <button>{isLoading ? <Spinner /> : "Sign up"}</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? <Spinner /> : "Sign up"}
+        </button>
       </form>
     </div>
   );
