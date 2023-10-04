@@ -1,43 +1,38 @@
 "use client";
+import { useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRegisterMutation } from "@/redux/features/authApiSlice";
-import { useState, ChangeEvent, FormEvent } from "react";
-
 import { useToast } from "@/components/ui/use-toast";
 import Spinner from "@/components/ui/spinner";
+
+import { RegisterFormSchemaType, formSchema, RegisterError } from "@/lib/types";
+import CustomInput from "@/components/ui/customInput";
 
 const Page = () => {
   const { toast } = useToast();
   const [register, { isLoading }] = useRegisterMutation();
 
-  const [registerFormData, setRegisterFormData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    re_password: "",
+  const {
+    register: registerInput,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+    setError,
+  } = useForm<RegisterFormSchemaType>({
+    resolver: zodResolver(formSchema),
   });
 
-  const [error, setError] = useState<undefined | string[]>();
+  console.log(errors);
+
   const [errorblur, setErrorblur] = useState(false);
 
-  const { first_name, last_name, email, password, re_password } =
-    registerFormData;
+  const onSubmit = async (data: RegisterFormSchemaType) => {
+    console.log("i am created", data);
+    console.log("i am created", errors);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setRegisterFormData({ ...registerFormData, [name]: value });
-  };
-
-  interface RegisterError {
-    data: {
-      password: string[];
-    };
-    status: number;
-  }
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    const { first_name, last_name, email, password, re_password } = data;
     try {
-      event.preventDefault();
       await register({
         first_name,
         last_name,
@@ -54,42 +49,32 @@ const Page = () => {
         variant: "destructive",
         title: "Failed to sign up!",
       });
-
-      // let message;
-      // if (error instanceof RegisterError) message = error;
-      // else message = String(error);
-      console.log((error as RegisterError).data);
-      setError((error as RegisterError).data.password);
+      const result = (error as RegisterError).data;
+      console.log("EROOR", result);
+      if (result) {
+        setError("password", {
+          type: "server",
+          message: result.password?.toString(),
+        });
+      }
     }
   };
-
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="first_name">First Name</label>
-          <div>
-            <input
-              id="first_name"
-              className="text-black"
-              onChange={handleChange}
-              value={first_name}
-              type="text"
-              name="first_name"
-              required
-            />
-          </div>
-        </div>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <CustomInput
+          register={{ ...registerInput("first_name") }}
+          label="first_name"
+        />
+
         <div>
           <label htmlFor="last_name">Last Name</label>
           <div>
             <input
-              onChange={handleChange}
-              value={last_name}
+              {...registerInput("last_name")}
               type="text"
               name="last_name"
               id="last_name"
-              required
             />
           </div>
         </div>
@@ -97,12 +82,10 @@ const Page = () => {
           <label htmlFor="email">Email</label>
           <div>
             <input
-              onChange={handleChange}
-              value={email}
+              {...registerInput("email")}
               type="email"
               name="email"
               id="email"
-              required
             />
           </div>
         </div>
@@ -110,34 +93,45 @@ const Page = () => {
           <label htmlFor="password">Password</label>
           <div>
             <input
+              {...registerInput("password")}
               className={`${errorblur ? "border-red-300 border" : ""}`}
-              onChange={handleChange}
-              onBlur={() => {
-                password.length < 8 ? setErrorblur(true) : setErrorblur(false);
-              }}
-              value={password}
               type="password"
               name="password"
               id="password"
-              required
             />
+            {errors.password && (
+              <ul>
+                {errors.password.message?.split(",").map((error) => (
+                  <li className="text-red-500" key={error}>
+                    {error}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
-          <div>{error ? error.map((e) => <div key={e}>{e}</div>) : null}</div>
         </div>
         <div>
           <label htmlFor="re_password">Confirm Password</label>
           <div>
             <input
-              onChange={handleChange}
-              value={re_password}
+              {...registerInput("re_password")}
               type="password"
               name="re_password"
               id="re_password"
-              required
             />
+            {errors.re_password && (
+              <ul>
+                {errors.re_password.message?.split(",").map((error) => (
+                  <li className="text-red-500" key={error}>
+                    {error}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
-        <button type="submit" disabled={isLoading}>
+
+        <button type="submit" disabled={isSubmitting}>
           {isLoading ? <Spinner /> : "Sign up"}
         </button>
       </form>
