@@ -147,7 +147,7 @@ DJOSER = {
     "LOGIN_FIELD": "email",
     "UPDATE_LAST_LOGIN": True,
     "SEND_ACTIVATION_EMAIL": True,
-    "ACTIVATION_URL": "/activate/{uid}/{token}",
+    "ACTIVATION_URL": "activate/{uid}/{token}",
     "SEND_CONFIRMATION_EMAIL": False,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_PASSWORD_RETYPE": True,
