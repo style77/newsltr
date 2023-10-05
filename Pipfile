@@ -21,6 +21,7 @@ django-cors-headers = "*"
 django-redis = "*"
 djet = "*"
 drf-spectacular = {extras = ["sidecar"], version = "*"}
+celery = "*"
 
 [dev-packages]
 flake8 = "*"
