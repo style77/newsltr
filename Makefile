@@ -24,3 +24,7 @@ up-dev:
 	@echo Building dev image...
 	docker build -t "newsltr-api:latest" -f newsltr/dev.Dockerfile .
 	docker run -p 8000:8000 --name "newsltr-api" newsltr-api:latest
+
+freeze:
+	@echo Freezing dependencies...
+	cd newsltr && pipenv run pip freeze > requirements.txt
