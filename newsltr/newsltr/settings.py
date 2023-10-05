@@ -76,9 +76,17 @@ INSTALLED_APPS = [
 
 REDIS_URL = os.getenv("REDIS_URL")
 
+# Celery
+
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
 # Email
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "newsltr.backends.CeleryEmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
@@ -87,6 +95,10 @@ EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 300  # in seconds
 DEFAULT_FROM_EMAIL = f"Newsltr <{EMAIL_HOST_USER}>"
 
+CELERY_EMAIL_CHUNK_SIZE = 10
+CELERY_EMAIL_TASK_CONFIG = {}
+CELERY_EMAIL_MESSAGE_EXTRA_ATTRIBUTES = None
+# CELERY_TASK_CONFIG = {"queue": "email", "rate_limit": "50/m"}
 # Rest Framework
 
 AUTH_USER_MODEL = "authorization.User"
