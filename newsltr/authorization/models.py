@@ -50,7 +50,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name", "date_joined", "last_login"]
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     id = models.CharField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True, max_length=36
