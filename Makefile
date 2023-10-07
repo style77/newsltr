@@ -16,6 +16,10 @@ runserver:
 	@echo Running server...
 	cd newsltr && pipenv run python manage.py runserver
 
+runcelery:
+	@echo running celery
+	cd newsltr && pipenv run celery -A newsltr worker -l info
+
 generateschema:
 	@echo Generating schema...
 	cd newsltr && pipenv run python manage.py generateschema --file openapi-schema.yml
