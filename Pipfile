@@ -22,6 +22,8 @@ django-redis = "*"
 djet = "*"
 drf-spectacular = {extras = ["sidecar"], version = "*"}
 celery = "*"
+django-celery-results = "*"
+django-celery-beat = "*"
 
 [dev-packages]
 flake8 = "*"
