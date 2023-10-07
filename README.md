@@ -7,6 +7,7 @@ Newsletter service for businesses and organizations.
 ### Requirements
 
 - [Docker](https://docs.docker.com/install/)
+- [Docker-compose](https://docs.docker.com/compose/install/)
 - [Makefile](https://www.gnu.org/software/make/)
 - [Git](https://git-scm.com/downloads)
 - [Python 3](https://www.python.org/downloads/)
