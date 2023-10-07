@@ -70,6 +70,8 @@ INSTALLED_APPS = [
     "health_check.contrib.redis",
     # Apps
     "authorization.apps.AuthorizationConfig",
+    "django_celery_results",
+    "django_celery_beat",
 ]
 
 # Redis
@@ -79,14 +81,17 @@ REDIS_URL = os.getenv("REDIS_URL")
 # Celery
 
 CELERY_BROKER_URL = REDIS_URL
-CELERY_RESULT_BACKEND = REDIS_URL
+CELERY_RESULT_BACKEND = "django-db"
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
+CELERY_IMPORTS = ()
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
 # Email
 
-EMAIL_BACKEND = "newsltr.backends.CeleryEmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
@@ -96,9 +101,7 @@ EMAIL_TIMEOUT = 300  # in seconds
 DEFAULT_FROM_EMAIL = f"Newsltr <{EMAIL_HOST_USER}>"
 
 CELERY_EMAIL_CHUNK_SIZE = 10
-CELERY_EMAIL_TASK_CONFIG = {}
-CELERY_EMAIL_MESSAGE_EXTRA_ATTRIBUTES = None
-# CELERY_TASK_CONFIG = {"queue": "email", "rate_limit": "50/m"}
+# CELERY_IMPORTS = ("newsltr.tasks",)
 # Rest Framework
 
 AUTH_USER_MODEL = "authorization.User"
@@ -148,7 +151,7 @@ DJOSER = {
     "UPDATE_LAST_LOGIN": True,
     "SEND_ACTIVATION_EMAIL": True,
     "ACTIVATION_URL": "activate/{uid}/{token}",
-    "SEND_CONFIRMATION_EMAIL": False,
+    "SEND_CONFIRMATION_EMAIL": True,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_PASSWORD_RETYPE": True,
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
@@ -157,6 +160,14 @@ DJOSER = {
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
         "user": "authorization.serializers.CustomUserSerializer",
+    },
+    "EMAIL": {
+        "activation": "newsltr.email.ActivationEmail",
+        "confirmation": "newsltr.email.ConfirmationEmail",
+        "password_reset": "newsltr.email.PasswordResetEmail",
+        "password_changed_confirmation": "newsltr.email.PasswordChangedConfirmationEmail",
+        "username_changed_confirmation": "newsltr.email.UsernameChangedConfirmationEmail",
+        "username_reset": "newsltr.email.UsernameResetEmail",
     },
 }
 
