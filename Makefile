@@ -26,8 +26,7 @@ generateschema:
 
 up-dev:
 	@echo Building dev image...
-	docker build -t "newsltr-api:latest" -f newsltr/dev.Dockerfile .
-	docker run -p 8000:8000 --name "newsltr-api" newsltr-api:latest
+	docker-compose -f docker-compose.dev.yml up --build
 
 freeze:
 	@echo Freezing dependencies...
