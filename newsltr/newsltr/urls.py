@@ -1,5 +1,6 @@
 from django.urls import path, re_path, include
 from rest_framework import permissions
+from django.contrib import admin
 
 from . import settings
 
@@ -28,4 +29,5 @@ if settings.DEVELOPMENT:
             SpectacularRedocView.as_view(url_name="schema"),
             name="redoc",
         ),
+        path(r"admin/", admin.site.urls),
     ]
