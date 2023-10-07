@@ -45,19 +45,26 @@ else:
 
 # Application definition
 
-INSTALLED_APPS = [
+# Core Django Apps
+CORE_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # DRF
+]
+
+# Third-party Packages
+THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "djoser",
     "djoser.social",
-    # Health Check
+]
+
+# Health Check Apps
+HEALTH_CHECK_APPS = [
     "health_check",
     "health_check.db",
     "health_check.cache",
@@ -68,11 +75,23 @@ INSTALLED_APPS = [
     "health_check.contrib.psutil",
     # "health_check.contrib.rabbitmq",
     "health_check.contrib.redis",
-    # Apps
-    "authorization.apps.AuthorizationConfig",
+]
+
+# Custom Apps
+CUSTOM_APPS = [
+    "authorization.apps.AuthorizationConfig"
+]
+
+# Celery Apps
+CELERY_APPS = [
     "django_celery_results",
     "django_celery_beat",
 ]
+
+# Combine all categories
+INSTALLED_APPS = (
+    CORE_APPS + THIRD_PARTY_APPS + HEALTH_CHECK_APPS + CUSTOM_APPS + CELERY_APPS
+)
 
 # Redis
 
