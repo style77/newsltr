@@ -5,10 +5,7 @@
 {% endblock subject %}
 
 {% block text_body %}
-{% with user=first_name %}
-Hello {{ user }},
-
-{% endwith %}
+{% trans "Hello" %} {{ first_name }},
 
 {% blocktrans %}
 Welcome to Newsltr! We're thrilled to have you on board. Your journey into the world of newsletter management begins
@@ -84,7 +81,7 @@ The Newsltr Team
             <h1>{% trans "Activate Your Newsltr Account" %}</h1>
         </div>
         <div class="content">
-            <p>{% with user=first_name %}Hello {{ user }},{% endwith %}</p>
+            <p>{% trans "Hello" %} {{ first_name }}, </p>
             <p>{% trans "Welcome to Newsltr! We're thrilled to have you on board. Your journey into the world of newsletter management begins now." %}</p>
             <p><a href="{{ protocol }}://{{ domain }}/{{ url|safe }}" class="button">{% trans "Activate Account" %}</a></p>
             <p>{% trans "If you have any questions or run into any issues, our support team is here to help. Feel free to reach out to us anytime." %}</p>
