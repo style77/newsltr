@@ -1,0 +1,49 @@
+name: Django Test CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  test:
+    name: Run Django Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11 
+
+      - name: Install dependencies
+        run: |
+          pip install -r newsltr/requirements.txt
+          pip install coverage
+
+      - name: Run Django tests
+        working-directory: newsltr
+        run: |
+          python manage.py test
+
+      - name: Collect test coverage
+        working-directory: newsltr
+        run: |
+          coverage run manage.py test
+          coverage xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: newsltr/coverage.xml
