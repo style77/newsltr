@@ -24,6 +24,7 @@ drf-spectacular = {extras = ["sidecar"], version = "*"}
 celery = "*"
 django-celery-results = "*"
 django-celery-beat = "*"
+django-anymail = {extras = ["sendgrid"], version = "*"}
 
 [dev-packages]
 flake8 = "*"
