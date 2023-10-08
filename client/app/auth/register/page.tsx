@@ -1,146 +1,24 @@
 "use client";
-import { useRegisterMutation } from "@/redux/features/authApiSlice";
-import { useState, ChangeEvent, FormEvent } from "react";
-
-import { useToast } from "@/components/ui/use-toast";
-import Spinner from "@/components/ui/spinner";
+import Link from "next/link";
+import RegisterForm from "@/components/RegisterForm";
 
 const Page = () => {
-  const { toast } = useToast();
-  const [register, { isLoading }] = useRegisterMutation();
-
-  const [registerFormData, setRegisterFormData] = useState({
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    re_password: "",
-  });
-
-  const [error, setError] = useState<undefined | string[]>();
-  const [errorblur, setErrorblur] = useState(false);
-
-  const { first_name, last_name, email, password, re_password } =
-    registerFormData;
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setRegisterFormData({ ...registerFormData, [name]: value });
-  };
-
-  interface RegisterError {
-    data: {
-      password: string[];
-    };
-    status: number;
-  }
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    try {
-      event.preventDefault();
-      await register({
-        first_name,
-        last_name,
-        email,
-        password,
-        re_password,
-      }).unwrap();
-
-      toast({
-        title: "Your account was succesfully created!",
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Failed to sign up!",
-      });
-
-      // let message;
-      // if (error instanceof RegisterError) message = error;
-      // else message = String(error);
-      console.log((error as RegisterError).data);
-      setError((error as RegisterError).data.password);
-    }
-  };
-
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="first_name">First Name</label>
-          <div>
-            <input
-              id="first_name"
-              className="text-black"
-              onChange={handleChange}
-              value={first_name}
-              type="text"
-              name="first_name"
-              required
-            />
-          </div>
+    <div className="flex justify-between">
+      <div className=" flex flex-col justify-center">
+        <h2 className="text-ltext text-4xl font-bold mb-4">
+          Welcome to Newsltr.
+        </h2>
+        <RegisterForm />
+        <div className="mt-2">
+          <p className="text-sm">
+            Already have an account?{" "}
+            <Link className="text-secondary" href="/auth/login">
+              Log in
+            </Link>{" "}
+          </p>
         </div>
-        <div>
-          <label htmlFor="last_name">Last Name</label>
-          <div>
-            <input
-              onChange={handleChange}
-              value={last_name}
-              type="text"
-              name="last_name"
-              id="last_name"
-              required
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="email">Email</label>
-          <div>
-            <input
-              onChange={handleChange}
-              value={email}
-              type="email"
-              name="email"
-              id="email"
-              required
-            />
-          </div>
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <div>
-            <input
-              className={`${errorblur ? "border-red-300 border" : ""}`}
-              onChange={handleChange}
-              onBlur={() => {
-                password.length < 8 ? setErrorblur(true) : setErrorblur(false);
-              }}
-              value={password}
-              type="password"
-              name="password"
-              id="password"
-              required
-            />
-          </div>
-          <div>{error ? error.map((e) => <div key={e}>{e}</div>) : null}</div>
-        </div>
-        <div>
-          <label htmlFor="re_password">Confirm Password</label>
-          <div>
-            <input
-              onChange={handleChange}
-              value={re_password}
-              type="password"
-              name="re_password"
-              id="re_password"
-              required
-            />
-          </div>
-        </div>
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? <Spinner /> : "Sign up"}
-        </button>
-      </form>
+      </div>
     </div>
   );
 };
