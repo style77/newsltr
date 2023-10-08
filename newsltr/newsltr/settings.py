@@ -108,7 +108,11 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
 # Email
 
-EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend" if os.getenv("SENDINBLUE_API_KEY") else "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = (
+    "anymail.backends.sendinblue.EmailBackend"
+    if os.getenv("SENDINBLUE_API_KEY")
+    else "django.core.mail.backends.smtp.EmailBackend"
+)
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
@@ -237,7 +241,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [os.path.join(BASE_DIR, 'templates')],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

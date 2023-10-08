@@ -1,5 +1,4 @@
-from django.urls import path, re_path, include
-from rest_framework import permissions
+from django.urls import path, include
 from django.contrib import admin
 
 from . import settings

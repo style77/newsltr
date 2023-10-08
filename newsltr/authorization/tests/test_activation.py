@@ -1,6 +1,4 @@
-from django.conf import settings
 from django.contrib.auth.tokens import default_token_generator
-from django.test.utils import override_settings
 from djet import assertions
 from rest_framework import status
 from rest_framework.reverse import reverse
