@@ -17,6 +17,15 @@ jobs:
     name: Run Django Tests
     runs-on: ubuntu-latest
 
+    env:
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+      EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+      EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+      SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -25,11 +34,6 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.11 
-
-      - name: Generate SECRET_KEY
-        run: |
-          SECRET_KEY=$(python -c "import random; import string; print(''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(50)))")
-          echo "SECRET_KEY=${SECRET_KEY}" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: |
