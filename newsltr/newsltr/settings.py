@@ -78,7 +78,10 @@ HEALTH_CHECK_APPS = [
 ]
 
 # Custom Apps
-CUSTOM_APPS = ["authorization.apps.AuthorizationConfig"]
+CUSTOM_APPS = [
+    "authorization.apps.AuthorizationConfig",
+    "workspaces.apps.WorkspacesConfig"
+]
 
 # Celery Apps
 CELERY_APPS = [
