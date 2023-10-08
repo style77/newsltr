@@ -108,14 +108,14 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
 # Email
 
-EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
+EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend" if os.getenv("SENDINBLUE_API_KEY") else "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 300  # in seconds
-DEFAULT_FROM_EMAIL = "Newsltr <newsltr@newsltr.io>"
+DEFAULT_FROM_EMAIL = f"Newsltr <{'newsltr@newsltr.io' if os.getenv('SENDINBLUE_API_KEY') else EMAIL_HOST}>"
 
 ANYMAIL = {
     "SENDINBLUE_API_KEY": os.getenv("SENDINBLUE_API_KEY"),
