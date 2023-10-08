@@ -2,11 +2,17 @@ name: Django Test CI
 
 on:
   push:
+    paths:
+      - 'newsltr/**'
+      - '.github/workflows/**'
     branches:
       - main
       - master
       - develop
   pull_request:
+    paths:
+      - 'newsltr/**'
+      - '.github/workflows/**'
     branches:
       - main
       - master
