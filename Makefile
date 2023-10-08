@@ -22,7 +22,7 @@ runcelery:
 
 generateschema:
 	@echo Generating schema...
-	cd newsltr && pipenv run python manage.py generateschema --file openapi-schema.yml
+	cd newsltr && pipenv run python manage.py spectacular --file openapi-schema.yml
 
 up-dev:
 	@echo Building dev image...
