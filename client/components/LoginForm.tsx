@@ -1,18 +1,8 @@
 import React from "react";
 import Form from "./ui/form";
-import { useRegister } from "@/hooks/useRegister";
+import { useLogin } from "@/hooks/useLogin";
 
 const config = [
-  {
-    id: "first_name",
-    label: "First Name",
-    type: "text",
-  },
-  {
-    id: "last_name",
-    label: "Last Name",
-    type: "text",
-  },
   {
     id: "email",
     label: "Email",
@@ -23,15 +13,10 @@ const config = [
     label: "Password",
     type: "password",
   },
-  {
-    id: "re_password",
-    label: "Confirm Password",
-    type: "password",
-  },
 ];
-const RegisterForm = () => {
+const LoginForm = () => {
   const { registerInput, errors, onSubmit, handleSubmit, isLoading } =
-    useRegister();
+    useLogin();
   return (
     <Form
       config={config}
@@ -40,9 +25,9 @@ const RegisterForm = () => {
       onSubmit={onSubmit}
       handleSubmit={handleSubmit}
       isLoading={isLoading}
-      btnText="Sign up"
+      btnText="Log in"
     />
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

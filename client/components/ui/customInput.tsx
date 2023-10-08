@@ -1,4 +1,5 @@
 import React from "react";
+import { AlertTriangle } from "lucide-react";
 import type {
   FieldErrors,
   FieldValues,
@@ -22,16 +23,18 @@ const CustomInput = <T extends FieldValues>({
   errors,
 }: InputProps) => {
   return (
-    <div>
+    <div className="min-h-[100px]">
       <label className="text-ltext" htmlFor={id}>
         {label}
       </label>
-      <div className="mb-5 mt-2">
+      <div className="mb-5 mt-1">
         <input
           {...register}
           id={id}
-          className={`text-black border w-96 bg-grey p-2 rounded-md ${
-            errors[id]?.message ? "border-danger" : ""
+          className={`text-ltext border w-96 p-2 rounded-md focus:outline-primary mb-1 ${
+            errors[id]?.message
+              ? "border-danger bg-red-100"
+              : "bg-slate-50 border-slate-300"
           }`}
           type={type}
         />
@@ -41,9 +44,10 @@ const CustomInput = <T extends FieldValues>({
           render={({ message }) =>
             message &&
             message.split(",").map((m) => (
-              <p className="text-danger" key={m}>
-                {m}
-              </p>
+              <div className="flex gap-1 text-danger items-center" key={m}>
+                <AlertTriangle size={16} />
+                <p className="text-sm">{m}</p>
+              </div>
             ))
           }
         />

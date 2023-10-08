@@ -25,3 +25,17 @@ export type RegisterError = {
     re_password: string;
   };
 };
+
+export type LoginError = {
+  status: number;
+  data: {
+    detail: string;
+  };
+};
+
+export const loginFormSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+
+export type LoginFormSchemaType = z.infer<typeof loginFormSchema>;
