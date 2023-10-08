@@ -1,4 +1,6 @@
-.PHONY: test migrate runserver generateschema
+.PHONY: test migrate makemigrations runserver runcelery generateschema up-dev freeze flake8 black
+
+# Development Commands
 
 test:
 	@echo Running tests...
@@ -17,7 +19,7 @@ runserver:
 	cd newsltr && pipenv run python manage.py runserver
 
 runcelery:
-	@echo running celery
+	@echo Running celery...
 	cd newsltr && pipenv run celery -A newsltr worker -l info
 
 generateschema:
@@ -26,8 +28,18 @@ generateschema:
 
 up-dev:
 	@echo Building dev image...
-	docker compose -f docker-compose.dev.yml up --build
+	docker-compose -f docker-compose.dev.yml up --build
 
 freeze:
 	@echo Freezing dependencies...
 	cd newsltr && pipenv run pip freeze > requirements.txt
+
+# Code Quality Checks
+
+flake8:
+	@echo Running flake8...
+	cd newsltr && pipenv run flake8 .
+
+black:
+	@echo Running black...
+	cd newsltr && pipenv run black .
