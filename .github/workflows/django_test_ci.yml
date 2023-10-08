@@ -26,6 +26,11 @@ jobs:
         with:
           python-version: 3.11 
 
+      - name: Generate SECRET_KEY
+        run: |
+          SECRET_KEY=$(python -c "import random; import string; print(''.join(random.choice(string.ascii_letters + string.digits + string.punctuation) for _ in range(50)))")
+          echo "SECRET_KEY=${SECRET_KEY}" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: |
           pip install -r newsltr/requirements.txt
