@@ -78,9 +78,7 @@ HEALTH_CHECK_APPS = [
 ]
 
 # Custom Apps
-CUSTOM_APPS = [
-    "authorization.apps.AuthorizationConfig"
-]
+CUSTOM_APPS = ["authorization.apps.AuthorizationConfig"]
 
 # Celery Apps
 CELERY_APPS = [
@@ -167,6 +165,7 @@ SIMPLE_JWT = {
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "TOKEN_OBTAIN_SERIALIZER": "authorization.serializers.CustomTokenObtainSerializer",
+    "USER_AUTHENTICATION_RULE": "authorization.utils.user_authentication_rule",
 }
 
 DJOSER = {
@@ -198,7 +197,8 @@ DJOSER = {
 
 AUTHENTICATION_BACKENDS = (
     "social_core.backends.google.GoogleOAuth2",
-    "django.contrib.auth.backends.ModelBackend",
+    "django.contrib.auth.backends.AllowAllUsersModelBackend",
+    # "django.contrib.auth.backends.ModelBackend",
 )
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("GOOGLE_OAUTH2_KEY")

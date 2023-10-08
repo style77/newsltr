@@ -7,9 +7,6 @@ paths:
   /api/v1/auth/jwt/create/:
     post:
       operationId: api_v1_auth_jwt_create_create
-      description: |-
-        Takes a set of user credentials and returns an access and refresh JSON web
-        token pair to prove the authentication of those credentials.
       tags:
       - api
       requestBody:
@@ -598,6 +595,14 @@ components:
         last_name:
           type: string
           maxLength: 150
+        id:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
         date_joined:
           type: string
           format: date-time
@@ -607,14 +612,6 @@ components:
           format: date-time
           readOnly: true
           nullable: true
-        id:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-          title: Email address
       required:
       - date_joined
       - email
@@ -627,13 +624,6 @@ components:
           type: string
         last_name:
           type: string
-        date_joined:
-          type: string
-          format: date-time
-        last_login:
-          type: string
-          format: date-time
-          nullable: true
         email:
           type: string
           format: email
@@ -679,6 +669,14 @@ components:
         last_name:
           type: string
           maxLength: 150
+        id:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
         date_joined:
           type: string
           format: date-time
@@ -688,14 +686,6 @@ components:
           format: date-time
           readOnly: true
           nullable: true
-        id:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-          readOnly: true
-          title: Email address
     PatchedUser:
       type: object
       properties:
@@ -705,13 +695,6 @@ components:
         last_name:
           type: string
           maxLength: 150
-        date_joined:
-          type: string
-          format: date-time
-        last_login:
-          type: string
-          format: date-time
-          nullable: true
         id:
           type: string
           readOnly: true
@@ -799,13 +782,6 @@ components:
         last_name:
           type: string
           maxLength: 150
-        date_joined:
-          type: string
-          format: date-time
-        last_login:
-          type: string
-          format: date-time
-          nullable: true
         id:
           type: string
           readOnly: true

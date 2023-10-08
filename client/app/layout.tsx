@@ -19,9 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8 my-8">
-            {children}
-          </div>
+          <div className="h-full mx-auto px-2 sm:px-6 lg:px-0">{children}</div>
         </Provider>
         <Toaster />
       </body>
