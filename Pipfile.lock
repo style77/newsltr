@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9170d6a1358a8e90241db232deed80c395438dde816152541e167be6415198ee"
+            "sha256": "463375093388a03a60e104382fffe524cd09eacb6025a90055d97a4e056aa906"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -317,6 +317,17 @@
             "index": "pypi",
             "markers": "python_version >= '3.8'",
             "version": "==4.2.6"
+        },
+        "django-anymail": {
+            "extras": [
+                "sendgrid"
+            ],
+            "hashes": [
+                "sha256:5c4f26bd0f5507324ed1da31e430bca3293bb2c16f386e813484f2ea2df83d06",
+                "sha256:e0a65c1e235dcb863dab67a3e193e899a48503b650df483d7b73f73983fd874b"
+            ],
+            "markers": "python_version >= '3.7'",
+            "version": "==10.1"
         },
         "django-celery-beat": {
             "hashes": [
@@ -834,7 +845,7 @@
                 "sha256:11ef1e08e54acb0d4f95bdb1be05da659673de4acbd21bf9c69e94cc5e907a3a",
                 "sha256:7e65763eef3120314099b6939b5546db7adce1e7d6f2e179e3df563c70511eda"
             ],
-            "markers": "python_version >= '2'",
+            "markers": "sys_platform == 'win32'",
             "version": "==2023.3"
         },
         "uritemplate": {
