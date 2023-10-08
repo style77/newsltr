@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
+from rest_framework import serializers, status
 from djoser.serializers import UserCreatePasswordRetypeSerializer, UserSerializer
 from djoser.conf import settings
 from rest_framework_simplejwt.serializers import (
     TokenObtainSerializer,
     update_last_login,
 )
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -59,6 +60,12 @@ class CustomUserCreateSerliazier(UserCreatePasswordRetypeSerializer):
         return super().validate(attrs)
 
 
+class InActiveUser(AuthenticationFailed):
+    status_code = status.HTTP_406_NOT_ACCEPTABLE
+    default_detail = "User is not active, please confirm your email"
+    default_code = "user_is_inactive"
+
+
 class CustomUserSerializer(UserSerializer):
     class Meta:
         model = User
@@ -73,17 +80,17 @@ class CustomUserSerializer(UserSerializer):
         read_only_fields = (settings.LOGIN_FIELD, "date_joined", "last_login")
 
 
-class EmailTokenObtainSerializer(TokenObtainSerializer):
+class CustomTokenObtainPairSerializer(TokenObtainSerializer):
     username_field = settings.LOGIN_FIELD
 
-
-class CustomTokenObtainPairSerializer(EmailTokenObtainSerializer):
     @classmethod
     def get_token(cls, user):
         return RefreshToken.for_user(user)
 
     def validate(self, attrs):
         data = super().validate(attrs)
+        if not self.user.is_active:
+            raise InActiveUser()
 
         refresh = self.get_token(self.user)
 
