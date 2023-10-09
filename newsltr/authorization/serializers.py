@@ -80,6 +80,27 @@ class CustomUserSerializer(UserSerializer):
         read_only_fields = (settings.LOGIN_FIELD, "date_joined", "last_login")
 
 
+class CurrentUserSerializer(UserSerializer):
+    class Meta:
+        model = User
+        # all fields except password
+        fields = tuple(User.REQUIRED_FIELDS) + (
+            settings.USER_ID_FIELD,
+            settings.LOGIN_FIELD,
+            "first_name",
+            "last_name",
+            "date_joined",
+            "last_login",
+            "workspaces",
+        )
+        read_only_fields = (
+            settings.LOGIN_FIELD,
+            "date_joined",
+            "last_login",
+            "workspaces"
+        )
+
+
 class CustomTokenObtainPairSerializer(TokenObtainSerializer):
     username_field = settings.LOGIN_FIELD
 
