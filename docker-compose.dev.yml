@@ -1,19 +1,19 @@
 version: '3'
 services:
-  # newsltr-db:
-  #   image: postgres:latest
-  #   container_name: newsltr-db
-  #   ports:
-  #     - "5432:5432"
-  #   environment:
-  #     - POSTGRES_USER=postgres
-  #     - POSTGRES_PASSWORD=postgres
-  #     - POSTGRES_DB=newsltr
-  # newsltr-redis:
-  #   image: redis:latest
-  #   container_name: newsltr-redis
-  #   ports:
-  #     - "6379:6379"
+  newsltr-db:
+    image: postgres:latest
+    container_name: newsltr-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: newsltr
+  newsltr-redis:
+    image: redis:latest
+    container_name: newsltr-redis
+    ports:
+      - "6379:6379"
   newsltr-api:
     build:
       context: ./newsltr
@@ -22,6 +22,12 @@ services:
     container_name: newsltr-api
     ports:
       - "8000:8000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@newsltr-db:5432/newsltr
+      REDIS_URL: redis://newsltr-redis:6379
+    depends_on:
+      - newsltr-db
+      - newsltr-redis
   newsltr-celery:
     build:
       context: ./newsltr
