@@ -1,5 +1,3 @@
-from django.conf import settings
-from django.test import override_settings
 from djet import assertions
 from rest_framework import status
 from rest_framework.reverse import reverse

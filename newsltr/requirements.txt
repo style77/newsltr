@@ -19,6 +19,7 @@ defusedxml==0.8.0rc2
 distlib==0.3.7
 dj-database-url==2.1.0
 Django==4.2.6
+django-anymail==10.1
 django-appconf==1.0.5
 django-celery-beat==2.5.0
 django-celery-results==2.5.1

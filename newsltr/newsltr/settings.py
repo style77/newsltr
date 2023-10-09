@@ -108,14 +108,22 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
 # Email
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = (
+    "anymail.backends.sendinblue.EmailBackend"
+    if os.getenv("SENDINBLUE_API_KEY")
+    else "django.core.mail.backends.smtp.EmailBackend"
+)
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_TIMEOUT = 300  # in seconds
-DEFAULT_FROM_EMAIL = f"Newsltr <{EMAIL_HOST_USER}>"
+DEFAULT_FROM_EMAIL = f"Newsltr <{'newsltr@newsltr.io' if os.getenv('SENDINBLUE_API_KEY') else EMAIL_HOST}>"
+
+ANYMAIL = {
+    "SENDINBLUE_API_KEY": os.getenv("SENDINBLUE_API_KEY"),
+}
 
 CELERY_EMAIL_CHUNK_SIZE = 10
 # CELERY_IMPORTS = ("newsltr.tasks",)
@@ -169,6 +177,8 @@ DJOSER = {
     "UPDATE_LAST_LOGIN": True,
     "SEND_ACTIVATION_EMAIL": True,
     "ACTIVATION_URL": "activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
     "SEND_CONFIRMATION_EMAIL": True,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_PASSWORD_RETYPE": True,
@@ -227,10 +237,11 @@ CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "newsltr.urls"
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

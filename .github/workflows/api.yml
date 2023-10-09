@@ -1,18 +1,47 @@
-name: Django Test CI
+name: API Pre-Deploy
 
 on:
   push:
+    paths:
+      - 'newsltr/**'
+      - '.github/workflows/**'
     branches:
       - main
       - master
       - develop
   pull_request:
+    paths:
+      - 'newsltr/**'
+      - '.github/workflows/**'
     branches:
       - main
       - master
       - develop
 
 jobs:
+  lint:
+    name: Lint Python Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11 
+
+      - name: Install dependencies
+        run: |
+          pip install -r newsltr/requirements.txt
+          pip install flake8
+
+      - name: Lint Python code
+        working-directory: newsltr
+        run: |
+          flake8 .
+          
   test:
     name: Run Django Tests
     runs-on: ubuntu-latest
