@@ -191,14 +191,15 @@ DJOSER = {
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
         "user": "authorization.serializers.CustomUserSerializer",
+        "current_user": "authorization.serializers.CurrentUserSerializer",
     },
     "EMAIL": {
-        "activation": "newsltr.email.ActivationEmail",
-        "confirmation": "newsltr.email.ConfirmationEmail",
-        "password_reset": "newsltr.email.PasswordResetEmail",
-        "password_changed_confirmation": "newsltr.email.PasswordChangedConfirmationEmail",
-        "username_changed_confirmation": "newsltr.email.UsernameChangedConfirmationEmail",
-        "username_reset": "newsltr.email.UsernameResetEmail",
+        "activation": "authorization.email.ActivationEmail",
+        "confirmation": "authorization.email.ConfirmationEmail",
+        "password_reset": "authorization.email.PasswordResetEmail",
+        "password_changed_confirmation": "authorization.email.PasswordChangedConfirmationEmail",
+        "username_changed_confirmation": "authorization.email.UsernameChangedConfirmationEmail",
+        "username_reset": "authorization.email.UsernameResetEmail",
     },
 }
 
