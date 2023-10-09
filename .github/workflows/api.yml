@@ -72,12 +72,12 @@ jobs:
       - name: Run Django tests
         working-directory: newsltr
         run: |
-          python manage.py test
+          python manage.py test --noinput
 
       - name: Collect test coverage
         working-directory: newsltr
         run: |
-          coverage run manage.py test
+          coverage run manage.py test --noinput
           coverage xml
 
       - name: Upload coverage report
