@@ -26,7 +26,7 @@ generateschema:
 
 up-dev:
 	@echo Building dev image...
-	docker-compose -f docker-compose.dev.yml up --build
+	docker compose -f docker-compose.dev.yml up --build
 
 freeze:
 	@echo Freezing dependencies...
