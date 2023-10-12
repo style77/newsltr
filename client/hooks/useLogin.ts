@@ -21,10 +21,12 @@ export const useLogin = () => {
   const onSubmit = async (data: LoginFormSchemaType) => {
     const { email, password } = data;
     try {
-      await login({
+      const res = await login({
         email,
         password,
       }).unwrap();
+
+      console.log(res);
 
       toast({
         title: "You are succesfully logged in!",

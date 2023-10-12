@@ -7,10 +7,9 @@ import type {
   UseFormGetValues,
 } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { LoginError } from "@/lib/types";
-import { Button } from "./button";
 import { useToast } from "./use-toast";
 import { useResendActivationMutation } from "@/redux/features/authApiSlice";
+import Spinner from "./spinner";
 
 interface InputProps<T extends FieldValues> {
   register: UseFormRegisterReturn;
@@ -30,10 +29,9 @@ const CustomInput = <T extends FieldValues>({
   getValues,
 }: InputProps<T>) => {
   const { toast } = useToast();
-  const inactive = errors.email?.message?.toString().includes("not active");
 
   const v = errors.email?.message;
-  const [resendActivation] = useResendActivationMutation();
+  const [resendActivation, { isLoading }] = useResendActivationMutation();
 
   const resendActivationEmail = async () => {
     if (getValues) {
@@ -92,10 +90,11 @@ const CustomInput = <T extends FieldValues>({
             <div>
               {v?.toString().includes("not active") && id === "email" && (
                 <button
+                  type="button"
                   onClick={resendActivationEmail}
                   className="text-sm text-secondary underline font-semibold"
                 >
-                  Resend activation email
+                  {isLoading ? <Spinner /> : "Resend activation email"}
                 </button>
               )}
             </div>
