@@ -13,12 +13,10 @@ class ActivationEmail(BaseEmailMessage):
         context = super().get_context_data()
 
         user = context.get("user")
-        print(user.first_name)
         context["uid"] = utils.encode_uid(user.pk)
         context["token"] = default_token_generator.make_token(user)
         context["url"] = settings.ACTIVATION_URL.format(**context)
         context["first_name"] = user.first_name
-        print(context)
         return context
 
 
