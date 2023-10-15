@@ -61,9 +61,8 @@ paths:
   /api/v1/auth/jwt/verify/:
     post:
       operationId: api_v1_auth_jwt_verify_create
-      description: |-
-        Takes a token and indicates if it is valid.  This view provides no
-        information about a token's fitness for a particular use.
+      description: Takes a token and returns correct HTTP status if it is valid or
+        not.
       tags:
       - api
       requestBody:
@@ -85,6 +84,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/TokenVerify'
           description: ''
+  /api/v1/auth/logout:
+    post:
+      operationId: api_v1_auth_logout_create
+      description: Logout user by deleting cookies.
+      tags:
+      - api
+      security:
+      - JWTCookiesAuthentication: []
+      responses:
+        '200':
+          description: No response body
   /api/v1/auth/o/{provider}/:
     get:
       operationId: api_v1_auth_o_retrieve
@@ -98,6 +108,7 @@ paths:
       tags:
       - api
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -129,6 +140,7 @@ paths:
             schema:
               $ref: '#/components/schemas/ProviderAuth'
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '201':
@@ -142,6 +154,8 @@ paths:
       operationId: api_v1_auth_users_list
       tags:
       - api
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -168,6 +182,7 @@ paths:
               $ref: '#/components/schemas/CustomUserCreateSerliazier'
         required: true
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '201':
@@ -188,6 +203,8 @@ paths:
         required: true
       tags:
       - api
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -217,6 +234,8 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CustomUser'
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -246,6 +265,8 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedCustomUser'
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -264,6 +285,8 @@ paths:
         required: true
       tags:
       - api
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
@@ -285,6 +308,7 @@ paths:
               $ref: '#/components/schemas/Activation'
         required: true
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -298,6 +322,8 @@ paths:
       operationId: api_v1_auth_users_me_retrieve
       tags:
       - api
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -320,6 +346,8 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/User'
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -342,6 +370,8 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedUser'
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -353,6 +383,8 @@ paths:
       operationId: api_v1_auth_users_me_destroy
       tags:
       - api
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
@@ -374,6 +406,7 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -400,6 +433,7 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -426,6 +460,7 @@ paths:
               $ref: '#/components/schemas/UsernameResetConfirm'
         required: true
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -452,6 +487,7 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -478,6 +514,7 @@ paths:
               $ref: '#/components/schemas/PasswordResetConfirmRetype'
         required: true
       security:
+      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -503,6 +540,8 @@ paths:
             schema:
               $ref: '#/components/schemas/SetUsername'
         required: true
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -527,6 +566,8 @@ paths:
             schema:
               $ref: '#/components/schemas/SetPasswordRetype'
         required: true
+      security:
+      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -775,3 +816,5 @@ components:
           maxLength: 254
       required:
       - new_email
+  securitySchemes:
+    JWTCookiesAuthentication: {}

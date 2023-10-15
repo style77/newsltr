@@ -116,6 +116,9 @@ class CustomTokenRefreshView(TokenRefreshView):
 
 
 class CustomTokenVerifyView(TokenVerifyView):
+    """
+    Takes a token and returns correct HTTP status if it is valid or not.
+    """
     def post(self, request, *args, **kwargs):
         access_token = request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE"])
 
@@ -126,6 +129,11 @@ class CustomTokenVerifyView(TokenVerifyView):
 
 
 class LogoutView(APIView):
+    """
+    Logout user by deleting cookies.
+    """
+    serializer_class = None
+
     def post(self, request, *args, **kwargs):
         response = Response(status=status.HTTP_204_NO_CONTENT)
         response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE"])
