@@ -1,8 +1,12 @@
-import "./globals.css";
+import Image from "next/image";
+import React from "react";
+import formDecor from "@/public/login-decor.svg";
+import "../globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Provider from "@/redux/Provider";
 import { Toaster } from "@/components/ui/toaster";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,7 +23,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Provider>
-          <div className="h-full mx-auto px-2 sm:px-6 lg:px-0">{children}</div>
+          <div className="flex justify-between h-screen min-h-[900px] w-full ">
+            <div className="grow flex justify-center">{children}</div>
+            <Image className="h-full w-fit" src={formDecor} alt="login-decor" />
+          </div>
         </Provider>
         <Toaster />
       </body>
