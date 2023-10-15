@@ -1,4 +1,4 @@
-name: Deploy
+name: Client Deploy
 on:
   push:
     paths:
