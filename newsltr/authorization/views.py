@@ -1,15 +1,53 @@
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from django.conf import settings
 
-from rest_framework_simplejwt.views import TokenViewBase
+from djoser.social.views import ProviderAuthView
+
+from rest_framework_simplejwt.views import (
+    TokenViewBase,
+    TokenVerifyView,
+    TokenRefreshView,
+)
 from rest_framework_simplejwt.exceptions import (
     AuthenticationFailed,
     TokenError,
     InvalidToken,
 )
+
 from authorization.serializers import CustomTokenObtainPairSerializer, InActiveUser
+
+
+class CustomProviderAuthView(ProviderAuthView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+
+        if response.status_code == 201:
+            access_token = response.data.get('access')
+            refresh_token = response.data.get('refresh')
+
+            response.set_cookie(
+                'access',
+                access_token,
+                max_age=settings.SIMPLE_JWT["AUTH_COOKIE_MAX_AGE"],
+                path=settings.SIMPLE_JWT["AUTH_COOKIE_PATH"],
+                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
+                samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"]
+            )
+            response.set_cookie(
+                'refresh',
+                refresh_token,
+                max_age=settings.SIMPLE_JWT["AUTH_COOKIE_MAX_AGE"],
+                path=settings.SIMPLE_JWT["AUTH_COOKIE_PATH"],
+                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
+                samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"]
+            )
+
+        return response
 
 
 class EmailTokenObtainPairView(TokenViewBase):
@@ -50,33 +88,47 @@ class EmailTokenObtainPairView(TokenViewBase):
         return response
 
 
-class CustomTokenRefreshView(TokenViewBase):
+class CustomTokenRefreshView(TokenRefreshView):
     """
     Takes a refresh type JSON web token and returns an access type JSON web
     token if the refresh token is valid.
     """
 
-    _serializer_class = settings.SIMPLE_JWT["TOKEN_REFRESH_SERIALIZER"]
-
     def post(self, request, *args, **kwargs):
-        serializer_class = self.get_serializer_class()
-        serializer = serializer_class(data=request.data)
+        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT["REFRESH_COOKIE"])
 
-        try:
-            serializer.is_valid(raise_exception=True)
-        except AuthenticationFailed:
-            raise InActiveUser()
-        except TokenError:
-            raise InvalidToken()
+        if refresh_token:
+            request.data["refresh"] = refresh_token
 
-        response = Response(serializer.validated_data, status=status.HTTP_200_OK)
-        response.set_cookie(
-            key=settings.SIMPLE_JWT["AUTH_COOKIE"],
-            value=serializer.validated_data["access"],
-            expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
-            secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-            httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-            samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
-        )
+        response = super().post(request, *args, **kwargs)
+
+        if response.status_code == 200:
+            response.set_cookie(
+                key=settings.SIMPLE_JWT["AUTH_COOKIE"],
+                value=response.data.get("access"),
+                expires=settings.SIMPLE_JWT["ACCESS_TOKEN_LIFETIME"],
+                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
+                httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
+                samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
+            )
+
+            return response
+
+
+class CustomTokenVerifyView(TokenVerifyView):
+    def post(self, request, *args, **kwargs):
+        access_token = request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE"])
+
+        if access_token:
+            request.data["token"] = access_token
+
+        return super().post(request, *args, **kwargs)
+
+
+class LogoutView(APIView):
+    def post(self, request, *args, **kwargs):
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+        response.delete_cookie(settings.SIMPLE_JWT["AUTH_COOKIE"])
+        response.delete_cookie(settings.SIMPLE_JWT["REFRESH_COOKIE"])
 
         return response
