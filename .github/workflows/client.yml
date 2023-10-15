@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'client/**'
+      - '.github/workflows/**'
     branches:
       - main
       - master
