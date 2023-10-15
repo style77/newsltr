@@ -7,6 +7,9 @@ paths:
   /api/v1/auth/jwt/create/:
     post:
       operationId: api_v1_auth_jwt_create_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
       tags:
       - api
       requestBody:
@@ -95,7 +98,6 @@ paths:
       tags:
       - api
       security:
-      - jwtAuth: []
       - {}
       responses:
         '200':
@@ -127,7 +129,6 @@ paths:
             schema:
               $ref: '#/components/schemas/ProviderAuth'
       security:
-      - jwtAuth: []
       - {}
       responses:
         '201':
@@ -141,8 +142,6 @@ paths:
       operationId: api_v1_auth_users_list
       tags:
       - api
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -169,7 +168,6 @@ paths:
               $ref: '#/components/schemas/CustomUserCreateSerliazier'
         required: true
       security:
-      - jwtAuth: []
       - {}
       responses:
         '201':
@@ -190,8 +188,6 @@ paths:
         required: true
       tags:
       - api
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -221,8 +217,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CustomUser'
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -252,8 +246,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedCustomUser'
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -272,8 +264,6 @@ paths:
         required: true
       tags:
       - api
-      security:
-      - jwtAuth: []
       responses:
         '204':
           description: No response body
@@ -295,7 +285,6 @@ paths:
               $ref: '#/components/schemas/Activation'
         required: true
       security:
-      - jwtAuth: []
       - {}
       responses:
         '200':
@@ -309,8 +298,6 @@ paths:
       operationId: api_v1_auth_users_me_retrieve
       tags:
       - api
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -333,8 +320,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/User'
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -357,8 +342,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedUser'
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -370,8 +353,6 @@ paths:
       operationId: api_v1_auth_users_me_destroy
       tags:
       - api
-      security:
-      - jwtAuth: []
       responses:
         '204':
           description: No response body
@@ -393,7 +374,6 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
-      - jwtAuth: []
       - {}
       responses:
         '200':
@@ -420,7 +400,6 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
-      - jwtAuth: []
       - {}
       responses:
         '200':
@@ -447,7 +426,6 @@ paths:
               $ref: '#/components/schemas/UsernameResetConfirm'
         required: true
       security:
-      - jwtAuth: []
       - {}
       responses:
         '200':
@@ -474,7 +452,6 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
-      - jwtAuth: []
       - {}
       responses:
         '200':
@@ -501,7 +478,6 @@ paths:
               $ref: '#/components/schemas/PasswordResetConfirmRetype'
         required: true
       security:
-      - jwtAuth: []
       - {}
       responses:
         '200':
@@ -527,8 +503,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SetUsername'
         required: true
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -553,8 +527,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SetPasswordRetype'
         required: true
-      security:
-      - jwtAuth: []
       responses:
         '200':
           content:
@@ -803,8 +775,3 @@ components:
           maxLength: 254
       required:
       - new_email
-  securitySchemes:
-    jwtAuth:
-      type: http
-      scheme: bearer
-      bearerFormat: Bearer

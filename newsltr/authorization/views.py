@@ -13,6 +13,11 @@ from authorization.serializers import CustomTokenObtainPairSerializer, InActiveU
 
 
 class EmailTokenObtainPairView(TokenViewBase):
+    """
+    Takes a set of user credentials and returns an access and refresh JSON web
+    token pair to prove the authentication of those credentials.
+    """
+
     serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
@@ -46,6 +51,11 @@ class EmailTokenObtainPairView(TokenViewBase):
 
 
 class CustomTokenRefreshView(TokenViewBase):
+    """
+    Takes a refresh type JSON web token and returns an access type JSON web
+    token if the refresh token is valid.
+    """
+
     _serializer_class = settings.SIMPLE_JWT["TOKEN_REFRESH_SERIALIZER"]
 
     def post(self, request, *args, **kwargs):
