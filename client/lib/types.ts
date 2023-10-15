@@ -30,6 +30,7 @@ export type LoginError = {
   status: number;
   data: {
     detail: string;
+    code: string;
   };
 };
 

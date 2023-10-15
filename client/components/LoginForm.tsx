@@ -15,18 +15,28 @@ const config = [
   },
 ];
 const LoginForm = () => {
-  const { registerInput, errors, onSubmit, handleSubmit, isLoading } =
-    useLogin();
+  const {
+    registerInput,
+    errors,
+    onSubmit,
+    handleSubmit,
+    isLoading,
+    getValues,
+  } = useLogin();
+
   return (
-    <Form
-      config={config}
-      register={registerInput}
-      errors={errors}
-      onSubmit={onSubmit}
-      handleSubmit={handleSubmit}
-      isLoading={isLoading}
-      btnText="Log in"
-    />
+    <>
+      <Form
+        config={config}
+        register={registerInput}
+        errors={errors}
+        onSubmit={onSubmit}
+        handleSubmit={handleSubmit}
+        isLoading={isLoading}
+        btnText="Log in"
+        getValues={getValues}
+      />
+    </>
   );
 };
 
