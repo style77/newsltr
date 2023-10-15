@@ -13,6 +13,7 @@ export const useLogin = () => {
     formState: { errors, isSubmitting },
     reset,
     setError,
+    getValues,
   } = useForm<LoginFormSchemaType>({
     resolver: zodResolver(loginFormSchema),
     mode: "onBlur",
@@ -20,10 +21,12 @@ export const useLogin = () => {
   const onSubmit = async (data: LoginFormSchemaType) => {
     const { email, password } = data;
     try {
-      await login({
+      const res = await login({
         email,
         password,
       }).unwrap();
+
+      console.log(res);
 
       toast({
         title: "You are succesfully logged in!",
@@ -34,13 +37,11 @@ export const useLogin = () => {
         title: "Failed to login in!",
       });
       const result = (error as LoginError).data;
-      console.log("EROOR", result);
+      console.log("EROOR", error);
       if (result) {
         setError("email", {
           type: "server",
-          message:
-            result.detail +
-            ". if you have already created an account with these credentials but ndidn't activate it",
+          message: result.detail,
         });
       }
     }
@@ -53,5 +54,6 @@ export const useLogin = () => {
     isSubmitting,
     registerInput,
     errors,
+    getValues,
   };
 };

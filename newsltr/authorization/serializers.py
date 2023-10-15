@@ -9,6 +9,7 @@ from rest_framework_simplejwt.serializers import (
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from newsltr.schemas import JWTCookiesScheme  # noqa
 
 User = get_user_model()
 

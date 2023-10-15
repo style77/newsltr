@@ -13,7 +13,10 @@ const Page = () => {
         <div className="mt-2">
           <p className="text-sm">
             Already have an account?{" "}
-            <Link className="text-secondary" href="/auth/login">
+            <Link
+              className="text-secondary underline font-semibold"
+              href="/auth/login"
+            >
               Log in
             </Link>{" "}
           </p>
