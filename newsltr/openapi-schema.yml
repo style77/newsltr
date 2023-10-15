@@ -817,4 +817,7 @@ components:
       required:
       - new_email
   securitySchemes:
-    JWTCookiesAuthentication: {}
+    JWTCookiesAuthentication:
+      type: apiKey
+      in: cookie
+      name: access
