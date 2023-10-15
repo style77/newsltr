@@ -3,8 +3,10 @@ import { useToast } from "@/components/ui/use-toast";
 import { loginFormSchema, LoginFormSchemaType, LoginError } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
 export const useLogin = () => {
+  const route = useRouter();
   const [login, { isLoading }] = useLoginMutation();
   const { toast } = useToast();
   const {
@@ -31,6 +33,7 @@ export const useLogin = () => {
       toast({
         title: "You are succesfully logged in!",
       });
+      route.push("/");
     } catch (error) {
       toast({
         variant: "destructive",
