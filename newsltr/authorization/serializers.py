@@ -7,7 +7,7 @@ from rest_framework_simplejwt.serializers import (
     update_last_login,
 )
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, UntypedToken
 
 from newsltr.schemas import JWTCookiesScheme  # noqa
 
@@ -102,3 +102,12 @@ class CustomTokenObtainPairSerializer(TokenObtainSerializer):
             update_last_login(None, self.user)
 
         return data
+
+
+class CustomTokenVerifySerializer(serializers.Serializer):
+    token = serializers.CharField(required=False)
+
+    def validate(self, attrs):
+        UntypedToken(attrs["token"])
+
+        return {}
