@@ -277,6 +277,10 @@ TEMPLATES = [
 WSGI_APPLICATION = "newsltr.wsgi.application"
 
 
+WORKSPACES = {
+    "ACTIVATION_URL": "invite/accept/{uid}/{workspace_id}/{token}",
+}
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
