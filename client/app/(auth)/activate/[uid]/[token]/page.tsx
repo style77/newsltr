@@ -1,7 +1,6 @@
 "use client";
 import { useToast } from "@/components/ui/use-toast";
 import { useActivationMutation } from "@/redux/features/authApiSlice";
-import { register } from "module";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 
@@ -31,7 +30,7 @@ const Page = ({ params }: ParamsProps) => {
           title: `Failed to activate account, email validation expired`,
         });
       } finally {
-        router.push("/auth/login");
+        router.push("/login");
       }
     };
 

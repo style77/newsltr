@@ -1,6 +1,7 @@
 import React from "react";
 import Form from "./ui/form";
 import { useLogin } from "@/hooks/useLogin";
+import { useAppSelector } from "@/redux/hooks";
 
 const config = [
   {
@@ -23,6 +24,9 @@ const LoginForm = () => {
     isLoading,
     getValues,
   } = useLogin();
+
+  const isAuth = useAppSelector((state) => state.auth.isUserAuthenticated);
+  console.log(isAuth);
 
   return (
     <>

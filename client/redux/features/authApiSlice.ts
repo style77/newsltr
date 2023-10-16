@@ -49,9 +49,10 @@ const authApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     verify: builder.mutation({
-      query: () => ({
+      query: ({ token }) => ({
         url: "/jwt/verify/",
         method: "POST",
+        body: { token }, ///this should be removed
       }),
     }),
     activation: builder.mutation({
@@ -82,6 +83,12 @@ const authApiSlice = apiSlice.injectEndpoints({
         body: { uid, token, new_password, re_new_password },
       }),
     }),
+    logout: builder.mutation({
+      query: () => ({
+        url: "/logout/",
+        method: "POST",
+      }),
+    }),
   }),
 });
 
@@ -95,4 +102,5 @@ export const {
   useResendActivationMutation,
   useResetPasswordMutation,
   useResetPasswordConfirmMutation,
+  useLogoutMutation,
 } = authApiSlice;
