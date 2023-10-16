@@ -11,18 +11,30 @@ import {
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 
+const listItems = [
+  {
+    name: "Log in",
+    url: "/login",
+  },
+  {
+    name: "Sign up",
+    url: "/register",
+  },
+];
+
 const Navbar = () => {
   return (
-    <nav className="flex justify-between bg-red-200">
+    <nav className="flex border-b border-red-200 justify-between py-2 px-4">
       <div>LOGO</div>
       <NavigationMenu>
         <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuLink href="/login">Log in</NavigationMenuLink>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuLink href="/register">Sign up</NavigationMenuLink>
-          </NavigationMenuItem>
+          {listItems.map((item) => (
+            <NavigationMenuItem key={item.name}>
+              <NavigationMenuLink href={item.url}>
+                {item.name}
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          ))}
         </NavigationMenuList>
       </NavigationMenu>
     </nav>

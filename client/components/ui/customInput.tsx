@@ -59,7 +59,7 @@ const CustomInput = <T extends FieldValues>({
           id={id}
           className={`text-ltext border w-96 p-2 rounded-md focus:outline-primary mb-1 ${
             errors[id]?.message
-              ? "border-danger bg-red-100"
+              ? "border-error border-2 bg-red-100"
               : "bg-slate-50 border-slate-300"
           }`}
           type={type}
@@ -71,7 +71,7 @@ const CustomInput = <T extends FieldValues>({
             message &&
             message.split(".,").map((m, i) => (
               <div
-                className="flex text-danger justify-between items-center text-sm"
+                className="flex text-error justify-between items-center text-sm"
                 key={m}
               >
                 <div className="flex gap-1">
