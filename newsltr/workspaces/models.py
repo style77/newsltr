@@ -29,8 +29,8 @@ class Workspace(models.Model):
     id = models.CharField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True, max_length=36
     )
-    name = models.CharField(_("workspace name"), max_length=100, blank=False, null=False)
-    description = models.CharField(_("workspace description"), max_length=1000)
+    name = models.CharField(_("workspace name"), max_length=120, blank=False, null=False)
+    description = models.CharField(_("workspace description"), max_length=1024)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
