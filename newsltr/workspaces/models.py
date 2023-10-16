@@ -6,6 +6,25 @@ from django.conf import settings
 # Create your models here.
 
 
+class WorkspaceMembership(models.Model):
+    ROLE_CHOICES = (
+        ("admin", _("Admin")),
+        ("moderator", _("Moderator")),
+        ("member", _("Member")),
+    )
+
+    workspace = models.ForeignKey(
+        "Workspace", related_name="memberships", on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        "authorization.User", related_name="workspace_memberships", on_delete=models.CASCADE
+    )
+    role = models.CharField(_("Role"), max_length=20, choices=ROLE_CHOICES)
+
+    class Meta:
+        unique_together = (("workspace", "user"),)
+
+
 class Workspace(models.Model):
     id = models.CharField(
         primary_key=True, default=uuid.uuid4, editable=False, unique=True, max_length=36
@@ -21,21 +40,6 @@ class Workspace(models.Model):
     def __str__(self):
         return self.name
 
-
-class WorkspaceMembership(models.Model):
-    ROLE_CHOICES = (
-        ("admin", _("Admin")),
-        ("moderator", _("Moderator")),
-        ("member", _("Member")),
-    )
-
-    workspace = models.ForeignKey(
-        Workspace, related_name="memberships", on_delete=models.CASCADE
-    )
-    user = models.ForeignKey(
-        "authorization.User", related_name="workspace_memberships", on_delete=models.CASCADE
-    )
-    role = models.CharField(_("Role"), max_length=20, choices=ROLE_CHOICES)
-
-    class Meta:
-        unique_together = (("workspace", "user"),)
+    @property
+    def memberships(self):
+        return WorkspaceMembership.objects.filter(workspace=self)
