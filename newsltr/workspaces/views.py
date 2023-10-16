@@ -26,12 +26,6 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
 
     token_generator = tokens.default_token_generator
 
-    # GET /workspaces/{id} - retrieve informations about workspace with id
-    # POST /workspaces/ - create new workspace, assign current user as first member with Adfmin role
-    # PATCH /workspaces/{id} - partial update
-    # PUT /workspaces/{id} - update
-    # POST /workspaces/{id}/invite- invitie user with email, check if user that send request is Admin of workspace
-
     def get_queryset(self):
         if self.action == "list" and not self.request.user.is_staff:
             return super().get_queryset().filter(memberships__user=self.request.user)
@@ -56,13 +50,40 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
             return WorkspaceInvitationAcceptSerializer
         return self.serializer_class
 
-    def perform_create(self, serializer, *args, **kwargs):
-        workspace = serializer.save(*args, **kwargs)
+    def list(self, request, *args, **kwargs):
+        """
+            List all workspaces that the user is a member of.
+        """
+        return super().list(request, *args, **kwargs)
 
-    def perform_update(self, serializer, *args, **kwargs):
-        super().perform_update(serializer, *args, **kwargs)
+    def retrieve(self, request, *args, **kwargs):
+        """
+            Retrieve workspace.
+        """
+        return super().retrieve(request, *args, **kwargs)
+
+    def create(self, request, *args, **kwargs):
+        """
+            Create a new workspace.
+        """
+        return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        """
+            Update workspace.
+        """
+        return super().update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        """
+            Partial update workspace.
+        """
+        return super().partial_update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
+        """
+            Delete workspace.
+        """
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -72,6 +93,9 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
 
     @action(["post"], detail=True)
     def invite(self, request, pk, *args, **kwargs):
+        """
+            Invite user to workspace.
+        """
         workspace = self.get_object()
         if not workspace:
             raise NotFound()
@@ -101,6 +125,9 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
 
     @action(["post"], detail=False, url_path="invite/accept")
     def invitation_accept(self, request, *args, **kwargs):
+        """
+            Accept invitation to workspace.
+        """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
