@@ -8,11 +8,15 @@ on:
       - main
       - master
       - develop
+    paths:
+      - newsltr/openapi-schema.yml
   pull_request:
     branches:
       - main
       - master
       - develop
+    paths:
+      - newsltr/openapi-schema.yml
 jobs:
   deploy-doc:
     if: ${{ github.event_name == 'push' }}
