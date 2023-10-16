@@ -30,6 +30,7 @@ const LoginForm = () => {
 
   return (
     <>
+      <div>{isAuth ? "i m logged in" : "i'm logged out"}</div>
       <Form
         config={config}
         register={registerInput}

@@ -1,5 +1,6 @@
 import Provider from "@/redux/Provider";
 import Navbar from "@/components/Navbar";
+import Setup from "@/utils/Setup";
 import "../globals.css";
 
 export const metadata = {
@@ -18,6 +19,7 @@ export default function RootLayout({
         <Provider>
           <Navbar />
           <div>{children}</div>
+          <Setup />
         </Provider>
       </body>
     </html>
