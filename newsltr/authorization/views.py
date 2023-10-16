@@ -17,7 +17,7 @@ from rest_framework_simplejwt.exceptions import (
     InvalidToken,
 )
 
-from authorization.serializers import CustomTokenObtainPairSerializer, InActiveUser, CustomTokenVerifySerializer
+from authorization.serializers import CustomTokenObtainPairSerializer, InActiveUser
 
 
 class CustomProviderAuthView(ProviderAuthView):
