@@ -4,7 +4,7 @@
 
 test:
 	@echo Running tests...
-	cd newsltr && pipenv run python manage.py test
+	cd newsltr && pipenv run python manage.py test --noinput
 
 migrate:
 	@echo Running migrations...
