@@ -23,7 +23,7 @@ class WorkspaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workspace
         fields = ("id", "name", "description", "created", "updated", "memberships")
-        depth = 1
+        read_only_fields = ("id", "created", "updated", "memberships")
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.name)
@@ -31,29 +31,14 @@ class WorkspaceSerializer(serializers.ModelSerializer):
         instance.save()
         return super().update(instance, validated_data)
 
-    # def get_fields(self):
-    #     fields = super().get_fields()
-
-    #     # Apply the IsMemberOfWorkspace permission to the memberships field
-    #     request = self.context.get("request")
-    #     if request and not request.user.is_anonymous:
-    #         fields["memberships"].child.context.update({"request": request})
-    #         fields["memberships"].child.parent = self
-    #         fields["memberships"].child.fields["user"].context.update(
-    #             {"request": request}
-    #         )
-    #         fields["memberships"].child.fields["user"].parent = self
-    #         fields["memberships"].child.fields["user"].child.fields[
-    #             "email"
-    #         ].read_only = True
-
-    #     return fields
-
 
 class WorkspaceCreateSerializer(serializers.ModelSerializer):
+    memberships = WorkspaceMembershipSerializer(many=True, read_only=True)
+
     class Meta:
         model = Workspace
-        fields = ("name", "description")
+        fields = ("id", "name", "description", "created", "updated", "memberships")
+        read_only_fields = ("created", "updated", "id", "memberships")
 
     def create(self, validated_data):
         try:
@@ -93,6 +78,7 @@ class WorkspaceInvitationAcceptSerializer(serializers.Serializer):
         "invalid_token": "Invalid token for given user.",
         "invalid_uid": "Invalid user id.",
         "invalid_workspace_id": "Invalid workspace id.",
+        "user_already_in_workspace": "User is already in workspace.",
     }
 
     def validate(self, attrs):
@@ -116,6 +102,12 @@ class WorkspaceInvitationAcceptSerializer(serializers.Serializer):
             key_error = "invalid_workspace_id"
             raise ValidationError(
                 {"workspace_id": [self.error_messages[key_error]]}, code=key_error
+            )
+
+        if self.workspace.memberships.filter(user=self.user).exists():
+            key_error = "user_already_in_workspace"
+            raise ValidationError(
+                {"detail": [self.error_messages[key_error]]}, code=key_error
             )
 
         is_token_valid = self.context["view"].token_generator.check_token(
