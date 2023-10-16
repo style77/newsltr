@@ -4,9 +4,12 @@ import { loginFormSchema, LoginFormSchemaType, LoginError } from "@/lib/types";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { setAuth } from "@/redux/features/authSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 export const useLogin = () => {
   const route = useRouter();
+  const dispatch = useAppDispatch();
   const [login, { isLoading }] = useLoginMutation();
   const { toast } = useToast();
   const {
@@ -27,13 +30,13 @@ export const useLogin = () => {
         email,
         password,
       }).unwrap();
-
+      dispatch(setAuth());
       console.log(res);
 
       toast({
         title: "You are succesfully logged in!",
       });
-      route.push("/");
+      // route.push("/");
     } catch (error) {
       toast({
         variant: "destructive",

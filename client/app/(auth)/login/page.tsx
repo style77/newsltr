@@ -14,7 +14,7 @@ const Page = () => {
             Don<span>&apos;</span>t have an account?{" "}
             <Link
               className="text-secondary underline font-semibold"
-              href="/auth/register"
+              href="/register"
             >
               Sign up
             </Link>{" "}
