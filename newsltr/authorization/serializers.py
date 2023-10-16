@@ -91,14 +91,12 @@ class CurrentUserSerializer(UserSerializer):
             "first_name",
             "last_name",
             "date_joined",
-            "last_login",
-            "workspaces",
+            "last_login"
         )
         read_only_fields = (
             settings.LOGIN_FIELD,
             "date_joined",
-            "last_login",
-            "workspaces"
+            "last_login"
         )
 
 
