@@ -1,3 +1,4 @@
+from django.conf import settings
 from drf_spectacular.openapi import OpenApiAuthenticationExtension
 
 
@@ -9,4 +10,7 @@ class JWTCookiesScheme(OpenApiAuthenticationExtension):
 
     def get_security_definition(self, auto_schema):
         return {
+            "type": "apiKey",
+            "in": "cookie",
+            "name": settings.SIMPLE_JWT["AUTH_COOKIE"],
         }
