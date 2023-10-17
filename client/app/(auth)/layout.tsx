@@ -7,6 +7,8 @@ import { Inter } from "next/font/google";
 import Provider from "@/redux/Provider";
 import { Toaster } from "@/components/ui/toaster";
 
+import Setup from "@/utils/Setup";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -27,8 +29,8 @@ export default function RootLayout({
             <div className="grow flex justify-center">{children}</div>
             <Image className="h-full w-fit" src={formDecor} alt="login-decor" />
           </div>
+          <Setup />
         </Provider>
-        <Toaster />
       </body>
     </html>
   );
