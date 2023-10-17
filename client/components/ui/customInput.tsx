@@ -91,7 +91,7 @@ const CustomInput = <T extends FieldValues>({
                 className="flex mt-1 text-error justify-between items-center text-sm"
                 key={m}
               >
-                <div className="flex gap-1">
+                <div className="flex gap-1 w-80">
                   <AlertTriangle size={16} />
                   <p>
                     {m}

@@ -36,7 +36,9 @@ export type LoginError = {
 
 export const loginFormSchema = z.object({
   email: z.string().email(),
-  password: z.string(),
+  password: z
+    .string()
+    .min(8, "The password cannot be blank, please enter your password."),
 });
 
 export type LoginFormSchemaType = z.infer<typeof loginFormSchema>;

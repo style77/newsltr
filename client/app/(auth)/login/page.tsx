@@ -3,7 +3,7 @@ import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 import React from "react";
 
-const Page = () => {
+const LoginPage = () => {
   return (
     <div className="flex justify-between">
       <div className="flex flex-col justify-center">
@@ -25,4 +25,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default LoginPage;
