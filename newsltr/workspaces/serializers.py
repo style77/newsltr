@@ -5,7 +5,8 @@ from rest_framework.exceptions import ValidationError
 
 from djoser.utils import decode_uid
 
-from .models import Workspace, WorkspaceMembership
+from .models import Workspace, WorkspaceMembership, WorkspaceAPIKey, WorkspaceAPIKeyManager
+from .permissions import IsAdminOfWorkspace
 
 
 User = get_user_model()
@@ -17,13 +18,36 @@ class WorkspaceMembershipSerializer(serializers.ModelSerializer):
         fields = ("user", "role")
 
 
+class APIKeySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkspaceAPIKey
+        fields = ("name", "key", "created")
+        read_only_fields = ("key", "created")
+
+
 class WorkspaceSerializer(serializers.ModelSerializer):
     memberships = WorkspaceMembershipSerializer(many=True, read_only=True)
+    keys = APIKeySerializer(many=True, read_only=True)
 
     class Meta:
         model = Workspace
-        fields = ("id", "name", "description", "created", "updated", "memberships")
-        read_only_fields = ("id", "created", "updated", "memberships")
+        fields = (
+            "id",
+            "name",
+            "description",
+            "created",
+            "updated",
+            "memberships",
+            "keys",
+        )
+        read_only_fields = ("id", "created", "updated", "memberships", "keys")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not IsAdminOfWorkspace().has_permission(
+            self.context["request"], None
+        ):
+            self.fields.pop("keys")
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.name)
@@ -56,6 +80,7 @@ class WorkspaceCreateSerializer(serializers.ModelSerializer):
                 user=self.context["request"].user,
                 role="admin",
             )
+            WorkspaceAPIKey.objects.create(workspace=workspace, name="Default API key")
             return workspace
 
 
