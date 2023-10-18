@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 export const useLogin = () => {
   const route = useRouter();
   const dispatch = useAppDispatch();
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading, error, isSuccess }] = useLoginMutation();
   const { toast } = useToast();
   const {
     register: registerInput,
@@ -23,6 +23,7 @@ export const useLogin = () => {
     resolver: zodResolver(loginFormSchema),
     mode: "onBlur",
   });
+  // console.log("MYERROR", error);
   const onSubmit = async (data: LoginFormSchemaType) => {
     const { email, password } = data;
     try {
@@ -31,8 +32,7 @@ export const useLogin = () => {
         password,
       }).unwrap();
       dispatch(setAuth());
-      console.log(res);
-
+      // console.log(res);
       toast({
         title: "You are succesfully logged in!",
       });
@@ -42,14 +42,14 @@ export const useLogin = () => {
         variant: "destructive",
         title: "Failed to login in!",
       });
-      const result = (error as LoginError).data;
-      console.log("EROOR", error);
-      if (result) {
-        setError("email", {
-          type: "server",
-          message: result.detail,
-        });
-      }
+      // const result = (error as LoginError).data;
+      // console.log("EROOR", error);
+      // if (result) {
+      //   setError("email", {
+      //     type: "server",
+      //     message: result.detail,
+      //   });
+      // }
     }
   };
 
@@ -61,5 +61,6 @@ export const useLogin = () => {
     registerInput,
     errors,
     getValues,
+    error,
   };
 };

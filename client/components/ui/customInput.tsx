@@ -51,7 +51,6 @@ const CustomInput = <T extends FieldValues>({
       }
     }
   };
-  console.log(register);
   return (
     <div className="min-h-[100px]">
       <label className="text-text" htmlFor={id}>
