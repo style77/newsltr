@@ -20,11 +20,11 @@ psutil = "*"
 django-cors-headers = "*"
 django-redis = "*"
 djet = "*"
-drf-spectacular = {extras = ["sidecar"], version = "*"}
+drf-spectacular = {extras = ["sidecar"] }
 celery = "*"
 django-celery-results = "*"
 django-celery-beat = "*"
-django-anymail = {extras = ["sendgrid"], version = "*"}
+django-anymail = {extras = ["sendgrid"] }
 
 [dev-packages]
 flake8 = "*"
