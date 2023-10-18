@@ -9,7 +9,7 @@ from .serializers import (
     WorkspaceSerializer,
     WorkspaceCreateSerializer,
     WorkspaceInviteSerializer,
-    WorkspaceInvitationAcceptSerializer,
+    WorkspaceInvitationAcceptSerializer
 )
 from .permissions import IsMemberOfWorkspace, IsAdminOfWorkspace
 from .models import Workspace, WorkspaceMembership
@@ -52,41 +52,39 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         """
-            List all workspaces that the user is a member of.
+        List all workspaces that the user is a member of.
         """
         return super().list(request, *args, **kwargs)
 
     def retrieve(self, request, *args, **kwargs):
         """
-            Retrieve workspace.
+        Retrieve workspace.
         """
         return super().retrieve(request, *args, **kwargs)
 
     def create(self, request, *args, **kwargs):
         """
-            Create a new workspace.
+        Create a new workspace.
         """
         return super().create(request, *args, **kwargs)
 
     def update(self, request, *args, **kwargs):
         """
-            Update workspace.
+        Update workspace.
         """
         return super().update(request, *args, **kwargs)
 
     def partial_update(self, request, *args, **kwargs):
         """
-            Partial update workspace.
+        Partial update workspace.
         """
         return super().partial_update(request, *args, **kwargs)
 
     def destroy(self, request, *args, **kwargs):
         """
-            Delete workspace.
+        Delete workspace.
         """
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data)
-        serializer.is_valid(raise_exception=True)
 
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -94,7 +92,7 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
     @action(["post"], detail=True)
     def invite(self, request, pk, *args, **kwargs):
         """
-            Invite user to workspace.
+        Invite user to workspace.
         """
         workspace = self.get_object()
         if not workspace:
@@ -126,7 +124,7 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
     @action(["post"], detail=False, url_path="invite/accept")
     def invitation_accept(self, request, *args, **kwargs):
         """
-            Accept invitation to workspace.
+        Accept invitation to workspace.
         """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
