@@ -168,7 +168,9 @@ if DEVELOPMENT:
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=2)
+    if DEVELOPMENT
+    else timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     # To include additional security let refresh_tokens be blacklisted
     # after using one of them
@@ -203,7 +205,7 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
     "HIDE_USERS": True,
-    'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': os.getenv('REDIRECT_URLS', "").split(','),
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": os.getenv("REDIRECT_URLS", "").split(","),
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
         "user": "authorization.serializers.CustomUserSerializer",
@@ -279,6 +281,7 @@ WSGI_APPLICATION = "newsltr.wsgi.application"
 
 WORKSPACES = {
     "ACTIVATION_URL": "invite/accept/{uid}/{workspace_id}/{token}",
+    "API_KEY_LENGTH": 40
 }
 
 # Database
