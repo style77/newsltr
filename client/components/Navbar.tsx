@@ -10,10 +10,8 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { logout as setLogout } from "@/redux/features/authSlice";
-import { useLogoutMutation } from "@/redux/features/authApiSlice";
-import { useRouter } from "next/navigation";
+import { UserNav } from "./UserNav";
+import { useAppSelector } from "@/redux/hooks";
 
 const guestList = [
   {
@@ -26,31 +24,8 @@ const guestList = [
   },
 ];
 
-const authList = [
-  {
-    name: "Dashboard",
-    url: "/dashboard",
-  },
-  {
-    name: "Sig",
-    url: "/register",
-  },
-];
-
 const Navbar = () => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
   const { isUserAuthenticated } = useAppSelector((state) => state.auth);
-  const [logout] = useLogoutMutation();
-
-  const handleLogout = async () => {
-    try {
-      await logout(undefined).unwrap();
-      dispatch(setLogout());
-    } finally {
-      router.push("/");
-    }
-  };
   console.log(isUserAuthenticated);
 
   const guestLinks = (
@@ -72,12 +47,9 @@ const Navbar = () => {
     <>
       <NavigationMenuItem>
         <NavigationMenuLink href="dashboard">Dashboard</NavigationMenuLink>
-        <NavigationMenuTrigger>
-          <div className="h-8 w-8 bg-secondary rounded-full"></div>
-        </NavigationMenuTrigger>
-        <NavigationMenuContent>
-          <NavigationMenuLink>Link</NavigationMenuLink>
-        </NavigationMenuContent>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <UserNav />
       </NavigationMenuItem>
     </>
   );
@@ -86,7 +58,7 @@ const Navbar = () => {
     <nav className="flex border-b border-red-300 justify-between py-8 px-4">
       <div className="h-6 w-6 bg-zinc-200" />
       <NavigationMenu>
-        <NavigationMenuList>
+        <NavigationMenuList className="space-x-4">
           {isUserAuthenticated ? authLinks : guestLinks}
         </NavigationMenuList>
       </NavigationMenu>
