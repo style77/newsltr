@@ -6,13 +6,14 @@ from rest_framework.exceptions import NotFound
 
 
 from .serializers import (
+    APIKeySerializer,
     WorkspaceSerializer,
     WorkspaceCreateSerializer,
     WorkspaceInviteSerializer,
-    WorkspaceInvitationAcceptSerializer
+    WorkspaceInvitationAcceptSerializer,
 )
 from .permissions import IsMemberOfWorkspace, IsAdminOfWorkspace
-from .models import Workspace, WorkspaceMembership
+from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
 from .email import WorkspaceInvitationEmail
 
 
@@ -142,3 +143,36 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
         serializer.workspace.refresh()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class WorkspaceKeysViewSet(viewsets.ModelViewSet):
+    serializer_class = APIKeySerializer
+    permission_classes = [IsAdminOfWorkspace, permissions.IsAuthenticated]
+    queryset = WorkspaceAPIKey
+
+    def get_queryset(self):
+        return WorkspaceAPIKey.objects.filter(workspace=self.kwargs["workspace_pk"])
+
+    def get_serializer_class(self):
+        if self.action == "destroy":
+            return None
+        return super().get_serializer_class()
+
+    def destroy(self, request, *args, **kwargs):
+        """
+            Revoke a workspace API Key
+        """
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def perform_destroy(self, instance):
+        instance.revoked = True
+        instance.save()
+
+    def create(self, request, *args, **kwargs):
+        """
+            Create a new workspace API Key
+        """
+        request.data["workspace"] = self.kwargs["workspace_pk"]
+        return super().create(request, *args, **kwargs)

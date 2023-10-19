@@ -1,9 +1,12 @@
 from rest_framework import permissions
-from .models import WorkspaceAPIKey
+from .models import WorkspaceAPIKey, Workspace
 
 
 class IsMemberOfWorkspace(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
+        if not isinstance(obj, Workspace):
+            obj = obj.workspace
+
         return (
             obj.memberships.filter(user=request.user).exists()
             or request.user.is_superuser
@@ -12,6 +15,9 @@ class IsMemberOfWorkspace(permissions.BasePermission):
 
 class IsAdminOfWorkspace(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
+        if not isinstance(obj, Workspace):
+            obj = obj.workspace
+
         return (
             obj.memberships.filter(user=request.user, role__in=["admin"]).exists()
             or request.user.is_superuser
@@ -20,6 +26,9 @@ class IsAdminOfWorkspace(permissions.BasePermission):
 
 class IsModeratorOfWorkspace(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
+        if not isinstance(obj, Workspace):
+            obj = obj.workspace
+
         return (
             obj.memberships.filter(
                 user=request.user, role__in=["admin", "moderator"]
@@ -28,7 +37,7 @@ class IsModeratorOfWorkspace(permissions.BasePermission):
         )
 
 
-class BearerKeyParser():
+class BearerKeyParser:
     keyword = "Bearer"
 
     def get(self, request):
@@ -65,7 +74,5 @@ class HasWorkspaceAPIKey(permissions.BasePermission):
             return False
         return self.model.objects.is_valid(key)
 
-    def has_object_permission(
-        self, request, view, obj
-    ):
+    def has_object_permission(self, request, view, obj):
         return self.has_permission(request, view)

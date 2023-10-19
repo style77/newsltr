@@ -4,6 +4,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from djoser.utils import decode_uid
+from rest_framework.fields import empty
 
 from .models import Workspace, WorkspaceMembership, WorkspaceAPIKey, WorkspaceAPIKeyManager
 from .permissions import IsAdminOfWorkspace
@@ -19,15 +20,25 @@ class WorkspaceMembershipSerializer(serializers.ModelSerializer):
 
 
 class APIKeySerializer(serializers.ModelSerializer):
+    default_error_messages = {
+        "cannot_create_api_key": "Cannot create API key for this workspace."
+    }
+
     class Meta:
         model = WorkspaceAPIKey
-        fields = ("name", "key", "revoked", "created")
-        read_only_fields = ("key", "revoked", "created")
+        fields = ("id", "name", "key", "revoked", "created")
+        read_only_fields = ("id", "key", "revoked", "created")
+
+    def create(self, validated_data):
+        workspace = Workspace.objects.get(pk=self.context['request'].data.get('workspace'))
+        validated_data['workspace'] = workspace
+
+        instance, _ = super().create(validated_data)
+        return instance
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
     memberships = WorkspaceMembershipSerializer(many=True, read_only=True)
-    keys = APIKeySerializer(many=True, read_only=True)
 
     class Meta:
         model = Workspace
@@ -37,17 +48,9 @@ class WorkspaceSerializer(serializers.ModelSerializer):
             "description",
             "created",
             "updated",
-            "memberships",
-            "keys",
+            "memberships"
         )
-        read_only_fields = ("id", "created", "updated", "memberships", "keys")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        if not IsAdminOfWorkspace().has_permission(
-            self.context["request"], None
-        ):
-            self.fields.pop("keys")
+        read_only_fields = ("id", "created", "updated", "memberships")
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.name)
