@@ -1,6 +1,6 @@
 import React from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
-
+import { AlertTriangleIcon } from "lucide-react";
 export interface SerializedError {
   name?: string;
   message?: string;
@@ -19,9 +19,16 @@ const Error = ({ error }: ErrorProps) => {
     const e = error.data as { detail: string };
     ErrorMessage = e.detail;
   }
-  return <div>{ErrorMessage}</div>;
-
-  // return <div>error</div>;
+  return (
+    <>
+      {error && (
+        <div className="flex gap-2 border border-error rounded-md p-2 bg-red-100 text-error mb-2">
+          <AlertTriangleIcon />
+          {ErrorMessage}
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Error;

@@ -6,11 +6,11 @@ import { useAppDispatch } from "@/redux/hooks";
 export const useVerify = () => {
   const [verify] = useVerifyMutation();
   const dispatch = useAppDispatch();
-  const token = "token";
+  // const token = "token";
   useEffect(() => {
     try {
       const verifyAuth = async () => {
-        await verify({ token }).unwrap();
+        await verify(undefined).unwrap();
         dispatch(setAuth());
       };
       verifyAuth();
