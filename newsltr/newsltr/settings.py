@@ -182,6 +182,7 @@ SIMPLE_JWT = {
     "USER_ID_CLAIM": "user_id",
     "TOKEN_OBTAIN_SERIALIZER": "authorization.serializers.CustomTokenObtainSerializer",
     # "TOKEN_REFRESH_SERIALIZER": "authorization.serializers.CustomTokenRefreshSerializer",
+    "TOKEN_VERIFY_SERIALIZER": "authorization.serializers.CustomTokenVerifySerializer",
     "USER_AUTHENTICATION_RULE": "authorization.utils.user_authentication_rule",
     "AUTH_COOKIE": "access_token",
     "REFRESH_COOKIE": "refresh_token",

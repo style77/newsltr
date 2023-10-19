@@ -1,5 +1,5 @@
-import React from "react";
-import { AlertTriangle } from "lucide-react";
+import React, { memo, useState } from "react";
+import { AlertTriangle, Eye, EyeOff } from "lucide-react";
 import type {
   FieldErrors,
   FieldValues,
@@ -29,9 +29,13 @@ const CustomInput = <T extends FieldValues>({
   getValues,
 }: InputProps<T>) => {
   const { toast } = useToast();
-
+  const [showPassword, setShowPassword] = useState(false);
   const v = errors.email?.message;
   const [resendActivation, { isLoading }] = useResendActivationMutation();
+  console.log("input Rendered");
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const resendActivationEmail = async () => {
     if (getValues) {
@@ -50,20 +54,33 @@ const CustomInput = <T extends FieldValues>({
   console.log(register);
   return (
     <div className="min-h-[100px]">
-      <label className="text-ltext" htmlFor={id}>
+      <label className="text-text" htmlFor={id}>
         {label}
       </label>
       <div className="mb-5 mt-1">
-        <input
-          {...register}
-          id={id}
-          className={`text-ltext border w-96 p-2 rounded-md focus:outline-primary mb-1 ${
+        <div
+          className={`flex items-center w-96 border rounded-md focus:outline-primary ${
             errors[id]?.message
               ? "border-error border-2 bg-red-100"
               : "bg-slate-50 border-slate-300"
           }`}
-          type={type}
-        />
+        >
+          <input
+            {...register}
+            id={id}
+            className="grow bg-transparent outline-0 py-2 px-4"
+            type={type === "password" && !showPassword ? "password" : "text"}
+          />
+          {type === "password" && (
+            <button
+              type="button"
+              className="pr-4 text-text"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <EyeOff /> : <Eye />}
+            </button>
+          )}
+        </div>
         <ErrorMessage
           errors={errors}
           name={id}
@@ -71,7 +88,7 @@ const CustomInput = <T extends FieldValues>({
             message &&
             message.split(".,").map((m, i) => (
               <div
-                className="flex text-error justify-between items-center text-sm"
+                className="flex mt-1 text-error justify-between items-center text-sm"
                 key={m}
               >
                 <div className="flex gap-1">
