@@ -108,6 +108,9 @@ class CustomTokenVerifySerializer(serializers.Serializer):
     token = serializers.CharField(required=False)
 
     def validate(self, attrs):
+        if not attrs.get("token"):
+            raise serializers.ValidationError("No token provided")
+
         UntypedToken(attrs["token"])
 
         return {}
