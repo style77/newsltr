@@ -93,7 +93,9 @@ class AbstractWorkspaceAPIKey(models.Model):
         on_delete=models.CASCADE,
         related_name="api_keys",
     )
-    id = models.CharField(max_length=150, unique=True, primary_key=True, editable=False)
+    id = models.CharField(
+        primary_key=True, default=uuid.uuid4, editable=False, unique=True, max_length=36
+    )
     key = models.CharField(
         _("Key"),
         max_length=40,
