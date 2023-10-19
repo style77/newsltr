@@ -9,7 +9,7 @@ export const useVerify = () => {
   useEffect(() => {
     try {
       const verifyAuth = async () => {
-        await verify(undefined).unwrap();
+        await verify({}).unwrap();
         dispatch(setAuth());
       };
       verifyAuth();
