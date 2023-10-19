@@ -21,8 +21,8 @@ class WorkspaceMembershipSerializer(serializers.ModelSerializer):
 class APIKeySerializer(serializers.ModelSerializer):
     class Meta:
         model = WorkspaceAPIKey
-        fields = ("name", "key", "created")
-        read_only_fields = ("key", "created")
+        fields = ("name", "key", "revoked", "created")
+        read_only_fields = ("key", "revoked", "created")
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
