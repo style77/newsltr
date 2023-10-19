@@ -3,6 +3,8 @@ from typing import Any
 import uuid
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
 
@@ -56,6 +58,11 @@ class Workspace(models.Model):
     @property
     def keys(self):
         return WorkspaceAPIKey.objects.filter(revoked=False, workspace=self)
+
+
+@receiver(post_save, sender=Workspace)
+def create_keys(sender, instance, *args, **kwargs):
+    WorkspaceAPIKey.objects.create(workspace=instance, name="Default API key")
 
 
 class AbstractWorkspaceAPIKeyManager(models.Manager):

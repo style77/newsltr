@@ -80,7 +80,6 @@ class WorkspaceCreateSerializer(serializers.ModelSerializer):
                 user=self.context["request"].user,
                 role="admin",
             )
-            WorkspaceAPIKey.objects.create(workspace=workspace, name="Default API key")
             return workspace
 
 
