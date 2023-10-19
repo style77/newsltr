@@ -10,12 +10,10 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { logout as setLogout } from "@/redux/features/authSlice";
-import { useLogoutMutation } from "@/redux/features/authApiSlice";
-import { useRouter } from "next/navigation";
+import { UserNav } from "./UserNav";
+import { useAppSelector } from "@/redux/hooks";
 
-const listItems = [
+const guestList = [
   {
     name: "Log in",
     url: "/login",
@@ -27,37 +25,41 @@ const listItems = [
 ];
 
 const Navbar = () => {
-  const router = useRouter();
-  const dispatch = useAppDispatch();
   const { isUserAuthenticated } = useAppSelector((state) => state.auth);
-  const [logout] = useLogoutMutation();
-
-  const handleLogout = async () => {
-    try {
-      await logout(undefined).unwrap();
-      dispatch(setLogout());
-    } finally {
-      router.push("/");
-    }
-  };
   console.log(isUserAuthenticated);
 
-  const authLinks = <div>auth links</div>;
-  const guestLinks = <div>guest links</div>;
+  const guestLinks = (
+    <>
+      <NavigationMenuItem>
+        <NavigationMenuLink className="mr-3" href="login">
+          Log in
+        </NavigationMenuLink>
+        <NavigationMenuLink
+          className="border border-text p-2 rounded"
+          href="register"
+        >
+          Sign up
+        </NavigationMenuLink>
+      </NavigationMenuItem>
+    </>
+  );
+  const authLinks = (
+    <>
+      <NavigationMenuItem>
+        <NavigationMenuLink href="dashboard">Dashboard</NavigationMenuLink>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
+        <UserNav />
+      </NavigationMenuItem>
+    </>
+  );
 
   return (
-    <nav className="flex border-b border-red-200 justify-between py-2 px-4">
-      <div>LOGO</div>
+    <nav className="flex border-b border-red-300 justify-between py-8 px-4">
+      <div className="h-6 w-6 bg-zinc-200" />
       <NavigationMenu>
-        <div>{isUserAuthenticated ? authLinks : guestLinks}</div>
-        <NavigationMenuList>
-          {listItems.map((item) => (
-            <NavigationMenuItem key={item.name}>
-              <NavigationMenuLink href={item.url}>
-                {item.name}
-              </NavigationMenuLink>
-            </NavigationMenuItem>
-          ))}
+        <NavigationMenuList className="space-x-4">
+          {isUserAuthenticated ? authLinks : guestLinks}
         </NavigationMenuList>
       </NavigationMenu>
     </nav>

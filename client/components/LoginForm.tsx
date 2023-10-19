@@ -1,7 +1,8 @@
 import React from "react";
-import Form from "./ui/form";
 import { useLogin } from "@/hooks/useLogin";
 import { useAppSelector } from "@/redux/hooks";
+import Form from "./ui/form";
+import Error from "./Error";
 
 const config = [
   {
@@ -23,6 +24,7 @@ const LoginForm = () => {
     handleSubmit,
     isLoading,
     getValues,
+    error,
   } = useLogin();
 
   const isAuth = useAppSelector((state) => state.auth.isUserAuthenticated);
@@ -30,7 +32,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <div>{isAuth ? "i m logged in" : "i'm logged out"}</div>
+      <Error error={error} />
       <Form
         config={config}
         register={registerInput}

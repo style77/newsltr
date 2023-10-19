@@ -3,10 +3,10 @@ import LoginForm from "@/components/LoginForm";
 import Link from "next/link";
 import React from "react";
 
-const Page = () => {
+const LoginPage = () => {
   return (
     <div className="flex justify-between">
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-center max-w-sm">
         <h2 className="text-text text-4xl font-bold mb-4">Welcome Back.</h2>
         <LoginForm />
         <div className="mt-2">
@@ -25,4 +25,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default LoginPage;
