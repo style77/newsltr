@@ -37,6 +37,10 @@ class APIKeySerializer(serializers.ModelSerializer):
         return instance
 
 
+class APIKeyDestroySerializer(serializers.ModelSerializer):
+    ...
+
+
 class WorkspaceSerializer(serializers.ModelSerializer):
     memberships = WorkspaceMembershipSerializer(many=True, read_only=True)
 

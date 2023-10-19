@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 
 from .serializers import (
+    APIKeyDestroySerializer,
     APIKeySerializer,
     WorkspaceSerializer,
     WorkspaceCreateSerializer,
@@ -20,6 +22,10 @@ from .email import WorkspaceInvitationEmail
 User = get_user_model()
 
 
+@extend_schema(
+    parameters=[OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH)],
+    tags=["workspaces"],
+)
 class WorkspaceViewSet(viewsets.ModelViewSet):
     serializer_class = WorkspaceSerializer
     permission_classes = [permissions.IsAuthenticated, IsMemberOfWorkspace]
@@ -145,6 +151,10 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@extend_schema(
+    parameters=[OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH), OpenApiParameter("id", str, OpenApiParameter.PATH)],
+    tags=["workspaces keys"],
+)
 class WorkspaceKeysViewSet(viewsets.ModelViewSet):
     serializer_class = APIKeySerializer
     permission_classes = [IsAdminOfWorkspace, permissions.IsAuthenticated]
@@ -155,12 +165,12 @@ class WorkspaceKeysViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         if self.action == "destroy":
-            return None
+            return APIKeyDestroySerializer
         return super().get_serializer_class()
 
     def destroy(self, request, *args, **kwargs):
         """
-            Revoke a workspace API Key
+        Revoke a workspace API Key
         """
         instance = self.get_object()
         self.perform_destroy(instance)
@@ -172,7 +182,7 @@ class WorkspaceKeysViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """
-            Create a new workspace API Key
+        Create a new workspace API Key
         """
         request.data["workspace"] = self.kwargs["workspace_pk"]
         return super().create(request, *args, **kwargs)
