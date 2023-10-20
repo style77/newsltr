@@ -9,14 +9,30 @@ from rest_framework.fields import empty
 from .models import Workspace, WorkspaceMembership, WorkspaceAPIKey, WorkspaceAPIKeyManager
 from .permissions import IsAdminOfWorkspace
 
+from authorization.serializers import UserSerializer
+
 
 User = get_user_model()
 
 
 class WorkspaceMembershipSerializer(serializers.ModelSerializer):
+    user = UserSerializer(read_only=True)
+
     class Meta:
         model = WorkspaceMembership
         fields = ("user", "role")
+
+    def validate(self, attrs):
+        if self.instance and self.instance.role == "admin":
+            raise ValidationError("Cannot change role of admin.")
+        
+        elif self.instance and self.instance.user == self.context["request"].user:
+            raise ValidationError("Cannot change own role.")
+        
+        elif attrs["role"] == "admin" and not IsAdminOfWorkspace().has_permission(self.context["request"], self.context["view"]):
+            raise ValidationError("Only admins can assign admin role.")
+
+        return super().validate(attrs)
 
 
 class APIKeySerializer(serializers.ModelSerializer):
@@ -42,8 +58,6 @@ class APIKeyDestroySerializer(serializers.ModelSerializer):
 
 
 class WorkspaceSerializer(serializers.ModelSerializer):
-    memberships = WorkspaceMembershipSerializer(many=True, read_only=True)
-
     class Meta:
         model = Workspace
         fields = (
@@ -51,10 +65,9 @@ class WorkspaceSerializer(serializers.ModelSerializer):
             "name",
             "description",
             "created",
-            "updated",
-            "memberships"
+            "updated"
         )
-        read_only_fields = ("id", "created", "updated", "memberships")
+        read_only_fields = ("id", "created", "updated")
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.name)
