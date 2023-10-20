@@ -41,7 +41,7 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ["create"]:
             self.permission_classes = [permissions.IsAuthenticated]
-        elif self.action in ["destroy"]:
+        elif self.action in ["destroy", "update", "partial_update"]:
             self.permission_classes = [
                 permissions.IsAuthenticated,
                 IsAdminOfWorkspace,
