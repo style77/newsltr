@@ -9,6 +9,7 @@ from drf_spectacular.utils import extend_schema, OpenApiParameter
 from .serializers import (
     APIKeyDestroySerializer,
     APIKeySerializer,
+    WorkspaceMembershipSerializer,
     WorkspaceSerializer,
     WorkspaceCreateSerializer,
     WorkspaceInviteSerializer,
@@ -38,9 +39,9 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
         return super().get_queryset()
 
     def get_permissions(self):
-        if self.action in ["create", "invitation_accept"]:
+        if self.action in ["create"]:
             self.permission_classes = [permissions.IsAuthenticated]
-        elif self.action in ["destroy", "invite"]:
+        elif self.action in ["destroy"]:
             self.permission_classes = [
                 permissions.IsAuthenticated,
                 IsAdminOfWorkspace,
@@ -50,10 +51,6 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == "create":
             return WorkspaceCreateSerializer
-        elif self.action == "invite":
-            return WorkspaceInviteSerializer
-        elif self.action == "invitation_accept":
-            return WorkspaceInvitationAcceptSerializer
         return self.serializer_class
 
     def list(self, request, *args, **kwargs):
@@ -95,8 +92,40 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(["post"], detail=True)
-    def invite(self, request, pk, *args, **kwargs):
+
+@extend_schema(
+    tags=["workspaces members"],
+)
+class WorkspaceMembersViewSet(
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+):
+    serializer_class = WorkspaceMembershipSerializer
+    permission_classes = [IsMemberOfWorkspace, permissions.IsAuthenticated]
+    queryset = WorkspaceMembership
+    lookup_field = "user__pk"
+
+    def get_queryset(self):
+        return WorkspaceMembership.objects.filter(workspace=self.kwargs["workspace_pk"])
+
+    def get_serializer_class(self):
+        if self.action == "invite":
+            return WorkspaceInviteSerializer
+        elif self.action == "invitation_accept":
+            return WorkspaceInvitationAcceptSerializer
+        return super().get_serializer_class()
+
+    def get_permissions(self):
+        if self.action in ["invite", "update", "partial_update", "destroy"]:
+            self.permission_classes = [permissions.IsAuthenticated, IsAdminOfWorkspace]
+        elif self.action in ["invitation_accept"]:
+            self.permission_classes = [permissions.IsAuthenticated]
+        return super().get_permissions()
+
+    @action(["post"], detail=False, url_path="invite")
+    def invite(self, request, *args, **kwargs):
         """
         Invite user to workspace.
         """
