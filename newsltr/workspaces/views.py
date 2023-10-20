@@ -23,7 +23,6 @@ User = get_user_model()
 
 
 @extend_schema(
-    parameters=[OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH)],
     tags=["workspaces"],
 )
 class WorkspaceViewSet(viewsets.ModelViewSet):

@@ -578,12 +578,6 @@ paths:
     get:
       operationId: api_v1_workspace_list
       description: List all workspaces that the user is a member of.
-      parameters:
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
       tags:
       - workspaces
       security:
@@ -600,12 +594,6 @@ paths:
     post:
       operationId: api_v1_workspace_create
       description: Create a new workspace.
-      parameters:
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
       tags:
       - workspaces
       requestBody:
@@ -640,11 +628,6 @@ paths:
           type: string
         description: A unique value identifying this workspace.
         required: true
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
       tags:
       - workspaces
       security:
@@ -665,11 +648,6 @@ paths:
         schema:
           type: string
         description: A unique value identifying this workspace.
-        required: true
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
         required: true
       tags:
       - workspaces
@@ -704,11 +682,6 @@ paths:
           type: string
         description: A unique value identifying this workspace.
         required: true
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
       tags:
       - workspaces
       requestBody:
@@ -741,11 +714,6 @@ paths:
           type: string
         description: A unique value identifying this workspace.
         required: true
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
       tags:
       - workspaces
       security:
@@ -763,11 +731,6 @@ paths:
         schema:
           type: string
         description: A unique value identifying this workspace.
-        required: true
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
         required: true
       tags:
       - workspaces
@@ -975,12 +938,6 @@ paths:
     post:
       operationId: api_v1_workspace_invite_accept_create
       description: Accept invitation to workspace.
-      parameters:
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
       tags:
       - workspaces
       requestBody:
