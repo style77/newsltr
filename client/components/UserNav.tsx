@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,10 +23,6 @@ export function UserNav() {
   const dispatch = useAppDispatch();
   const { isUserAuthenticated } = useAppSelector((state) => state.auth);
   const [logout] = useLogoutMutation();
-
-  if (isLoading) {
-    return <Skeleton className="h-8 w-8 rounded-full" />;
-  }
 
   const handleLogout = async () => {
     try {
@@ -68,7 +63,7 @@ export function UserNav() {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="hover:bg-slate-200">
             Profile
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>

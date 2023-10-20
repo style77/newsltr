@@ -1,6 +1,5 @@
 import Provider from "@/redux/Provider";
 import Navbar from "@/components/Navbar";
-import Setup from "@/utils/Setup";
 import "../globals.css";
 import Setup from "@/utils/Setup";
 
