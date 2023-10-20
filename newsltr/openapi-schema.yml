@@ -721,40 +721,6 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/workspace/{id}/invite/:
-    post:
-      operationId: api_v1_workspace_invite_create
-      description: Invite user to workspace.
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        description: A unique value identifying this workspace.
-        required: true
-      tags:
-      - workspaces
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WorkspaceInvite'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/WorkspaceInvite'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/WorkspaceInvite'
-        required: true
-      security:
-      - JWTCookiesAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceInvite'
-          description: ''
   /api/v1/workspace/{workspace_pk}/keys/:
     get:
       operationId: api_v1_workspace_keys_list
@@ -934,12 +900,165 @@ paths:
       responses:
         '204':
           description: No response body
-  /api/v1/workspace/invite/accept/:
-    post:
-      operationId: api_v1_workspace_invite_accept_create
-      description: Accept invitation to workspace.
+  /api/v1/workspace/{workspace_pk}/members/:
+    get:
+      operationId: api_v1_workspace_members_list
+      parameters:
+      - in: path
+        name: workspace_pk
+        schema:
+          type: string
+        required: true
       tags:
-      - workspaces
+      - workspaces members
+      security:
+      - JWTCookiesAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WorkspaceMembership'
+          description: ''
+  /api/v1/workspace/{workspace_pk}/members/{user__pk}/:
+    put:
+      operationId: api_v1_workspace_members_update
+      parameters:
+      - in: path
+        name: user__pk
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: workspace_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - workspaces members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkspaceMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkspaceMembership'
+        required: true
+      security:
+      - JWTCookiesAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMembership'
+          description: ''
+    patch:
+      operationId: api_v1_workspace_members_partial_update
+      parameters:
+      - in: path
+        name: user__pk
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: workspace_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - workspaces members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkspaceMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkspaceMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWorkspaceMembership'
+      security:
+      - JWTCookiesAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMembership'
+          description: ''
+    delete:
+      operationId: api_v1_workspace_members_destroy
+      parameters:
+      - in: path
+        name: user__pk
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: workspace_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - workspaces members
+      security:
+      - JWTCookiesAuthentication: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/workspace/{workspace_pk}/members/invite/:
+    post:
+      operationId: api_v1_workspace_members_invite_create
+      description: Invite user to workspace.
+      parameters:
+      - in: path
+        name: workspace_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - workspaces members
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInvite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInvite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInvite'
+        required: true
+      security:
+      - JWTCookiesAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceInvite'
+          description: ''
+  /api/v1/workspace/{workspace_pk}/members/invite/accept/:
+    post:
+      operationId: api_v1_workspace_members_invite_accept_create
+      description: Accept invitation to workspace.
+      parameters:
+      - in: path
+        name: workspace_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - workspaces members
       requestBody:
         content:
           application/json:
@@ -1222,11 +1341,15 @@ components:
           type: string
           format: date-time
           readOnly: true
-        memberships:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkspaceMembership'
+    PatchedWorkspaceMembership:
+      type: object
+      properties:
+        user:
+          allOf:
+          - $ref: '#/components/schemas/User'
           readOnly: true
+        role:
+          $ref: '#/components/schemas/WorkspaceMembershipRoleEnum'
     ProviderAuth:
       type: object
       properties:
@@ -1289,6 +1412,26 @@ components:
       required:
       - access
       - refresh
+    User:
+      type: object
+      properties:
+        first_name:
+          type: string
+          maxLength: 150
+        last_name:
+          type: string
+          maxLength: 150
+        id:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+          title: Email address
+      required:
+      - email
+      - id
     UsernameResetConfirm:
       type: object
       properties:
@@ -1321,16 +1464,10 @@ components:
           type: string
           format: date-time
           readOnly: true
-        memberships:
-          type: array
-          items:
-            $ref: '#/components/schemas/WorkspaceMembership'
-          readOnly: true
       required:
       - created
       - description
       - id
-      - memberships
       - name
       - updated
     WorkspaceCreate:
@@ -1404,7 +1541,9 @@ components:
       type: object
       properties:
         user:
-          type: string
+          allOf:
+          - $ref: '#/components/schemas/User'
+          readOnly: true
         role:
           $ref: '#/components/schemas/WorkspaceMembershipRoleEnum'
       required:
