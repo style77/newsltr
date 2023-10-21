@@ -33,11 +33,9 @@ const CustomInput = <T extends FieldValues>({
   const [showPassword, setShowPassword] = useState(false);
   const v = errors.email?.message;
   // const [resendActivation, { isLoading }] = useResendActivationMutation();
-  console.log("input Rendered");
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  console.log(v);
 
   // const resendActivationEmail = async () => {
   //   if (getValues) {

@@ -42,12 +42,15 @@ describe("Login Form", () => {
     // const url = `${process.env.NEXT_PUBLIC_HOST}/api/v1/auth/`;
     const url = `http://localhost:8000/api/v1/auth/`;
     server.use(
-      rest.post(`${url}jwt/create/`, (_req, res, ctx) => {
-        return res(
-          ctx.status(401),
-          ctx.json({ detail: "an error has occurred" }),
-        );
-      }),
+      rest.post(
+        `http://localhost:8000/api/v1/auth/jwt/create/`,
+        (_req, res, ctx) => {
+          return res(
+            ctx.status(401),
+            ctx.json({ detail: "an error has occurred" }),
+          );
+        },
+      ),
     );
     const user = userEvent.setup();
 
