@@ -43,7 +43,7 @@ describe("Login Form", () => {
     const url = `http://localhost:8000/api/v1/auth/`;
     server.use(
       rest.post(
-        `http://localhost:8000/api/v1/auth/jwt/create/`,
+        "http://localhost:8000/api/v1/auth/jwt/create/",
         (_req, res, ctx) => {
           return res(
             ctx.status(401),
