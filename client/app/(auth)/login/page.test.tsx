@@ -39,7 +39,7 @@ describe("Login Form", () => {
   });
 
   it("error appears if the account doesn't exist", async () => {
-    const url = "http://localhost:8000/api/v1/auth/";
+    const url = `${process.env.NEXT_PUBLIC_HOST}/api/v1/auth/`;
     server.use(
       rest.post(`${url}jwt/create/`, (_req, res, ctx) => {
         return res(
@@ -55,7 +55,7 @@ describe("Login Form", () => {
         <LoginPage />
       </Provider>,
     );
-    const emailInput = screen.getByLabelText(/emai/i);
+    const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
     const loginButton = screen.getByText(/log in/i);
     expect(screen.queryByText("an error has occurred")).not.toBeInTheDocument();
