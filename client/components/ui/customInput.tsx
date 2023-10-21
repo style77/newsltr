@@ -10,6 +10,7 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useToast } from "./use-toast";
 import { useResendActivationMutation } from "@/redux/features/authApiSlice";
 import Spinner from "./spinner";
+import { useResendActivationEmail } from "@/hooks/useResenActivationEmail";
 
 interface InputProps<T extends FieldValues> {
   register: UseFormRegisterReturn;
@@ -28,29 +29,33 @@ const CustomInput = <T extends FieldValues>({
   errors,
   getValues,
 }: InputProps<T>) => {
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const [showPassword, setShowPassword] = useState(false);
   const v = errors.email?.message;
-  const [resendActivation, { isLoading }] = useResendActivationMutation();
+  // const [resendActivation, { isLoading }] = useResendActivationMutation();
   console.log("input Rendered");
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  console.log(v);
 
-  const resendActivationEmail = async () => {
-    if (getValues) {
-      const { email } = getValues();
-      console.log("values", getValues());
-      try {
-        await resendActivation({ email });
-        toast({
-          title: "Activation email successfully sent! Please check your email.",
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  };
+  const { resendActivationEmail, isLoading, errorMessage } =
+    useResendActivationEmail(errors, getValues);
+  console.log("errorMessage", errorMessage);
+  // const resendActivationEmail = async () => {
+  //   if (getValues) {
+  //     const { email } = getValues();
+  //     console.log("values", getValues());
+  //     try {
+  //       await resendActivation({ email });
+  //       toast({
+  //         title: "Activation email successfully sent! Please check your email.",
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // };
   return (
     <div className="min-h-[100px]">
       <label className="text-text" htmlFor={id}>
@@ -91,31 +96,16 @@ const CustomInput = <T extends FieldValues>({
                 key={m}
               >
                 <div className="flex gap-1 w-80">
-                  <AlertTriangle size={16} />
-                  <p>
+                  <AlertTriangle className="w-8" size={16} />
+                  <span>
                     {m}
                     {i < message.split(".,").length - 1 && "."}
-                  </p>
+                  </span>
                 </div>
               </div>
             ))
           }
         />
-        <div>
-          {
-            <div>
-              {v?.toString().includes("not active") && id === "email" && (
-                <button
-                  type="button"
-                  onClick={resendActivationEmail}
-                  className="text-sm text-secondary underline font-semibold"
-                >
-                  {isLoading ? <Spinner /> : "Resend activation email"}
-                </button>
-              )}
-            </div>
-          }
-        </div>
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <Error error={error} />
+      <Error error={error} getValues={getValues} />
       <Form
         config={config}
         register={registerInput}
