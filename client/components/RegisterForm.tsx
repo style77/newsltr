@@ -41,6 +41,7 @@ const RegisterForm = () => {
       handleSubmit={handleSubmit}
       isLoading={isLoading}
       btnText="Sign up"
+      // getValues={getValues}
     />
   );
 };

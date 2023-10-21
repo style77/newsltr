@@ -39,7 +39,8 @@ describe("Login Form", () => {
   });
 
   it("error appears if the account doesn't exist", async () => {
-    const url = `${process.env.NEXT_PUBLIC_HOST}/api/v1/auth/`;
+    // const url = `${process.env.NEXT_PUBLIC_HOST}/api/v1/auth/`;
+    const url = `http://localhost:8000/api/v1/auth/`;
     server.use(
       rest.post(`${url}jwt/create/`, (_req, res, ctx) => {
         return res(

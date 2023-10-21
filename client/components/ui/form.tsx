@@ -20,7 +20,7 @@ interface Config {
 interface FormProps<T extends FieldValues> {
   config: Config[];
   register: UseFormRegister<any>;
-  getValues: UseFormGetValues<T>;
+  getValues?: UseFormGetValues<T>;
   onSubmit: SubmitHandler<T>;
   handleSubmit: UseFormHandleSubmit<T>;
   errors: FieldErrors<T>;

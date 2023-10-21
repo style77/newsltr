@@ -39,9 +39,6 @@ const CustomInput = <T extends FieldValues>({
   };
   console.log(v);
 
-  const { resendActivationEmail, isLoading, errorMessage } =
-    useResendActivationEmail(errors, getValues);
-  console.log("errorMessage", errorMessage);
   // const resendActivationEmail = async () => {
   //   if (getValues) {
   //     const { email } = getValues();
