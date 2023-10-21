@@ -62,7 +62,8 @@
     "tailwindcss": "latest",
     "typescript": "latest",
     "vitest": "^0.34.5",
-    "vitest-preview": "^0.0.1"
+    "vitest-preview": "^0.0.1",
+    "whatwg-fetch": "^3.6.19"
   },
   "resolutions": {
     "@types/react": "^18.2.24",
