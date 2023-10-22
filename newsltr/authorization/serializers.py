@@ -84,7 +84,6 @@ class CustomUserSerializer(UserSerializer):
 class CurrentUserSerializer(UserSerializer):
     class Meta:
         model = User
-        # all fields except password
         fields = tuple(User.REQUIRED_FIELDS) + (
             settings.USER_ID_FIELD,
             settings.LOGIN_FIELD,
