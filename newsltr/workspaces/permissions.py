@@ -1,5 +1,5 @@
 from rest_framework import permissions
-from .models import WorkspaceAPIKey, Workspace
+from .models import WorkspaceAPIKey, Workspace, WorkspaceMembership
 
 
 class IsMemberOfWorkspace(permissions.BasePermission):
@@ -7,10 +7,37 @@ class IsMemberOfWorkspace(permissions.BasePermission):
         if not isinstance(obj, Workspace):
             obj = obj.workspace
 
-        return (
-            obj.memberships.filter(user=request.user).exists()
+        try:
+            membership = obj.memberships.get(user=request.user)
+        except WorkspaceMembership.DoesNotExist:
+            return False
+
+        return bool(
+            membership.role in ["admin", "moderator", "member"]
             or request.user.is_superuser
         )
+
+    def has_permission(self, request, view):
+        id = view.kwargs.get("workspace_pk")
+        if id is None:
+            id = view.kwargs.get("pk")
+        if id is None:
+            id = view.kwargs.get("id")
+
+        try:
+            obj = Workspace.objects.get(pk=id)
+        except Workspace.DoesNotExist:
+            return False
+
+        if not isinstance(obj, Workspace):
+            obj = obj.workspace
+
+        try:
+            membership = obj.memberships.filter(user=request.user).exists()
+        except WorkspaceMembership.DoesNotExist:
+            return False
+
+        return bool(membership or request.user.is_superuser)
 
 
 class IsAdminOfWorkspace(permissions.BasePermission):
@@ -18,10 +45,34 @@ class IsAdminOfWorkspace(permissions.BasePermission):
         if not isinstance(obj, Workspace):
             obj = obj.workspace
 
-        return (
-            obj.memberships.filter(user=request.user, role__in=["admin"]).exists()
-            or request.user.is_superuser
-        )
+        try:
+            membership = obj.memberships.get(user=request.user)
+        except WorkspaceMembership.DoesNotExist:
+            return False
+
+        return bool(membership.role in ["admin"] or request.user.is_superuser)
+
+    def has_permission(self, request, view):
+        id = view.kwargs.get("workspace_pk")
+        if id is None:
+            id = view.kwargs.get("pk")
+        if id is None:
+            id = view.kwargs.get("id")
+
+        try:
+            obj = Workspace.objects.get(pk=id)
+        except Workspace.DoesNotExist:
+            return False
+
+        if not isinstance(obj, Workspace):
+            obj = obj.workspace
+
+        try:
+            membership = obj.memberships.get(user=request.user)
+        except WorkspaceMembership.DoesNotExist:
+            return False
+
+        return bool(membership.role in ["admin"] or request.user.is_superuser)
 
 
 class IsModeratorOfWorkspace(permissions.BasePermission):
@@ -29,11 +80,34 @@ class IsModeratorOfWorkspace(permissions.BasePermission):
         if not isinstance(obj, Workspace):
             obj = obj.workspace
 
-        return (
-            obj.memberships.filter(
-                user=request.user, role__in=["admin", "moderator"]
-            ).exists()
-            or request.user.is_superuser
+        try:
+            membership = obj.memberships.get(user=request.user)
+        except WorkspaceMembership.DoesNotExist:
+            return False
+
+        return bool(
+            membership.role in ["admin", "moderator"] or request.user.is_superuser
+        )
+
+    def has_permission(self, request, view):
+        id = view.kwargs.get("workspace_pk")
+        if id is None:
+            id = view.kwargs.get("pk")
+        if id is None:
+            id = view.kwargs.get("id")
+
+        try:
+            obj = Workspace.objects.get(pk=id)
+        except Workspace.DoesNotExist:
+            return False
+
+        try:
+            membership = obj.memberships.get(user=request.user)
+        except WorkspaceMembership.DoesNotExist:
+            return False
+
+        return bool(
+            membership.role in ["admin", "moderator"] or request.user.is_superuser
         )
 
 
