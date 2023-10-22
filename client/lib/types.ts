@@ -42,3 +42,23 @@ export const loginFormSchema = z.object({
 });
 
 export type LoginFormSchemaType = z.infer<typeof loginFormSchema>;
+
+export const resetPasswordSchema = z.object({
+  email: z.string().email(),
+});
+
+export type ResetPasswordSchemaType = z.infer<typeof resetPasswordSchema>;
+
+export const resetPasswordConfirmSchema = z.object({
+  new_password: z.string(),
+  re_new_password: z.string(),
+});
+
+export type ResetPasswordConfirmSchemaType = z.infer<
+  typeof resetPasswordConfirmSchema
+>;
+
+export interface ParamsType {
+  uid: string;
+  token: string;
+}

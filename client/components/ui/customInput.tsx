@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { useState } from "react";
 import { AlertTriangle, Eye, EyeOff } from "lucide-react";
 import type {
   FieldErrors,
@@ -7,10 +7,8 @@ import type {
   UseFormGetValues,
 } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { useToast } from "./use-toast";
-import { useResendActivationMutation } from "@/redux/features/authApiSlice";
-import Spinner from "./spinner";
-import { useResendActivationEmail } from "@/hooks/useResenActivationEmail";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface InputProps<T extends FieldValues> {
   register: UseFormRegisterReturn;
@@ -29,32 +27,23 @@ const CustomInput = <T extends FieldValues>({
   errors,
   getValues,
 }: InputProps<T>) => {
-  // const { toast } = useToast();
+  const pathname = usePathname();
   const [showPassword, setShowPassword] = useState(false);
-  const v = errors.email?.message;
-  // const [resendActivation, { isLoading }] = useResendActivationMutation();
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
-  // const resendActivationEmail = async () => {
-  //   if (getValues) {
-  //     const { email } = getValues();
-  //     console.log("values", getValues());
-  //     try {
-  //       await resendActivation({ email });
-  //       toast({
-  //         title: "Activation email successfully sent! Please check your email.",
-  //       });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  // };
   return (
     <div className="min-h-[100px]">
       <label className="text-text" htmlFor={id}>
-        {label}
+        <div className="flex justify-between">
+          <div>{label}</div>
+          {id === "password" && pathname === "/login" && (
+            <Link className="text-secondary" href="reset_password">
+              Forgot your password?
+            </Link>
+          )}
+        </div>
       </label>
       <div className="mb-5 mt-1">
         <div
@@ -90,8 +79,8 @@ const CustomInput = <T extends FieldValues>({
                 className="flex mt-1 text-error justify-between items-center text-sm"
                 key={m}
               >
-                <div className="flex gap-1 w-80">
-                  <AlertTriangle className="w-8" size={16} />
+                <div className="flex gap-2 w-80">
+                  <AlertTriangle size={16} />
                   <span>
                     {m}
                     {i < message.split(".,").length - 1 && "."}
