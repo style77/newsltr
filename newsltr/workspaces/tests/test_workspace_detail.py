@@ -37,5 +37,5 @@ class WorkspaceGetViewTest(
     def test_get_workspace_with_authorization_and_wrong_workspace_id(self):
         login_user(self.client, self.user.email, TEST_USER_DATA["password"])
 
-        response = self.client.get(reverse("workspace-detail", args=(999,)))
-        self.assert_status_equal(response, status.HTTP_404_NOT_FOUND)
+        response = self.client.get(reverse("workspace-detail", args=("1234",)))
+        self.assert_status_equal(response, status.HTTP_403_FORBIDDEN)
