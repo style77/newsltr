@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model, tokens
+from django.http import QueryDict
 from rest_framework import mixins, viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
@@ -24,7 +25,7 @@ User = get_user_model()
 
 
 @extend_schema(
-    tags=["workspaces"],
+    tags=["workspace"],
 )
 class WorkspaceViewSet(viewsets.ModelViewSet):
     serializer_class = WorkspaceSerializer
@@ -46,11 +47,17 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
                 permissions.IsAuthenticated,
                 IsAdminOfWorkspace,
             ]
+        elif self.action in ["invite", "invitation_accept", "list"]:
+            self.permission_classes = [permissions.IsAuthenticated]
         return super().get_permissions()
 
     def get_serializer_class(self):
         if self.action == "create":
             return WorkspaceCreateSerializer
+        elif self.action == "invite":
+            return WorkspaceInviteSerializer
+        elif self.action == "invitation_accept":
+            return WorkspaceInvitationAcceptSerializer
         return self.serializer_class
 
     def list(self, request, *args, **kwargs):
@@ -92,40 +99,8 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
-@extend_schema(
-    tags=["workspaces members"],
-)
-class WorkspaceMembersViewSet(
-    mixins.UpdateModelMixin,
-    mixins.DestroyModelMixin,
-    mixins.ListModelMixin,
-    viewsets.GenericViewSet
-):
-    serializer_class = WorkspaceMembershipSerializer
-    permission_classes = [IsMemberOfWorkspace, permissions.IsAuthenticated]
-    queryset = WorkspaceMembership
-    lookup_field = "user__pk"
-
-    def get_queryset(self):
-        return WorkspaceMembership.objects.filter(workspace=self.kwargs["workspace_pk"])
-
-    def get_serializer_class(self):
-        if self.action == "invite":
-            return WorkspaceInviteSerializer
-        elif self.action == "invitation_accept":
-            return WorkspaceInvitationAcceptSerializer
-        return super().get_serializer_class()
-
-    def get_permissions(self):
-        if self.action in ["invite", "update", "partial_update", "destroy"]:
-            self.permission_classes = [permissions.IsAuthenticated, IsAdminOfWorkspace]
-        elif self.action in ["invitation_accept"]:
-            self.permission_classes = [permissions.IsAuthenticated]
-        return super().get_permissions()
-
-    @action(["post"], detail=False, url_path="invite")
-    def invite(self, request, *args, **kwargs):
+    @action(["post"], detail=True, url_path="invite")
+    def invite(self, request, pk, *args, **kwargs):
         """
         Invite user to workspace.
         """
@@ -174,19 +149,103 @@ class WorkspaceMembersViewSet(
             workspace=serializer.workspace, user=serializer.user, role="member"
         )  # todo add possibility to invite with different role
         membership.save()
-        serializer.workspace.refresh()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @extend_schema(
-    parameters=[OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH), OpenApiParameter("id", str, OpenApiParameter.PATH)],
-    tags=["workspaces keys"],
+    tags=["workspace members"],
+)
+class WorkspaceMembersViewSet(
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet,
+):
+    serializer_class = WorkspaceMembershipSerializer
+    permission_classes = [IsMemberOfWorkspace, permissions.IsAuthenticated]
+    queryset = WorkspaceMembership
+    lookup_field = "user__pk"
+
+    def get_queryset(self):
+        return WorkspaceMembership.objects.filter(workspace=self.kwargs["workspace_pk"])
+
+    def get_serializer_class(self):
+        return super().get_serializer_class()
+
+    def get_permissions(self):
+        if self.action in ["invite", "update", "partial_update", "destroy"]:
+            self.permission_classes = [permissions.IsAuthenticated, IsAdminOfWorkspace]
+        elif self.action in ["invitation_accept"]:
+            self.permission_classes = [permissions.IsAuthenticated]
+        return super().get_permissions()
+
+    @extend_schema(
+        parameters=[OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH)],
+    )
+    def list(self, request, *args, **kwargs):
+        """
+        List workspace members.
+        """
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+            OpenApiParameter("user__pk", str, OpenApiParameter.PATH),
+        ],
+    )
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Retrieve workspace member.
+        """
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+            OpenApiParameter("user__pk", str, OpenApiParameter.PATH),
+        ],
+    )
+    def update(self, request, *args, **kwargs):
+        """
+        Update workspace member.
+        """
+        return super().update(request, *args, **kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+            OpenApiParameter("user__pk", str, OpenApiParameter.PATH),
+        ],
+    )
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update workspace member.
+        """
+        return super().partial_update(request, *args, **kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+            OpenApiParameter("user__pk", str, OpenApiParameter.PATH),
+        ],
+    )
+    def destroy(self, request, *args, **kwargs):
+        """
+        Delete workspace member.
+        """
+        return super().destroy(request, *args, **kwargs)
+
+
+@extend_schema(
+    tags=["workspace keys"],
 )
 class WorkspaceKeysViewSet(viewsets.ModelViewSet):
     serializer_class = APIKeySerializer
     permission_classes = [IsAdminOfWorkspace, permissions.IsAuthenticated]
     queryset = WorkspaceAPIKey
+    lookup_url_kwarg = "id"
 
     def get_queryset(self):
         return WorkspaceAPIKey.objects.filter(workspace=self.kwargs["workspace_pk"])
@@ -196,6 +255,15 @@ class WorkspaceKeysViewSet(viewsets.ModelViewSet):
             return APIKeyDestroySerializer
         return super().get_serializer_class()
 
+    def get_permissions(self):
+        return super().get_permissions()
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+            OpenApiParameter("id", str, OpenApiParameter.PATH),
+        ],
+    )
     def destroy(self, request, *args, **kwargs):
         """
         Revoke a workspace API Key
@@ -208,9 +276,63 @@ class WorkspaceKeysViewSet(viewsets.ModelViewSet):
         instance.revoked = True
         instance.save()
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+        ],
+    )
     def create(self, request, *args, **kwargs):
         """
         Create a new workspace API Key
         """
-        request.data["workspace"] = self.kwargs["workspace_pk"]
+        if isinstance(request.data, QueryDict):
+            request.data._mutable = True
+            request.data["workspace"] = self.kwargs["workspace_pk"]
+        else:
+            request.data.update({"workspace": self.kwargs["workspace_pk"]})
         return super().create(request, *args, **kwargs)
+
+    @extend_schema(
+        parameters=[OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH)],
+    )
+    def list(self, request, *args, **kwargs):
+        """
+        List all workspace API Keys
+        """
+        return super().list(request, *args, **kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+            OpenApiParameter("id", str, OpenApiParameter.PATH),
+        ],
+    )
+    def retrieve(self, request, *args, **kwargs):
+        """
+        Retrieve workspace API Key
+        """
+        return super().retrieve(request, *args, **kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+            OpenApiParameter("id", str, OpenApiParameter.PATH),
+        ],
+    )
+    def update(self, request, *args, **kwargs):
+        """
+        Update workspace API Key
+        """
+        return super().update(request, *args, **kwargs)
+
+    @extend_schema(
+        parameters=[
+            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
+            OpenApiParameter("id", str, OpenApiParameter.PATH),
+        ],
+    )
+    def partial_update(self, request, *args, **kwargs):
+        """
+        Partial update workspace API Key
+        """
+        return super().partial_update(request, *args, **kwargs)
