@@ -1,0 +1,87 @@
+name: API Pre-Deploy
+
+on:
+  push:
+    paths:
+      - 'newsltr/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+      - master
+      - develop
+  pull_request:
+    paths:
+      - 'newsltr/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+      - master
+      - develop
+
+jobs:
+  lint:
+    name: Lint Python Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11 
+
+      - name: Install dependencies
+        run: |
+          pip install -r newsltr/requirements.txt
+          pip install flake8
+
+      - name: Lint Python code
+        working-directory: newsltr
+        run: |
+          flake8 .
+          
+  test:
+    name: Run Django Tests
+    runs-on: ubuntu-latest
+
+    env:
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+      EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+      EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+      SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11 
+
+      - name: Install dependencies
+        run: |
+          pip install -r newsltr/requirements.txt
+          pip install coverage
+
+      - name: Run Django tests
+        working-directory: newsltr
+        run: |
+          python manage.py test --noinput
+
+      - name: Collect test coverage
+        working-directory: newsltr
+        run: |
+          coverage run manage.py test --noinput
+          coverage xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: newsltr/coverage.xml

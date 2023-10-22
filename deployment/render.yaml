@@ -1,0 +1,55 @@
+databases:
+  - name: newsltr-db
+    plan: free
+    region: frankfurt
+    databaseName: newsltr
+    user: newsltr
+
+services:
+  - type: web
+    name: newsltr-api
+    runtime: python
+    region: frankfurt
+    plan: free
+    rootDir: newsltr
+    healthCheckPath: /api/v1/health?format=json
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: newsltr-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: newsltr-redis
+          property: connectionString
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
+      - key: PYTHON_VERSION
+        value: 3.11.3
+  - type: web
+    name: newsltr-web
+    env: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm; npm run dev
+    startCommand: npm run start
+    rootDir: client
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: API_URL
+        fromService:
+          type: web
+          name: newsltr-api
+          property: hostport
+  - type: redis
+    name: newsltr-redis
+    region: frankfurt
+    plan: free
+    ipAllowList:
+      - source: 0.0.0.0/0  # todo change to service hostport
+        description: Allow all incoming traffic
+    maxmemoryPolicy: volatile-lru

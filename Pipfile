@@ -1,0 +1,35 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "*"
+djangorestframework = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
+social-auth-app-django = "*"
+dj-database-url = "*"
+python-dotenv = "*"
+psycopg2 = "*"
+pyyaml = "*"
+uritemplate = "*"
+gunicorn = "*"
+django-health-check = "*"
+psutil = "*"
+django-cors-headers = "*"
+django-redis = "*"
+djet = "*"
+drf-spectacular = {extras = ["sidecar"], version = "*"}
+celery = "*"
+django-celery-results = "*"
+django-celery-beat = "*"
+django-anymail = {extras = ["sendgrid"], version = "*"}
+
+[dev-packages]
+flake8 = "*"
+black = "*"
+pre-commit = "*"
+
+[requires]
+python_version = "3.12"

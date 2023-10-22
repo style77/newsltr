@@ -1,0 +1,80 @@
+name: Client Deploy
+on:
+  push:
+    paths:
+      - 'client/**'
+      - '.github/workflows/**'
+    branches:
+      - main
+      - master
+      - develop
+      - feature/auth-ui
+  pull_request:
+    branches:
+      - main
+      - master
+      - develop
+
+defaults:
+  run:
+    working-directory: client
+
+jobs:
+  lint:
+    name: ⬣ ESLint
+    #needs: [changes]
+    #if: needs.changes.outputs.DEPLOYABLE == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        run: npm ci
+      - name: 🔬 Lint
+        run: npm run lint
+
+  typecheck:
+    name: ʦ TypeScript
+    # needs: [changes]
+    # if: needs.changes.outputs.DEPLOYABLE == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        run: npm ci
+
+      - name: 🔎 Type check
+        run: npm run typecheck
+
+  vitest:
+    name: 🃏 Vitest
+    # needs: [changes]
+    # if: needs.changes.outputs.DEPLOYABLE == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: 📥 Download deps
+        run: npm ci
+
+      - name: 🃏 Run vitest
+        run: npm run test
