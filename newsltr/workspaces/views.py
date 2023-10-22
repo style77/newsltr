@@ -241,7 +241,12 @@ class WorkspaceMembersViewSet(
 @extend_schema(
     tags=["workspace keys"],
 )
-class WorkspaceKeysViewSet(viewsets.ModelViewSet):
+class WorkspaceKeysViewSet(
+    mixins.CreateModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.ListModelMixin,
+    viewsets.GenericViewSet
+):
     serializer_class = APIKeySerializer
     permission_classes = [IsAdminOfWorkspace, permissions.IsAuthenticated]
     queryset = WorkspaceAPIKey
@@ -300,39 +305,3 @@ class WorkspaceKeysViewSet(viewsets.ModelViewSet):
         List all workspace API Keys
         """
         return super().list(request, *args, **kwargs)
-
-    @extend_schema(
-        parameters=[
-            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
-            OpenApiParameter("id", str, OpenApiParameter.PATH),
-        ],
-    )
-    def retrieve(self, request, *args, **kwargs):
-        """
-        Retrieve workspace API Key
-        """
-        return super().retrieve(request, *args, **kwargs)
-
-    @extend_schema(
-        parameters=[
-            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
-            OpenApiParameter("id", str, OpenApiParameter.PATH),
-        ],
-    )
-    def update(self, request, *args, **kwargs):
-        """
-        Update workspace API Key
-        """
-        return super().update(request, *args, **kwargs)
-
-    @extend_schema(
-        parameters=[
-            OpenApiParameter("workspace_pk", str, OpenApiParameter.PATH),
-            OpenApiParameter("id", str, OpenApiParameter.PATH),
-        ],
-    )
-    def partial_update(self, request, *args, **kwargs):
-        """
-        Partial update workspace API Key
-        """
-        return super().partial_update(request, *args, **kwargs)
