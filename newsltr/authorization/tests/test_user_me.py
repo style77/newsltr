@@ -23,23 +23,16 @@ class UserViewSetMeTest(
 
     def setUp(self):
         self.base_url = reverse("user-me")
-        data = {
-            "first_name": TEST_DATA["first_name"],
-            "last_name": TEST_DATA["last_name"],
-            "email": TEST_DATA["email"],
-            "password": TEST_DATA["password"],
-        }
-        self.user = create_user(**data)
-        login_user(self.client, data["email"], data["password"])
+        self.user = create_user()
+        login_user(self.client, self.user.email, TEST_DATA["password"])
 
     def test_get_return_user(self):
         response = self.client.get(self.base_url)
 
         self.assert_status_equal(response, status.HTTP_200_OK)
-        self.assertEqual(
-            set(response.data.keys()),
-            set([User.USERNAME_FIELD, User._meta.pk.name] + User.REQUIRED_FIELDS),
-        )
+
+        expected_keys = set([User.USERNAME_FIELD, User._meta.pk.name] + User.REQUIRED_FIELDS + ['last_login', 'date_joined'])
+        self.assertEqual(set(response.data.keys()), expected_keys)
 
     def test_patch_email_change(self):
         data = {"email": TEST_DATA["email"]}
