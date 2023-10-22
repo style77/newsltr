@@ -6,10 +6,6 @@ test:
 	@echo Running tests...
 	cd newsltr && pipenv run python manage.py test --noinput
 
-test-workspaces:
-	@echo Running tests...
-	cd newsltr && pipenv run python manage.py test workspaces/tests/. --noinput
-
 migrate:
 	@echo Running migrations...
 	cd newsltr && pipenv run python manage.py migrate
