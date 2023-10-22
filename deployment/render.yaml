@@ -12,6 +12,7 @@ services:
     region: frankfurt
     plan: free
     rootDir: newsltr
+    dockerfilePath: prod.Dockerfile
     healthCheckPath: /api/v1/health?format=json
     envVars:
       - key: DATABASE_URL
