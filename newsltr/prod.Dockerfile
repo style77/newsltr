@@ -23,4 +23,4 @@ COPY . /app/
 
 RUN python manage.py migrate
 
-CMD ["gunicorn", "newsltr.wsgi:application", "--bind", "0.0.0.0:7000"]
+CMD ["gunicorn", "newsltr.wsgi:application", "--bind", "0.0.0.0:8000"]

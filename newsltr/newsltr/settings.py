@@ -78,7 +78,10 @@ HEALTH_CHECK_APPS = [
 ]
 
 # Custom Apps
-CUSTOM_APPS = ["authorization.apps.AuthorizationConfig"]
+CUSTOM_APPS = [
+    "authorization.apps.AuthorizationConfig",
+    "workspaces.apps.WorkspacesConfig"
+]
 
 # Celery Apps
 CELERY_APPS = [
@@ -165,7 +168,9 @@ if DEVELOPMENT:
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=2)
+    if DEVELOPMENT
+    else timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     # To include additional security let refresh_tokens be blacklisted
     # after using one of them
@@ -205,14 +210,15 @@ DJOSER = {
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
         "user": "authorization.serializers.CustomUserSerializer",
+        "current_user": "authorization.serializers.CurrentUserSerializer",
     },
     "EMAIL": {
-        "activation": "newsltr.email.ActivationEmail",
-        "confirmation": "newsltr.email.ConfirmationEmail",
-        "password_reset": "newsltr.email.PasswordResetEmail",
-        "password_changed_confirmation": "newsltr.email.PasswordChangedConfirmationEmail",
-        "username_changed_confirmation": "newsltr.email.UsernameChangedConfirmationEmail",
-        "username_reset": "newsltr.email.UsernameResetEmail",
+        "activation": "authorization.email.ActivationEmail",
+        "confirmation": "authorization.email.ConfirmationEmail",
+        "password_reset": "authorization.email.PasswordResetEmail",
+        "password_changed_confirmation": "authorization.email.PasswordChangedConfirmationEmail",
+        "username_changed_confirmation": "authorization.email.UsernameChangedConfirmationEmail",
+        "username_reset": "authorization.email.UsernameResetEmail",
     },
 }
 
@@ -273,6 +279,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "newsltr.wsgi.application"
 
+
+WORKSPACES = {
+    "ACTIVATION_URL": "invite/accept/{uid}/{workspace_id}/{token}",
+    "API_KEY_LENGTH": 40
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases

@@ -12,6 +12,7 @@ services:
     region: frankfurt
     plan: free
     rootDir: newsltr
+    dockerfilePath: prod.Dockerfile
     healthCheckPath: /api/v1/health?format=json
     envVars:
       - key: DATABASE_URL
@@ -29,12 +30,28 @@ services:
         value: 4
       - key: PYTHON_VERSION
         value: 3.11.3
+      - key: DJANGO_DEVELOPMENT
+        value: false
+
+      - key: EMAIL_HOST
+        sync: false
+      - key: EMAIL_HOST_USER
+        sync: false
+      - key: EMAIL_HOST_PASSWORD
+        sync: false
+      - key: SENDINBLUE_API_KEY
+        sync: false
+
+      - key: GOOGLE_OAUTH2_KEY
+        sync: false
+      - key: GOOGLE_OAUTH2_SECRET
+        sync: false
   - type: web
     name: newsltr-web
     env: node
     plan: free
     region: frankfurt
-    buildCommand: npm; npm run dev
+    buildCommand: npm; npm run build
     startCommand: npm run start
     rootDir: client
     envVars:

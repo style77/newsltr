@@ -1,0 +1,94 @@
+{% load i18n %}
+
+{% block subject %}
+{% trans "Invitation to {{ workspace_name }} workspace" %}
+{% endblock subject %}
+
+{% block text_body %}
+{% trans "Hello" %} {{ email }},
+
+{% blocktrans %}
+You have been invited to join the {{ workspace_name }} workspace on Newsltr. To accept the invitation, click the link below:
+
+{{ protocol }}://{{ domain }}/{{ url|safe }}
+
+If you have any questions or run into any issues, our support team is here to help. Feel free to reach out to us
+anytime.
+
+We appreciate your trust in Newsltr. Thank you for choosing us!
+
+Best regards,
+The Newsltr Team
+{% endblocktrans %}
+{% endblock text_body %}
+
+{% block html_body %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        /* Add your inline CSS styles here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            background-color: #007BFF;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .footer {
+            background-color: #f7f7f7;
+            padding: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{% trans "Invitation to {{ workspace_name }} workspace" %}</h1>
+        </div>
+        <div class="content">
+            <p>{% trans "Hello" %} {{ first_name }}, </p>
+            <p>{% trans "You have been invited to join the {{ workspace_name }} workspace on Newsltr. To accept the invitation, click the link below:" %}</p>
+            <p><a href="{{ protocol }}://{{ domain }}/{{ url|safe }}" class="button">{% trans "Accept invitation" %}</a></p>
+            <p>{% trans "If you have any questions or run into any issues, our support team is here to help. Feel free to reach out to us anytime." %}</p>
+            <p>{% trans "We appreciate your trust in Newsltr. Thank you for choosing us!" %}</p>
+        </div>
+        <div class="footer">
+            <p>{% trans "Best regards," %}<br>{% trans "The Newsltr Team" %}</p>
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock html_body %}
