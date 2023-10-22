@@ -3,8 +3,11 @@ from rest_framework.test import APITestCase
 from rest_framework.reverse import reverse
 from djet import assertions
 
-from workspaces.models import Workspace
-from workspaces.tests.common import create_workspace, create_user, invite_user_to_workspace
+from workspaces.tests.common import (
+    create_workspace,
+    create_user,
+    invite_user_to_workspace,
+)
 
 from authorization.tests.common import (
     TEST_DATA as TEST_USER_DATA,

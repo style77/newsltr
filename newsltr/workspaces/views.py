@@ -245,7 +245,7 @@ class WorkspaceKeysViewSet(
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     serializer_class = APIKeySerializer
     permission_classes = [IsAdminOfWorkspace, permissions.IsAuthenticated]

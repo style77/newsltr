@@ -4,7 +4,7 @@ from rest_framework.reverse import reverse
 from djet import assertions
 
 from workspaces.models import Workspace, WorkspaceMembership
-from workspaces.tests.common import TEST_DATA, create_workspace
+from workspaces.tests.common import TEST_DATA
 
 from authorization.tests.common import (
     TEST_DATA as TEST_USER_DATA,
@@ -35,9 +35,7 @@ class WorkspaceCreateViewTest(
 
         workspace = Workspace.objects.get(name=TEST_DATA["name"])
         self.assertTrue(
-            WorkspaceMembership.objects.filter(
-                workspace=workspace, user=user
-            ).exists()
+            WorkspaceMembership.objects.filter(workspace=workspace, user=user).exists()
         )
         self.assertTrue(
             WorkspaceMembership.objects.filter(

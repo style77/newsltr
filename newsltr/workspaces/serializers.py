@@ -4,9 +4,12 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from djoser.utils import decode_uid
-from rest_framework.fields import empty
 
-from .models import Workspace, WorkspaceMembership, WorkspaceAPIKey, WorkspaceAPIKeyManager
+from .models import (
+    Workspace,
+    WorkspaceMembership,
+    WorkspaceAPIKey,
+)
 from .permissions import IsAdminOfWorkspace
 
 from authorization.serializers import UserSerializer
@@ -25,11 +28,13 @@ class WorkspaceMembershipSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         if self.instance and self.instance.role == "admin":
             raise ValidationError("Cannot change role of admin.")
-        
+
         elif self.instance and self.instance.user == self.context["request"].user:
             raise ValidationError("Cannot change own role.")
-        
-        elif attrs["role"] == "admin" and not IsAdminOfWorkspace().has_permission(self.context["request"], self.context["view"]):
+
+        elif attrs["role"] == "admin" and not IsAdminOfWorkspace().has_permission(
+            self.context["request"], self.context["view"]
+        ):
             raise ValidationError("Only admins can assign admin role.")
 
         return super().validate(attrs)
@@ -46,8 +51,10 @@ class APIKeySerializer(serializers.ModelSerializer):
         read_only_fields = ("id", "key", "revoked", "created")
 
     def create(self, validated_data):
-        workspace = Workspace.objects.get(pk=self.context['request'].data.get('workspace'))
-        validated_data['workspace'] = workspace
+        workspace = Workspace.objects.get(
+            pk=self.context["request"].data.get("workspace")
+        )
+        validated_data["workspace"] = workspace
 
         instance, _ = super().create(validated_data)
         return instance
@@ -60,13 +67,7 @@ class APIKeyDestroySerializer(serializers.ModelSerializer):
 class WorkspaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workspace
-        fields = (
-            "id",
-            "name",
-            "description",
-            "created",
-            "updated"
-        )
+        fields = ("id", "name", "description", "created", "updated")
         read_only_fields = ("id", "created", "updated")
 
     def update(self, instance, validated_data):

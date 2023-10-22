@@ -6,7 +6,7 @@ from authorization.views import (
     CustomTokenRefreshView,
     CustomTokenVerifyView,
     CustomProviderAuthView,
-    LogoutView
+    LogoutView,
 )
 
 urlpatterns = [
@@ -19,5 +19,5 @@ urlpatterns = [
     path(r"auth/jwt/create/", EmailTokenObtainPairView.as_view(), name="jwt-create"),
     path(r"auth/jwt/refresh/", CustomTokenRefreshView.as_view(), name="jwt-refresh"),
     path(r"auth/jwt/verify/", CustomTokenVerifyView.as_view(), name="jwt-verify"),
-    path(r"auth/logout/", LogoutView.as_view(), name="logout")
+    path(r"auth/logout/", LogoutView.as_view(), name="logout"),
 ]

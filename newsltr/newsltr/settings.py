@@ -80,7 +80,7 @@ HEALTH_CHECK_APPS = [
 # Custom Apps
 CUSTOM_APPS = [
     "authorization.apps.AuthorizationConfig",
-    "workspaces.apps.WorkspacesConfig"
+    "workspaces.apps.WorkspacesConfig",
 ]
 
 # Celery Apps
@@ -282,7 +282,7 @@ WSGI_APPLICATION = "newsltr.wsgi.application"
 
 WORKSPACES = {
     "ACTIVATION_URL": "invite/accept/{uid}/{workspace_id}/{token}",
-    "API_KEY_LENGTH": 40
+    "API_KEY_LENGTH": 40,
 }
 
 # Database
