@@ -579,7 +579,7 @@ paths:
       operationId: api_v1_workspace_list
       description: List all workspaces that the user is a member of.
       tags:
-      - workspaces
+      - workspace
       security:
       - JWTCookiesAuthentication: []
       responses:
@@ -595,7 +595,7 @@ paths:
       operationId: api_v1_workspace_create
       description: Create a new workspace.
       tags:
-      - workspaces
+      - workspace
       requestBody:
         content:
           application/json:
@@ -629,7 +629,7 @@ paths:
         description: A unique value identifying this workspace.
         required: true
       tags:
-      - workspaces
+      - workspace
       security:
       - JWTCookiesAuthentication: []
       responses:
@@ -650,7 +650,7 @@ paths:
         description: A unique value identifying this workspace.
         required: true
       tags:
-      - workspaces
+      - workspace
       requestBody:
         content:
           application/json:
@@ -683,7 +683,7 @@ paths:
         description: A unique value identifying this workspace.
         required: true
       tags:
-      - workspaces
+      - workspace
       requestBody:
         content:
           application/json:
@@ -715,28 +715,58 @@ paths:
         description: A unique value identifying this workspace.
         required: true
       tags:
-      - workspaces
+      - workspace
       security:
       - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
-  /api/v1/workspace/{workspace_pk}/keys/:
-    get:
-      operationId: api_v1_workspace_keys_list
+  /api/v1/workspace/{id}/invite/:
+    post:
+      operationId: api_v1_workspace_invite_create
+      description: Invite user to workspace.
       parameters:
       - in: path
         name: id
         schema:
           type: string
+        description: A unique value identifying this workspace.
         required: true
+      tags:
+      - workspace
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInvite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInvite'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInvite'
+        required: true
+      security:
+      - JWTCookiesAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceInvite'
+          description: ''
+  /api/v1/workspace/{workspace_pk}/keys/:
+    get:
+      operationId: api_v1_workspace_keys_list
+      description: List all workspace API Keys
+      parameters:
       - in: path
         name: workspace_pk
         schema:
           type: string
         required: true
       tags:
-      - workspaces keys
+      - workspace keys
       security:
       - JWTCookiesAuthentication: []
       responses:
@@ -753,17 +783,12 @@ paths:
       description: Create a new workspace API Key
       parameters:
       - in: path
-        name: id
-        schema:
-          type: string
-        required: true
-      - in: path
         name: workspace_pk
         schema:
           type: string
         required: true
       tags:
-      - workspaces keys
+      - workspace keys
       requestBody:
         content:
           application/json:
@@ -785,100 +810,6 @@ paths:
                 $ref: '#/components/schemas/APIKey'
           description: ''
   /api/v1/workspace/{workspace_pk}/keys/{id}/:
-    get:
-      operationId: api_v1_workspace_keys_retrieve
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
-      tags:
-      - workspaces keys
-      security:
-      - JWTCookiesAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIKey'
-          description: ''
-    put:
-      operationId: api_v1_workspace_keys_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
-      tags:
-      - workspaces keys
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/APIKey'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/APIKey'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/APIKey'
-      security:
-      - JWTCookiesAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIKey'
-          description: ''
-    patch:
-      operationId: api_v1_workspace_keys_partial_update
-      parameters:
-      - in: path
-        name: id
-        schema:
-          type: string
-        required: true
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
-      tags:
-      - workspaces keys
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PatchedAPIKey'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/PatchedAPIKey'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/PatchedAPIKey'
-      security:
-      - JWTCookiesAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/APIKey'
-          description: ''
     delete:
       operationId: api_v1_workspace_keys_destroy
       description: Revoke a workspace API Key
@@ -894,7 +825,7 @@ paths:
           type: string
         required: true
       tags:
-      - workspaces keys
+      - workspace keys
       security:
       - JWTCookiesAuthentication: []
       responses:
@@ -903,6 +834,7 @@ paths:
   /api/v1/workspace/{workspace_pk}/members/:
     get:
       operationId: api_v1_workspace_members_list
+      description: List workspace members.
       parameters:
       - in: path
         name: workspace_pk
@@ -910,7 +842,7 @@ paths:
           type: string
         required: true
       tags:
-      - workspaces members
+      - workspace members
       security:
       - JWTCookiesAuthentication: []
       responses:
@@ -923,8 +855,9 @@ paths:
                   $ref: '#/components/schemas/WorkspaceMembership'
           description: ''
   /api/v1/workspace/{workspace_pk}/members/{user__pk}/:
-    put:
-      operationId: api_v1_workspace_members_update
+    get:
+      operationId: api_v1_workspace_members_retrieve
+      description: Retrieve workspace member.
       parameters:
       - in: path
         name: user__pk
@@ -937,7 +870,32 @@ paths:
           type: string
         required: true
       tags:
-      - workspaces members
+      - workspace members
+      security:
+      - JWTCookiesAuthentication: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceMembership'
+          description: ''
+    put:
+      operationId: api_v1_workspace_members_update
+      description: Update workspace member.
+      parameters:
+      - in: path
+        name: user__pk
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: workspace_pk
+        schema:
+          type: string
+        required: true
+      tags:
+      - workspace members
       requestBody:
         content:
           application/json:
@@ -961,6 +919,7 @@ paths:
           description: ''
     patch:
       operationId: api_v1_workspace_members_partial_update
+      description: Partial update workspace member.
       parameters:
       - in: path
         name: user__pk
@@ -973,7 +932,7 @@ paths:
           type: string
         required: true
       tags:
-      - workspaces members
+      - workspace members
       requestBody:
         content:
           application/json:
@@ -996,6 +955,7 @@ paths:
           description: ''
     delete:
       operationId: api_v1_workspace_members_destroy
+      description: Delete workspace member.
       parameters:
       - in: path
         name: user__pk
@@ -1008,57 +968,18 @@ paths:
           type: string
         required: true
       tags:
-      - workspaces members
+      - workspace members
       security:
       - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
-  /api/v1/workspace/{workspace_pk}/members/invite/:
+  /api/v1/workspace/invite/accept/:
     post:
-      operationId: api_v1_workspace_members_invite_create
-      description: Invite user to workspace.
-      parameters:
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
-      tags:
-      - workspaces members
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/WorkspaceInvite'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/WorkspaceInvite'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/WorkspaceInvite'
-        required: true
-      security:
-      - JWTCookiesAuthentication: []
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/WorkspaceInvite'
-          description: ''
-  /api/v1/workspace/{workspace_pk}/members/invite/accept/:
-    post:
-      operationId: api_v1_workspace_members_invite_accept_create
+      operationId: api_v1_workspace_invite_accept_create
       description: Accept invitation to workspace.
-      parameters:
-      - in: path
-        name: workspace_pk
-        schema:
-          type: string
-        required: true
       tags:
-      - workspaces members
+      - workspace
       requestBody:
         content:
           application/json:
@@ -1243,30 +1164,6 @@ components:
       - re_new_password
       - token
       - uid
-    PatchedAPIKey:
-      type: object
-      properties:
-        id:
-          type: string
-          readOnly: true
-        name:
-          type: string
-          description: A free-form name for the API key. Need not be unique. 50 characters
-            max.
-          maxLength: 50
-        key:
-          type: string
-          readOnly: true
-          nullable: true
-        revoked:
-          type: boolean
-          readOnly: true
-          description: If the API key is revoked, clients cannot use it anymore. (This
-            cannot be undone.)
-        created:
-          type: string
-          format: date-time
-          readOnly: true
     PatchedCurrentUser:
       type: object
       properties:
