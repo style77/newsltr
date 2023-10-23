@@ -5,8 +5,8 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Mainabilities][mainabilities-shield]][mainabilities-url]
 <!-- [![Technical Debt][technical-debt-shield]][technical-debt-url] -->
-[![API][api-build-shield]][api-build-url]
-[![Client][client-build-shield]][client-build-url]
+[![API Build][api-build-shield]][api-build-url]
+[![Client Build][client-build-shield]][client-build-url]
 
 
 <!-- PROJECT LOGO -->
@@ -205,9 +205,9 @@ Project Link: [https://github.com/Style77/newsltr](https://github.com/Style77/ne
 [mainabilities-url]: https://codeclimate.com/github/Style77/newsltr
 [technical-debt-shield]: https://img.shields.io/codeclimate/tech-debt/Style77/newsltr?style=for-the-badge&logoColor=red&color=red
 [technical-debt-url]: https://codeclimate.com/github/Style77/newsltr
-[api-build-shield]: https://img.shields.io/github/actions/workflow/status/Style77/newsltr/api.yml?label=API%20Build&style=for-the-badge
+[api-build-shield]: https://img.shields.io/github/actions/workflow/status/Style77/newsltr/api.yml?label=API&style=for-the-badge
 [api-build-url]: https://github.com/Style77/newsltr
-[client-build-shield]: https://img.shields.io/github/actions/workflow/status/Style77/newsltr/client.yml?label=Client%20Build&style=for-the-badge
+[client-build-shield]: https://img.shields.io/github/actions/workflow/status/Style77/newsltr/client.yml?label=Client&style=for-the-badge
 [client-build-url]: https://github.com/Style77/newsltr
 <!-- Images -->
 [product-screenshot]: images/screenshot.png
