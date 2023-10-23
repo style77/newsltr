@@ -4,7 +4,6 @@
 [![Contributors][contributors-shield]][contributors-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Mainabilities][mainabilities-shield]][mainabilities-url]
-<!-- [![Technical Debt][technical-debt-shield]][technical-debt-url] -->
 [![API Build][api-build-shield]][api-build-url]
 [![Client Build][client-build-shield]][client-build-url]
 
