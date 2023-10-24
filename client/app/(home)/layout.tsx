@@ -2,6 +2,13 @@ import Provider from "@/redux/Provider";
 import Navbar from "@/components/Navbar";
 import "../globals.css";
 import Setup from "@/utils/Setup";
+import { Nunito_Sans } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export const metadata = {
   title: "Next.js",
@@ -15,9 +22,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body
+        className={cn("bg-bg-1 bg-left-top bg-no-repeat", nunitoSans.className)}
+      >
         <Provider>
-          <div className="max-w-6xl mx-auto">
+          <div className="">
             <Navbar />
             <div>{children}</div>
             <Setup />
