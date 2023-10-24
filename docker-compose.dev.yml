@@ -28,6 +28,8 @@ services:
     depends_on:
       - newsltr-db
       - newsltr-redis
+    volumes:
+      - ./newsltr/:/app/
   newsltr-celery:
     build:
       context: ./newsltr
