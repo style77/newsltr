@@ -18,6 +18,10 @@ runserver:
 	@echo Running server...
 	cd newsltr && pipenv run python manage.py runserver
 
+stripe:
+	@echo Running stripe webhook listener...
+	pipenv run stripe listen --forward-to 127.0.0.1:8000/api/v1/payments/webhook/
+
 runcelery:
 	@echo Running celery...
 	cd newsltr && pipenv run celery -A newsltr worker -l info
