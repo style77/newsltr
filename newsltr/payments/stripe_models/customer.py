@@ -26,17 +26,17 @@ class StripeCustomer(BaseModel):
     invoice_prefix: Optional[str]
     invoice_settings: Optional[Dict]
     livemode: Optional[bool]
-    next_invoice_sequence: Optional[int]
+    next_invoice_sequence: Optional[int] = None
     preferred_locales: Optional[List[str]]
-    sources: Optional[List[Dict]]
-    subscriptions: Optional[List[StripeSubscriptionItems]]
-    tax: Optional[Dict]
+    sources: Optional[List[Dict]] = None
+    subscriptions: Optional[List[StripeSubscriptionItems]] = None
+    tax: Optional[Dict] = None
     tax_exempt: Optional[str]
-    tax_ids: Optional[List[Dict]]
+    tax_ids: Optional[List[Dict]] = None
 
 
 class StripeCustomers(BaseModel):
     """Based on https://stripe.com/docs/api/customers/list"""
     data: List[StripeCustomer]
-    has_more: bool = None
-    url: str = None
+    has_more: Optional[bool] = None
+    url: Optional[str] = None
