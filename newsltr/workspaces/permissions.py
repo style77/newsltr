@@ -1,5 +1,75 @@
 from rest_framework import permissions
 from .models import WorkspaceAPIKey, Workspace, WorkspaceMembership
+from payments.models import StripeUser
+
+
+class IsSubscriptionActive(permissions.BasePermission):
+    message = "You need to have an active subscription to perform this action."
+
+    def has_permission(self, request, view):
+        try:
+            subscriptions = StripeUser.objects.get(
+                user=request.user
+            ).current_subscription_items
+        except StripeUser.DoesNotExist:
+            return False
+
+        if len(subscriptions) == 0:
+            return False
+
+        return True
+
+
+class CanCreateWorkspace(permissions.BasePermission):
+    message = "You have reached the limit of workspaces you can create."
+
+    def has_permission(self, request, view):
+        try:
+            subscriptions = StripeUser.objects.get(
+                user=request.user
+            ).current_subscription_items
+        except StripeUser.DoesNotExist:
+            return False
+
+        workspaces_count = len(Workspace.objects.filter(memberships__user=request.user))
+        workspaces_limit = sum(
+            [
+                subscription.price.product.metadata.get("workspace_limit")
+                for subscription in subscriptions
+            ]
+        )
+
+        if workspaces_count >= workspaces_limit:
+            return False
+
+        return True
+
+
+class CanInviteMoreMembers(permissions.BasePermission):
+    message = "You have reached the limit of members for this workspace."
+
+    def has_permission(self, request, view):
+        try:
+            subscriptions = StripeUser.objects.get(
+                user=request.user
+            ).current_subscription_items
+        except StripeUser.DoesNotExist:
+            return False
+
+        members_count = Workspace.objects.get(
+            pk=view.kwargs.get("workspace_pk")
+        ).memberships.count()
+        members_limit = sum(
+            [
+                subscription.price.product.metadata.get("workspace_members_limit")
+                for subscription in subscriptions
+            ]
+        )
+
+        if members_count >= members_limit:
+            return False
+
+        return True
 
 
 class IsMemberOfWorkspace(permissions.BasePermission):

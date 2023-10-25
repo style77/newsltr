@@ -16,7 +16,13 @@ from .serializers import (
     WorkspaceInviteSerializer,
     WorkspaceInvitationAcceptSerializer,
 )
-from .permissions import IsMemberOfWorkspace, IsAdminOfWorkspace
+from .permissions import (
+    IsMemberOfWorkspace,
+    IsAdminOfWorkspace,
+    IsSubscriptionActive,
+    CanCreateWorkspace,
+    CanInviteMoreMembers,
+)
 from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
 from .email import WorkspaceInvitationEmail
 
@@ -29,7 +35,11 @@ User = get_user_model()
 )
 class WorkspaceViewSet(viewsets.ModelViewSet):
     serializer_class = WorkspaceSerializer
-    permission_classes = [permissions.IsAuthenticated, IsMemberOfWorkspace]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsMemberOfWorkspace,
+        IsSubscriptionActive,
+    ]
     queryset = Workspace.objects.all()
 
     token_generator = tokens.default_token_generator
@@ -41,13 +51,35 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ["create"]:
-            self.permission_classes = [permissions.IsAuthenticated]
-        elif self.action in ["destroy", "update", "partial_update"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                IsSubscriptionActive,
+                CanCreateWorkspace,
+            ]
+        elif self.action in ["destroy"]:
             self.permission_classes = [
                 permissions.IsAuthenticated,
                 IsAdminOfWorkspace,
             ]
-        elif self.action in ["invite", "invitation_accept", "list"]:
+        elif self.action in ["update", "partial_update"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                IsSubscriptionActive,
+                IsAdminOfWorkspace,
+            ]
+        elif self.action in ["invite"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                IsSubscriptionActive,
+                IsAdminOfWorkspace,
+                CanInviteMoreMembers,
+            ]
+        elif self.action in ["invitation_accept"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                CanInviteMoreMembers,
+            ]
+        elif self.action in ["list"]:
             self.permission_classes = [permissions.IsAuthenticated]
         return super().get_permissions()
 
