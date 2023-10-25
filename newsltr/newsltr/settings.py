@@ -62,8 +62,7 @@ ALLOW_PROMOTION_CODES = True
 DJANGO_USER_EMAIL_FIELD = "email"
 USER_CREATE_DEFAULTS_ATTRIBUTE_MAP = {
     "email": "email",
-    "first_name": "first_name",
-    "last_name": "last_name",
+    "first_name": "name",
 }
 
 # Application definition
