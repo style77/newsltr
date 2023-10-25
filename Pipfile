@@ -27,6 +27,8 @@ django-celery-beat = "*"
 django-anymail = {extras = ["sendgrid"] }
 install = "*"
 drf-nested-routers = "*"
+stripe = "*"
+pydantic = "*"
 
 [dev-packages]
 flake8 = "*"
