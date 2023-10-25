@@ -22,6 +22,10 @@ stripe:
 	@echo Running stripe webhook listener...
 	pipenv run stripe listen --forward-to 127.0.0.1:8000/api/v1/payments/webhook/
 
+pull-stripe:
+	@echo Pulling stripe events...
+	cd newsltr && pipenv run python manage.py pull_stripe
+
 runcelery:
 	@echo Running celery...
 	cd newsltr && pipenv run celery -A newsltr worker -l info
