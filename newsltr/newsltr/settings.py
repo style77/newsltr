@@ -36,12 +36,35 @@ DEBUG = DEVELOPMENT
 
 if DEVELOPMENT:
     ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
+    FRONT_END_BASE_URL = "http://localhost:3000"
+    STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY_TEST")
+    STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET_TEST")
 else:
     RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
     if RENDER_EXTERNAL_HOSTNAME:
         ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME]
     else:
         ALLOWED_HOSTS = []
+
+    FRONT_END_BASE_URL = os.getenv("FRONT_END_BASE_URL")
+    STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY")
+    STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+
+# Stripe
+
+NEW_USER_FREE_TRIAL_DAYS = None
+CHECKOUT_SUCCESS_URL_PATH = "payment"
+CHECKOUT_CANCEL_URL_PATH = "manage-subscription"
+DEFAULT_PAYMENT_METHOD_TYPES = ["card"]
+DEFAULT_CHECKOUT_MODE = "subscription"
+DEFAULT_DISCOUNTS = None
+ALLOW_PROMOTION_CODES = True
+DJANGO_USER_EMAIL_FIELD = "email"
+USER_CREATE_DEFAULTS_ATTRIBUTE_MAP = {
+    "email": "email",
+    "first_name": "first_name",
+    "last_name": "last_name",
+}
 
 # Application definition
 
@@ -81,6 +104,7 @@ HEALTH_CHECK_APPS = [
 CUSTOM_APPS = [
     "authorization.apps.AuthorizationConfig",
     "workspaces.apps.WorkspacesConfig",
+    "payments.apps.PaymentsConfig",
 ]
 
 # Celery Apps
