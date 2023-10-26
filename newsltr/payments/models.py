@@ -56,6 +56,7 @@ class Product(models.Model):
     active = models.BooleanField()
     description = models.CharField(max_length=1024, null=True, blank=True)
     name = models.CharField(max_length=256, null=True, blank=True)
+    metadata = models.JSONField(null=True, blank=True)
 
 
 class ProductFeature(models.Model):
