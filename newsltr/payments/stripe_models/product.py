@@ -20,7 +20,7 @@ class StripeProduct(BaseModel):
     id: Optional[str]
     active: Optional[bool]
     description: Optional[str] = None
-    metadata: Optional[Union[StripeProductMetadata, Dict]]
+    metadata: Optional[Dict] = None
     name: Optional[str] = None
     created: Optional[datetime]
     images: Optional[List[str]]
