@@ -1,7 +1,7 @@
 import Provider from "@/redux/Provider";
 import Navbar from "@/components/Navbar";
 import "../globals.css";
-import Setup from "@/utils/Setup";
+import Setup from "@/components/utils/Setup";
 import { Nunito_Sans } from "next/font/google";
 import { cn } from "@/lib/utils";
 

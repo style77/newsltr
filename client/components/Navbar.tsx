@@ -23,8 +23,10 @@ const Navbar = () => {
         <NavigationMenuLink className="mr-3" href="login">
           Log in
         </NavigationMenuLink>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
         <NavigationMenuLink
-          className="border border-text p-2 rounded"
+          className="border border-text py-2 px-4 rounded"
           href="register"
         >
           Sign up

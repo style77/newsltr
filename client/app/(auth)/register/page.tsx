@@ -1,6 +1,7 @@
-"use client";
+// "use client";
 import Link from "next/link";
 import RegisterForm from "@/components/RegisterForm";
+import SocialButtons from "@/components/SocialButtons";
 
 const Page = () => {
   return (
@@ -13,6 +14,7 @@ const Page = () => {
           Create your Newsltr account
         </p>
         <RegisterForm />
+        <SocialButtons />
         <div className="mt-2">
           <p className="text-sm">
             Already have an account?{" "}

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Form from "./ui/form";
 import { useRegister } from "@/hooks/useRegister";
