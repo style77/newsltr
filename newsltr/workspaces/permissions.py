@@ -66,7 +66,9 @@ class CanInviteMoreMembers(permissions.BasePermission):
             ]
         )
 
-        if members_count >= members_limit:
+        members_count += 1
+
+        if members_count > members_limit:
             return False
 
         return True
