@@ -186,6 +186,7 @@ if DEVELOPMENT:
         "REDOC_DIST": "SIDECAR",
         "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
         "SERVE_AUTHENTICATION": [],
+        "AUTHENTICATION_WHITELIST": [],
         # OTHER SETTINGS
     }
 
