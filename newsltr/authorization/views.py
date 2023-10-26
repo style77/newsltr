@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from django.conf import settings
 
 from djoser.social.views import ProviderAuthView
+from social_django.utils import load_backend, load_strategy
 
 from rest_framework_simplejwt.views import (
     TokenViewBase,
@@ -16,11 +17,27 @@ from rest_framework_simplejwt.exceptions import (
     TokenError,
     InvalidToken,
 )
+from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
 
 from authorization.serializers import CustomTokenObtainPairSerializer, InActiveUser
 
 
+@extend_schema(
+    tags=["social authorization"],
+    parameters=[
+        OpenApiParameter(
+            name="provider",
+            required=True,
+            location=OpenApiParameter.PATH,
+            type=OpenApiTypes.STR,
+            description="Provider name",
+        ),
+    ],
+)
 class CustomProviderAuthView(ProviderAuthView):
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
 
