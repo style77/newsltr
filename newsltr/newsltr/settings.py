@@ -83,6 +83,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "djoser",
     "djoser.social",
+    "social_django",
 ]
 
 # Health Check Apps
@@ -206,6 +207,7 @@ SIMPLE_JWT = {
     "USER_ID_CLAIM": "user_id",
     "TOKEN_OBTAIN_SERIALIZER": "authorization.serializers.CustomTokenObtainSerializer",
     # "TOKEN_REFRESH_SERIALIZER": "authorization.serializers.CustomTokenRefreshSerializer",
+    "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "TOKEN_VERIFY_SERIALIZER": "authorization.serializers.CustomTokenVerifySerializer",
     "USER_AUTHENTICATION_RULE": "authorization.utils.user_authentication_rule",
     "AUTH_COOKIE": "access_token",
@@ -230,7 +232,11 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
     "HIDE_USERS": True,
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": os.getenv("REDIRECT_URLS", "").split(","),
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": [
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:3000/",
+        "http://127.0.0.1:3000/login",
+    ],
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
         "user": "authorization.serializers.CustomUserSerializer",
