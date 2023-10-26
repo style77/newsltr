@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { useLogin } from "@/hooks/useLogin";
 import { useAppSelector } from "@/redux/hooks";
 import Form from "./ui/form";
 import Error from "./Error";
+import { useResetPassword } from "@/hooks/useResetPassword";
 
 const config = [
   {
@@ -11,13 +11,9 @@ const config = [
     label: "Email",
     type: "email",
   },
-  {
-    id: "password",
-    label: "Password",
-    type: "password",
-  },
 ];
-const LoginForm = () => {
+
+const ResetPasswordForm = () => {
   const {
     registerInput,
     errors,
@@ -26,10 +22,10 @@ const LoginForm = () => {
     isLoading,
     getValues,
     error,
-  } = useLogin();
+  } = useResetPassword();
 
   const isAuth = useAppSelector((state) => state.auth.isUserAuthenticated);
-  console.log(isAuth);
+  console.log("error", error);
 
   return (
     <>
@@ -41,11 +37,11 @@ const LoginForm = () => {
         onSubmit={onSubmit}
         handleSubmit={handleSubmit}
         isLoading={isLoading}
-        btnText="Log in"
+        btnText="Continue"
         getValues={getValues}
       />
     </>
   );
 };
 
-export default LoginForm;
+export default ResetPasswordForm;

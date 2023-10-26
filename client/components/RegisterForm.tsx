@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Form from "./ui/form";
 import { useRegister } from "@/hooks/useRegister";
@@ -41,6 +42,7 @@ const RegisterForm = () => {
       handleSubmit={handleSubmit}
       isLoading={isLoading}
       btnText="Sign up"
+      // getValues={getValues}
     />
   );
 };

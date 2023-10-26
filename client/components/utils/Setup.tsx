@@ -2,9 +2,11 @@
 import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { useVerify } from "@/hooks/useVerify";
+import Spinner from "../ui/spinner";
 
 const Setup = () => {
-  useVerify();
+  const isLoading = useVerify();
+
   return <Toaster />;
 };
 

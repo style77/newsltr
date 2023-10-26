@@ -16,24 +16,26 @@ import { logout as setLogout } from "@/redux/features/authSlice";
 import { useLogoutMutation } from "@/redux/features/authApiSlice";
 import { useRetrieveUserQuery } from "@/redux/features/authApiSlice";
 import { useRouter } from "next/navigation";
+import { useLogout } from "@/hooks/useLogout";
 
 export function UserNav() {
-  const router = useRouter();
+  // const router = useRouter();
   const { data: userData, isError, isLoading } = useRetrieveUserQuery();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const { isUserAuthenticated } = useAppSelector((state) => state.auth);
-  const [logout] = useLogoutMutation();
+  // const [logout] = useLogoutMutation();
+  const handleLogout = useLogout();
 
-  const handleLogout = async () => {
-    try {
-      await logout({}).unwrap();
-      dispatch(setLogout());
-    } catch (e) {
-      console.log(e);
-    } finally {
-      router.push("/");
-    }
-  };
+  // const handleLogout = async () => {
+  //   try {
+  //     await logout({}).unwrap();
+  //     dispatch(setLogout());
+  //   } catch (e) {
+  //     console.log(e);
+  //   } finally {
+  //     router.push("/");
+  //   }
+  // };
 
   console.log(userData);
   return (
