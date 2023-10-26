@@ -20,7 +20,7 @@ runserver:
 
 stripe:
 	@echo Running stripe webhook listener...
-	pipenv run stripe listen --forward-to 127.0.0.1:8000/api/v1/payments/webhook/
+	pipenv run stripe listen --forward-to 127.0.0.1:8000/api/v1/payment/webhook/
 
 pull-stripe:
 	@echo Pulling stripe events...
