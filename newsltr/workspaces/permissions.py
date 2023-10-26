@@ -25,16 +25,17 @@ class CanCreateWorkspace(permissions.BasePermission):
 
     def has_permission(self, request, view):
         try:
-            subscriptions = StripeUser.objects.get(
+            user = StripeUser.objects.get(
                 user=request.user
-            ).current_subscription_items
+            )
+            subscriptions = user.current_subscription_items
         except StripeUser.DoesNotExist:
             return False
 
         workspaces_count = len(Workspace.objects.filter(memberships__user=request.user))
         workspaces_limit = sum(
             [
-                subscription.price.product.metadata.get("workspace_limit")
+                int(subscription.price.product.metadata.get("workspace_limit"))
                 for subscription in subscriptions
             ]
         )
@@ -56,12 +57,24 @@ class CanInviteMoreMembers(permissions.BasePermission):
         except StripeUser.DoesNotExist:
             return False
 
-        members_count = Workspace.objects.get(
-            pk=view.kwargs.get("workspace_pk")
-        ).memberships.count()
+        id = view.kwargs.get("workspace_pk")
+        if id is None:
+            id = view.kwargs.get("pk")
+        if id is None:
+            id = view.kwargs.get("id")
+
+        try:
+            workspace = Workspace.objects.get(pk=id)
+        except Workspace.DoesNotExist:
+            return False
+
+        if not isinstance(workspace, Workspace):
+            workspace = workspace.workspace
+
+        members_count = workspace.memberships.count()
         members_limit = sum(
             [
-                subscription.price.product.metadata.get("workspace_members_limit")
+                int(subscription.price.product.metadata.get("workspace_members_limit"))
                 for subscription in subscriptions
             ]
         )
