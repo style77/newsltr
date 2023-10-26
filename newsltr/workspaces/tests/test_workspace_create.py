@@ -19,6 +19,7 @@ class WorkspaceCreateViewTest(
 ):
     def setUp(self):
         self.base_url = reverse("workspace-list")
+        self.user = create_user()
 
     def test_post_create_workspace_without_authorization(self):
         response = self.client.post(self.base_url, TEST_DATA)
@@ -26,7 +27,6 @@ class WorkspaceCreateViewTest(
         self.assertFalse(Workspace.objects.exists())
 
     def test_post_create_workspace_with_authorization(self):
-        user = create_user()
         login_user(self.client, TEST_USER_DATA["email"], TEST_USER_DATA["password"])
 
         response = self.client.post(self.base_url, TEST_DATA)
@@ -35,10 +35,12 @@ class WorkspaceCreateViewTest(
 
         workspace = Workspace.objects.get(name=TEST_DATA["name"])
         self.assertTrue(
-            WorkspaceMembership.objects.filter(workspace=workspace, user=user).exists()
+            WorkspaceMembership.objects.filter(
+                workspace=workspace, user=self.user
+            ).exists()
         )
         self.assertTrue(
             WorkspaceMembership.objects.filter(
-                workspace=workspace, user=user, role="admin"
+                workspace=workspace, user=self.user, role="admin"
             ).exists()
         )

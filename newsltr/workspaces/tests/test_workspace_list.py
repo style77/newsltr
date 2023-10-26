@@ -55,27 +55,3 @@ class WorkspaceListViewTest(
         self.assertEqual(response.data[1]["description"], workspace2.description)
         self.assert_instance_exists(Workspace, pk=workspace1.pk)
         self.assert_instance_exists(Workspace, pk=workspace2.pk)
-
-    def test_post_create_workspace_without_authorization(self):
-        response = self.client.post(self.base_url, TEST_DATA)
-        self.assert_status_equal(response, status.HTTP_401_UNAUTHORIZED)
-        self.assertFalse(Workspace.objects.exists())
-
-    def test_post_create_workspace_with_authorization(self):
-        login_user(self.client, self.user.email, TEST_USER_DATA["password"])
-
-        response = self.client.post(self.base_url, TEST_DATA)
-        self.assert_status_equal(response, status.HTTP_201_CREATED)
-        self.assertTrue(Workspace.objects.exists())
-
-        workspace = Workspace.objects.get(name=TEST_DATA["name"])
-        self.assertTrue(
-            WorkspaceMembership.objects.filter(
-                workspace=workspace, user=self.user
-            ).exists()
-        )
-        self.assertTrue(
-            WorkspaceMembership.objects.filter(
-                workspace=workspace, user=self.user, role="admin"
-            ).exists()
-        )
