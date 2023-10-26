@@ -18,10 +18,10 @@ class StripeInvoiceLineItem(BaseModel):
     proration: bool
     quantity: int
     type: str
-    discount_amounts: Optional[List[Dict]]
-    discountable: Optional[bool]
-    discounts: Optional[List[str]]
-    invoice_item: Optional[str]
+    discount_amounts: Optional[List[Dict]] = None
+    discountable: Optional[bool] = None
+    discounts: Optional[List[str]] = None
+    invoice_item: Optional[str] = None
     subscription: str
 
 
@@ -35,17 +35,17 @@ class StripeInvoiceLines(BaseModel):
 class StripeInvoice(BaseModel):
     """Based on https://stripe.com/docs/api/invoices/object"""
     id: str
-    auto_advance: Optional[bool]
-    charge: str = None
-    collection_method: Optional[str]
+    auto_advance: Optional[bool] = None
+    charge: Optional[str] = None
+    collection_method: Optional[str] = None
     currency: str
     customer: str
-    description: str = None
-    hosted_invoice_url: Optional[str]
-    lines: Optional[StripeInvoiceLines]
+    description: Optional[str] = None
+    hosted_invoice_url: Optional[str] = None
+    lines: Optional[StripeInvoiceLines] = None
 
 
 class StripeInvoiceEventData(BaseModel):
     """Based on https://stripe.com/docs/api/events/object#event_object-data"""
     object: StripeInvoice
-    previous_attributes: Optional[StripeInvoice]
+    previous_attributes: Optional[StripeInvoice] = None

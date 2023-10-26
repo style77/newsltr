@@ -11,19 +11,20 @@ class PackageDimension(BaseModel):
     width: float = None
 
 
-class StripeProductMetadata(BaseModel):
-    features: Optional[str] = None
+class StripeProductFeature(BaseModel):
+    name: Optional[str] = None
 
 
 class StripeProduct(BaseModel):
     """A single StripeProduct, see https://stripe.com/docs/api/products/object"""
-    id: Optional[str]
-    active: Optional[bool]
+    id: Optional[str] = None
+    active: Optional[bool] = None
     description: Optional[str] = None
     metadata: Optional[Dict] = None
+    features: Optional[List[StripeProductFeature]] = None
     name: Optional[str] = None
-    created: Optional[datetime]
-    images: Optional[List[str]]
+    created: Optional[datetime] = None
+    images: Optional[List[str]] = None
     package_dimensions: Optional[PackageDimension] = None
     shippable: Optional[bool] = None
     statement_descriptor: Optional[str] = None
@@ -43,4 +44,4 @@ class StripeProducts(BaseModel):
 class StripeProductEventData(BaseModel):
     """Based on https://stripe.com/docs/api/products/object"""
     object: StripeProduct
-    previous_attributes: Optional[StripeProduct]
+    previous_attributes: Optional[StripeProduct] = None

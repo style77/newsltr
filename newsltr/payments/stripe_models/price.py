@@ -28,22 +28,22 @@ class PriceType(str, Enum):
 class StripePriceRecurring(BaseModel):
     aggregate_usage: Optional[str] = None
     interval: RecurringInterval
-    interval_count: Optional[int]
-    usage_type: Optional[UsageType]
+    interval_count: Optional[int] = None
+    usage_type: Optional[UsageType] = None
 
 
 class StripePrice(BaseModel):
     """A single StripePrice, see https://stripe.com/docs/api/prices/object"""
-    id: Optional[str]
-    active: Optional[bool]
-    currency: Optional[StripeCurrency]
-    metadata: Optional[Dict]
+    id: Optional[str] = None
+    active: Optional[bool] = None
+    currency: Optional[StripeCurrency] = None
+    metadata: Optional[Dict] = None
     nickname: Optional[str] = None
-    product: Optional[Union[str, StripeProduct]]
+    product: Optional[Union[str, StripeProduct]] = None
     recurring: Optional[StripePriceRecurring] = None
-    type: Optional[PriceType]
-    unit_amount: Optional[int]
-    created: Optional[datetime]
+    type: Optional[PriceType] = None
+    unit_amount: Optional[int] = None
+    created: Optional[datetime] = None
 
 
 class StripePrices(BaseModel):
@@ -56,4 +56,4 @@ class StripePrices(BaseModel):
 class StripePriceEventData(BaseModel):
     """Based on https://stripe.com/docs/api/prices/object"""
     object: StripePrice
-    previous_attributes: Optional[StripePrice]
+    previous_attributes: Optional[StripePrice] = None

@@ -47,22 +47,22 @@ class StripeSubscriptionItems(BaseModel):
 
 class StripeSubscription(BaseModel):
     """Based on https://stripe.com/docs/api/subscriptions/object"""
-    id: Optional[str]
-    cancel_at_period_end: Optional[bool]
+    id: Optional[str] = None
+    cancel_at_period_end: Optional[bool] = None
     cancel_at: Optional[datetime] = None
     ended_at: Optional[datetime] = None
     trial_end: Optional[datetime] = None
     trial_start: Optional[datetime] = None
-    current_period_end: Optional[datetime]
-    current_period_start: Optional[datetime]
-    customer: Optional[str]
-    default_payment_method: str = None
-    items: Optional[StripeSubscriptionItems]
-    latest_invoice: Optional[str]
-    metadata: Optional[Dict]
+    current_period_end: Optional[datetime] = None
+    current_period_start: Optional[datetime] = None
+    customer: Optional[str] = None
+    default_payment_method: Optional[str] = None
+    items: Optional[StripeSubscriptionItems] = None
+    latest_invoice: Optional[str] = None
+    metadata: Optional[Dict] = None
     pending_setup_intent: Optional[str] = None
     pending_update: Any = None
-    status: Optional[StripeSubscriptionStatus]
+    status: Optional[StripeSubscriptionStatus] = None
 
 
 class StripeSubscriptions(BaseModel):
@@ -75,4 +75,4 @@ class StripeSubscriptions(BaseModel):
 class StripeSubscriptionEventData(BaseModel):
     """Based on https://stripe.com/docs/api/events/object#event_object-data"""
     object: StripeSubscription
-    previous_attributes: Optional[StripeSubscription]
+    previous_attributes: Optional[StripeSubscription] = None
