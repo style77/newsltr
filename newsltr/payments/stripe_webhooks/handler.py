@@ -39,13 +39,11 @@ def _handle_event_type_validation_error(err: ValidationError):
 
     for error in err.errors():
         error_loc = error["loc"]
-        print(error_loc)
         if (
-            error_loc[0] == "event"
-            and error.get("ctx", {}).get("discriminator_key", {}) == "type"
+            (error_loc[0] == "event")
+            and error.get("ctx", {}).get("discriminator", {}) == "'type'"
         ):
-            event_type_error = True
-            break
+            return
 
     if event_type_error is False:
         raise err
@@ -57,7 +55,7 @@ def handle_webhook_event(event):
     try:
         e = StripeEvent(event=event)
     except ValidationError as err:
-        _handle_event_type_validation_error(err)
+        _handle_event_type_validation_error(err)  # todo check if this is needed
         return
 
     event_type = e.event.type
