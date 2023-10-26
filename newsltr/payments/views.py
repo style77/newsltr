@@ -29,7 +29,7 @@ class Subscription(ListAPIView):
     tags=["payments"],
 )
 class SubscriptionItems(ListAPIView):
-    """SubscriptionItems of current user"""
+    """Subscription Details of current user"""
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = SubscriptionItemSerializer
     pagination_class = None
