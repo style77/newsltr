@@ -39,6 +39,7 @@ def _stripe_api_fetch_update_products(test_products=None, **kwargs):
                 "active": product.active,
                 "description": product.description,
                 "name": product.name,
+                "metadata": product.metadata,
             },
         )
         create_update_product_features(product)
