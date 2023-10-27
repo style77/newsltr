@@ -2,6 +2,7 @@
 import React from "react";
 import Form from "./ui/form";
 import { useRegister } from "@/hooks/useRegister";
+import SocialButtons from "./SocialButtons";
 
 const config = [
   {
@@ -34,16 +35,29 @@ const RegisterForm = () => {
   const { registerInput, errors, onSubmit, handleSubmit, isLoading } =
     useRegister();
   return (
-    <Form
-      config={config}
-      register={registerInput}
-      errors={errors}
-      onSubmit={onSubmit}
-      handleSubmit={handleSubmit}
-      isLoading={isLoading}
-      btnText="Sign up"
-      // getValues={getValues}
-    />
+    <div className="grid gap-6">
+      <Form
+        config={config}
+        register={registerInput}
+        errors={errors}
+        onSubmit={onSubmit}
+        handleSubmit={handleSubmit}
+        isLoading={isLoading}
+        btnText="Sign up"
+        // getValues={getValues}
+      />
+      <div className="relative">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+        </div>
+        <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">
+            Or continue with
+          </span>
+        </div>
+      </div>
+      <SocialButtons />
+    </div>
   );
 };
 

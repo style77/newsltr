@@ -14,7 +14,6 @@ const Page = () => {
           Create your Newsltr account
         </p>
         <RegisterForm />
-        <SocialButtons />
         <div className="mt-2">
           <p className="text-sm">
             Already have an account?{" "}

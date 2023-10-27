@@ -22,7 +22,7 @@ const authApiSlice = apiSlice.injectEndpoints({
     retrieveUser: builder.query<User, void>({
       query: () => "/users/me/",
     }),
-    providerAuthenticate: builder.mutation<CreateUser, ProviderAuth>({
+    socialAuthenticate: builder.mutation<CreateUser, ProviderAuth>({
       query: ({ provider, state, code }) => ({
         url: `/o/${provider}/?state=${encodeURIComponent(
           state,
@@ -32,6 +32,11 @@ const authApiSlice = apiSlice.injectEndpoints({
           Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded",
         },
+      }),
+    }),
+    socialGetAuthenticate: builder.query({
+      query: ({ provider }) => ({
+        url: `/o/${provider}/`,
       }),
     }),
     login: builder.mutation({
@@ -93,7 +98,7 @@ const authApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useRetrieveUserQuery,
-  useProviderAuthenticateMutation,
+  useSocialAuthenticateMutation,
   useLoginMutation,
   useRegisterMutation,
   useVerifyMutation,

@@ -8,11 +8,13 @@ export default async function continueWithSocialAuth(
   try {
     const url = `${
       process.env.NEXT_PUBLIC_HOST
-    }/api/v1/o/${provider}/?redirect_uri=${
+    }/api/v1/auth/o/${provider}/?redirect_uri=${
       process.env.NODE_ENV === "production"
         ? process.env.NEXT_PUBLIC_REDIRECT_URL
-        : "http://localhost:3000"
-    }/${redirect}`;
+        : "http%3A%2F%2F127.0.0.1%3A3000%2Flogin"
+    }`;
+    // "http:/127.0.0.1:3000/"
+    // }/${redirect}`;
 
     const res = await fetch(url, {
       method: "GET",

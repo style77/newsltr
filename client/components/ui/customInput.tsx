@@ -35,7 +35,7 @@ const CustomInput = <T extends FieldValues>({
 
   return (
     <div className="min-h-[100px]">
-      <label className="text-text" htmlFor={id}>
+      <label className="text-text text-sm" htmlFor={id}>
         <div className="flex justify-between">
           <div>{label}</div>
           {id === "password" && pathname === "/login" && (
@@ -47,7 +47,7 @@ const CustomInput = <T extends FieldValues>({
       </label>
       <div className="mb-5 mt-1">
         <div
-          className={`flex items-center w-96 border rounded-md focus:outline-primary ${
+          className={`flex items-center w-96 border rounded-md focus-within:outline-primary focus-within:outline ${
             errors[id]?.message
               ? "border-error border-2 bg-red-100"
               : "bg-slate-50 border-slate-300"
@@ -62,7 +62,7 @@ const CustomInput = <T extends FieldValues>({
           {type === "password" && (
             <button
               type="button"
-              className="pr-4 text-text"
+              className="pr-4 text-slate-300"
               onClick={togglePasswordVisibility}
             >
               {showPassword ? <EyeOff /> : <Eye />}
@@ -76,14 +76,18 @@ const CustomInput = <T extends FieldValues>({
             message &&
             message.split(".,").map((m, i) => (
               <div
-                className="flex mt-1 text-error justify-between items-center text-sm"
+                className=" mt-1.5 text-error justify-between items-center text-sm"
                 key={m}
               >
-                <div className="flex gap-2 w-80">
-                  <AlertTriangle size={16} />
-                  <span>
-                    {m}
-                    {i < message.split(".,").length - 1 && "."}
+                <div className="inline-flex items-start gap-1 w-80">
+                  <div className="pt-[1px]">
+                    <AlertTriangle size={13} />
+                  </div>
+                  <span className="leading-[16px]">
+                    <span>
+                      {m}
+                      {i < message.split(".,").length - 1 && "."}
+                    </span>
                   </span>
                 </div>
               </div>
