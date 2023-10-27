@@ -26,6 +26,10 @@ pull-stripe:
 	@echo Pulling stripe events...
 	cd newsltr && pipenv run python manage.py pull_stripe
 
+test-workspaces:
+	@echo Testing Workspaces...
+	cd newsltr && pipenv run python manage.py test --noinput ./workspaces/.
+
 runcelery:
 	@echo Running celery...
 	cd newsltr && pipenv run celery -A newsltr worker -l info

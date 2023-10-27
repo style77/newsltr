@@ -29,6 +29,7 @@ def create_user(first_name=None, last_name=None, email=None, password=None, **kw
     data.update(kwargs)
     user = get_user_model().objects.create_user(**data)
     user.raw_password = data["password"]
+
     return user
 
 

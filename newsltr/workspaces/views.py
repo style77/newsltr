@@ -79,6 +79,11 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
                 permissions.IsAuthenticated,
                 CanInviteMoreMembers,
             ]
+        elif self.action in ["retrieve"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                IsMemberOfWorkspace,
+            ]
         elif self.action in ["list"]:
             self.permission_classes = [permissions.IsAuthenticated]
         return super().get_permissions()
