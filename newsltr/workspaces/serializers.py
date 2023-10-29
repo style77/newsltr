@@ -42,7 +42,8 @@ class WorkspaceMembershipSerializer(serializers.ModelSerializer):
 
 class APIKeySerializer(serializers.ModelSerializer):
     default_error_messages = {
-        "cannot_create_api_key": "Cannot create API key for this workspace."
+        "cannot_create_api_key": "Cannot create API key for this workspace.",
+        "too_many_api_keys": "Cannot create more than 5 API keys for workspace.",
     }
 
     class Meta:
@@ -55,6 +56,9 @@ class APIKeySerializer(serializers.ModelSerializer):
             pk=self.context["request"].data.get("workspace")
         )
         validated_data["workspace"] = workspace
+
+        if workspace.keys.count() >= 5:
+            self.fail("too_many_api_keys")
 
         instance, _ = super().create(validated_data)
         return instance
