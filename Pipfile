@@ -29,6 +29,7 @@ install = "*"
 drf-nested-routers = "*"
 stripe = "*"
 pydantic = "*"
+isort = {extras = ["requirements_deprecated_finder", "pipfile_deprecated_finder"], version = "*"}
 
 [dev-packages]
 flake8 = "*"

@@ -55,3 +55,7 @@ flake8:
 black:
 	@echo Running black...
 	cd newsltr && pipenv run black .
+
+isort:
+	@echo Running isort...
+	cd newsltr && pipenv run isort .
