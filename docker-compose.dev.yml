@@ -9,13 +9,6 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: newsltr
-  stripe-cli:
-    image: stripe/stripe-cli
-    container_name: stripe-cli
-    command: "listen --api-key ${STRIPE_API_KEY} --device-name Newsltr.io --forward-to newsltr-api:8000/api/v1/payments/webhook"
-    environment:
-      - STRIPE_API_KEY
-      - STRIPE_DEVICE_NAME
   newsltr-redis:
     image: redis:latest
     container_name: newsltr-redis
@@ -35,7 +28,6 @@ services:
     depends_on:
       - newsltr-db
       - newsltr-redis
-      - stripe-cli
   newsltr-celery:
     build:
       context: ./newsltr
