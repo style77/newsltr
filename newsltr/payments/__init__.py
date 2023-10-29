@@ -1,5 +1,4 @@
 import stripe
-
 from django.conf import settings
 
 stripe.set_app_info(

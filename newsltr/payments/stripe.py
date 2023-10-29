@@ -1,5 +1,4 @@
 import stripe
-
 from django.conf import settings
 
 stripe_api = stripe

@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
-from pathlib import Path
 from datetime import timedelta
-from dotenv import load_dotenv
+from pathlib import Path
+
 import dj_database_url
+from dotenv import load_dotenv
 
 DEVELOPMENT = os.getenv("DJANGO_DEVELOPMENT", True)
 if DEVELOPMENT:

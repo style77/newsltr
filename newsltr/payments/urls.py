@@ -1,6 +1,7 @@
 from django.urls import path
 from rest_framework import routers
-from .views import Checkout, Subscriptions, MySubscriptions
+
+from .views import Checkout, MySubscriptions, Subscriptions
 
 router = routers.DefaultRouter()
 router.register(

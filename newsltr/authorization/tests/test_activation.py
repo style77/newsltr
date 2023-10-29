@@ -1,14 +1,14 @@
-from django.contrib.auth.tokens import default_token_generator
-from djet import assertions
-from rest_framework import status
-from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
-from authorization.tests.common import create_user
-
 import djoser.signals
 import djoser.utils
 import djoser.views
+from django.contrib.auth.tokens import default_token_generator
+from djet import assertions
 from djoser.conf import settings as default_settings
+from rest_framework import status
+from rest_framework.reverse import reverse
+from rest_framework.test import APITestCase
+
+from authorization.tests.common import create_user
 
 
 class ActivationViewTest(

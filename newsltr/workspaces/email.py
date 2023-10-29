@@ -1,8 +1,7 @@
-from django.contrib.auth.tokens import default_token_generator
-from templated_mail.mail import BaseEmailMessage
-
-from djoser import utils
 from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
+from djoser import utils
+from templated_mail.mail import BaseEmailMessage
 
 
 class WorkspaceInvitationEmail(BaseEmailMessage):

@@ -1,19 +1,13 @@
 from django.contrib.auth import get_user_model
-from django.db import transaction, IntegrityError
+from django.db import IntegrityError, transaction
+from djoser.utils import decode_uid
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from djoser.utils import decode_uid
-
-from .models import (
-    Workspace,
-    WorkspaceMembership,
-    WorkspaceAPIKey,
-)
-from .permissions import IsAdminOfWorkspace
-
 from authorization.serializers import UserSerializer
 
+from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
+from .permissions import IsAdminOfWorkspace
 
 User = get_user_model()
 

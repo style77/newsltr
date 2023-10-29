@@ -1,8 +1,7 @@
-from django.test import TestCase
-from rest_framework_simplejwt.serializers import TokenVerifySerializer
-
-from djoser.social.token.jwt import TokenStrategy
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+from djoser.social.token.jwt import TokenStrategy
+from rest_framework_simplejwt.serializers import TokenVerifySerializer
 
 from authorization.tests.common import TEST_DATA, create_user
 

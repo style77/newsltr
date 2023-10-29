@@ -1,6 +1,7 @@
+from unittest import mock
+
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
-from unittest import mock
 from django.urls import reverse
 
 __all__ = [

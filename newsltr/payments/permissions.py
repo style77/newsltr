@@ -1,8 +1,9 @@
 import stripe
 from rest_framework import permissions
-from .models import StripeUser
 
 from workspaces.models import Workspace
+
+from .models import StripeUser
 
 
 class IsSubscriptionActive(permissions.BasePermission):

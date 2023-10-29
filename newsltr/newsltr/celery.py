@@ -1,5 +1,6 @@
 import os
 import ssl
+
 from celery import Celery
 from django.apps import apps
 

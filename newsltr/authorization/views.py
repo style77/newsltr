@@ -1,25 +1,17 @@
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
 from django.conf import settings
-
 from djoser.social.views import ProviderAuthView
+from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.exceptions import (AuthenticationFailed,
+                                                 InvalidToken, TokenError)
+from rest_framework_simplejwt.views import (TokenRefreshView, TokenVerifyView,
+                                            TokenViewBase)
 from social_django.utils import load_backend, load_strategy
 
-from rest_framework_simplejwt.views import (
-    TokenViewBase,
-    TokenVerifyView,
-    TokenRefreshView,
-)
-from rest_framework_simplejwt.exceptions import (
-    AuthenticationFailed,
-    TokenError,
-    InvalidToken,
-)
-from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiTypes
-
-from authorization.serializers import CustomTokenObtainPairSerializer, InActiveUser
+from authorization.serializers import (CustomTokenObtainPairSerializer,
+                                       InActiveUser)
 
 
 @extend_schema(

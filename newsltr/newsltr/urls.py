@@ -1,5 +1,5 @@
-from django.urls import path, include
 from django.contrib import admin
+from django.urls import include, path
 
 from . import settings
 
@@ -11,11 +11,9 @@ urlpatterns = [
 ]
 
 if settings.DEVELOPMENT:
-    from drf_spectacular.views import (
-        SpectacularAPIView,
-        SpectacularRedocView,
-        SpectacularSwaggerView,
-    )  # noqa
+    from drf_spectacular.views import (SpectacularAPIView,  # noqa
+                                       SpectacularRedocView,
+                                       SpectacularSwaggerView)
 
     urlpatterns += [
         path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),

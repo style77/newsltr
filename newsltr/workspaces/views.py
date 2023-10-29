@@ -1,33 +1,22 @@
 from django.contrib.auth import get_user_model, tokens
 from django.http import QueryDict
-from rest_framework import mixins, viewsets, permissions, status
-from rest_framework.response import Response
+from drf_spectacular.utils import OpenApiParameter, extend_schema
+from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
 
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from payments.permissions import (CanCreateWorkspace, CanInviteMoreMembers,
+                                  IsSubscriptionActive)
 
-from .serializers import (
-    APIKeyDestroySerializer,
-    APIKeySerializer,
-    WorkspaceMembershipSerializer,
-    WorkspaceSerializer,
-    WorkspaceCreateSerializer,
-    WorkspaceInviteSerializer,
-    WorkspaceInvitationAcceptSerializer,
-)
-from .permissions import (
-    IsMemberOfWorkspace,
-    IsAdminOfWorkspace,
-)
-from payments.permissions import (
-    IsSubscriptionActive,
-    CanCreateWorkspace,
-    CanInviteMoreMembers,
-)
-from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
 from .email import WorkspaceInvitationEmail
-
+from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
+from .permissions import IsAdminOfWorkspace, IsMemberOfWorkspace
+from .serializers import (APIKeyDestroySerializer, APIKeySerializer,
+                          WorkspaceCreateSerializer,
+                          WorkspaceInvitationAcceptSerializer,
+                          WorkspaceInviteSerializer,
+                          WorkspaceMembershipSerializer, WorkspaceSerializer)
 
 User = get_user_model()
 

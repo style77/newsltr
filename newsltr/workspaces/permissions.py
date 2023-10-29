@@ -1,5 +1,6 @@
 from rest_framework import permissions
-from .models import WorkspaceAPIKey, Workspace, WorkspaceMembership
+
+from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
 
 
 class IsMemberOfWorkspace(permissions.BasePermission):

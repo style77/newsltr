@@ -1,19 +1,15 @@
 from datetime import datetime
-from rest_framework import viewsets, views, status, permissions, generics
+
+import stripe
+from drf_spectacular.utils import extend_schema
+from rest_framework import generics, permissions, status, views, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from drf_spectacular.utils import extend_schema
-
-import stripe
-
 from .customers import get_or_create_stripe_customer
-from .serializers import (
-    SubscriptionSerializer,
-    CreateSubscriptionSerializer,
-    CancelSubscriptionSerializer,
-    ProductSerializer,
-)
+from .serializers import (CancelSubscriptionSerializer,
+                          CreateSubscriptionSerializer, ProductSerializer,
+                          SubscriptionSerializer)
 
 
 @extend_schema(
