@@ -19,9 +19,9 @@ from .serializers import (
 from .permissions import (
     IsMemberOfWorkspace,
     IsAdminOfWorkspace,
-    IsSubscriptionActive,
-    CanCreateWorkspace,
-    CanInviteMoreMembers,
+    # IsSubscriptionActive,
+    # CanCreateWorkspace,
+    # CanInviteMoreMembers,
 )
 from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
 from .email import WorkspaceInvitationEmail
@@ -38,7 +38,7 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
     permission_classes = [
         permissions.IsAuthenticated,
         IsMemberOfWorkspace,
-        IsSubscriptionActive,
+        # IsSubscriptionActive,
     ]
     queryset = Workspace.objects.all()
 
@@ -53,8 +53,8 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
         if self.action in ["create"]:
             self.permission_classes = [
                 permissions.IsAuthenticated,
-                IsSubscriptionActive,
-                CanCreateWorkspace,
+                # IsSubscriptionActive,
+                # CanCreateWorkspace,
             ]
         elif self.action in ["destroy"]:
             self.permission_classes = [
@@ -64,20 +64,20 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
         elif self.action in ["update", "partial_update"]:
             self.permission_classes = [
                 permissions.IsAuthenticated,
-                IsSubscriptionActive,
+                # IsSubscriptionActive,
                 IsAdminOfWorkspace,
             ]
         elif self.action in ["invite"]:
             self.permission_classes = [
                 permissions.IsAuthenticated,
-                IsSubscriptionActive,
+                # IsSubscriptionActive,
                 IsAdminOfWorkspace,
-                CanInviteMoreMembers,
+                # CanInviteMoreMembers,
             ]
         elif self.action in ["invitation_accept"]:
             self.permission_classes = [
                 permissions.IsAuthenticated,
-                CanInviteMoreMembers,
+                # CanInviteMoreMembers,
             ]
         elif self.action in ["retrieve"]:
             self.permission_classes = [

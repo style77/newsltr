@@ -1,12 +1,15 @@
 from django.urls import path
+from rest_framework import routers
+from .views import Checkout, Subscriptions, MySubscriptions
 
-from . import views
+router = routers.DefaultRouter()
+router.register(
+    r"payment/me/subscriptions", MySubscriptions, basename="my-subscriptions"
+)
 
 urlpatterns = [
-    path('me/subscription/', views.Subscription.as_view()),
-    path('me/subscription/details/', views.SubscriptionItems.as_view()),
-    path('subscriptions/', views.SubscribableProductPrice.as_view()),
-    path('checkout/', views.CreateStripeCheckoutSession.as_view()),
-    path('webhook/', views.StripeWebhook.as_view()),
-    path('customer-portal/', views.StripeCustomerPortal.as_view())
-]
+    path("payment/subscribe/", Checkout.as_view(), name="payment-create-subscription"),
+    path(
+        "payment/subscriptions/", Subscriptions.as_view(), name="payment-subscriptions"
+    ),
+] + router.urls

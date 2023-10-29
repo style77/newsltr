@@ -1,90 +1,89 @@
 from rest_framework import permissions
 from .models import WorkspaceAPIKey, Workspace, WorkspaceMembership
-from payments.models import StripeUser
 
 
-class IsSubscriptionActive(permissions.BasePermission):
-    message = "You need to have an active subscription to perform this action."
+# class IsSubscriptionActive(permissions.BasePermission):
+#     message = "You need to have an active subscription to perform this action."
 
-    def has_permission(self, request, view):
-        try:
-            subscriptions = StripeUser.objects.get(
-                user=request.user
-            ).current_subscription_items
-        except StripeUser.DoesNotExist:
-            return False
+#     def has_permission(self, request, view):
+#         try:
+#             subscriptions = StripeUser.objects.get(
+#                 user=request.user
+#             ).current_subscription_items
+#         except StripeUser.DoesNotExist:
+#             return False
 
-        if len(subscriptions) == 0:
-            return False
+#         if len(subscriptions) == 0:
+#             return False
 
-        return True
-
-
-class CanCreateWorkspace(permissions.BasePermission):
-    message = "You have reached the limit of workspaces you can create."
-
-    def has_permission(self, request, view):
-        try:
-            user = StripeUser.objects.get(
-                user=request.user
-            )
-            subscriptions = user.current_subscription_items
-        except StripeUser.DoesNotExist:
-            return False
-
-        workspaces_count = len(Workspace.objects.filter(memberships__user=request.user))
-        workspaces_limit = sum(
-            [
-                int(subscription.price.product.metadata.get("workspace_limit"))
-                for subscription in subscriptions
-            ]
-        )
-
-        if workspaces_count >= workspaces_limit:
-            return False
-
-        return True
+#         return True
 
 
-class CanInviteMoreMembers(permissions.BasePermission):
-    message = "You have reached the limit of members for this workspace."
+# class CanCreateWorkspace(permissions.BasePermission):
+#     message = "You have reached the limit of workspaces you can create."
 
-    def has_permission(self, request, view):
-        try:
-            subscriptions = StripeUser.objects.get(
-                user=request.user
-            ).current_subscription_items
-        except StripeUser.DoesNotExist:
-            return False
+#     def has_permission(self, request, view):
+#         try:
+#             user = StripeUser.objects.get(
+#                 user=request.user
+#             )
+#             subscriptions = user.current_subscription_items
+#         except StripeUser.DoesNotExist:
+#             return False
 
-        id = view.kwargs.get("workspace_pk")
-        if id is None:
-            id = view.kwargs.get("pk")
-        if id is None:
-            id = view.kwargs.get("id")
+#         workspaces_count = len(Workspace.objects.filter(memberships__user=request.user))
+#         workspaces_limit = sum(
+#             [
+#                 int(subscription.price.product.metadata.get("workspace_limit"))
+#                 for subscription in subscriptions
+#             ]
+#         )
 
-        try:
-            workspace = Workspace.objects.get(pk=id)
-        except Workspace.DoesNotExist:
-            return False
+#         if workspaces_count >= workspaces_limit:
+#             return False
 
-        if not isinstance(workspace, Workspace):
-            workspace = workspace.workspace
+#         return True
 
-        members_count = workspace.memberships.count()
-        members_limit = sum(
-            [
-                int(subscription.price.product.metadata.get("workspace_members_limit"))
-                for subscription in subscriptions
-            ]
-        )
 
-        members_count += 1
+# class CanInviteMoreMembers(permissions.BasePermission):
+#     message = "You have reached the limit of members for this workspace."
 
-        if members_count > members_limit:
-            return False
+#     def has_permission(self, request, view):
+#         try:
+#             subscriptions = StripeUser.objects.get(
+#                 user=request.user
+#             ).current_subscription_items
+#         except StripeUser.DoesNotExist:
+#             return False
 
-        return True
+#         id = view.kwargs.get("workspace_pk")
+#         if id is None:
+#             id = view.kwargs.get("pk")
+#         if id is None:
+#             id = view.kwargs.get("id")
+
+#         try:
+#             workspace = Workspace.objects.get(pk=id)
+#         except Workspace.DoesNotExist:
+#             return False
+
+#         if not isinstance(workspace, Workspace):
+#             workspace = workspace.workspace
+
+#         members_count = workspace.memberships.count()
+#         members_limit = sum(
+#             [
+#                 int(subscription.price.product.metadata.get("workspace_members_limit"))
+#                 for subscription in subscriptions
+#             ]
+#         )
+
+#         members_count += 1
+
+#         if members_count > members_limit:
+#             return False
+
+#         return True
 
 
 class IsMemberOfWorkspace(permissions.BasePermission):
