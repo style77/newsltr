@@ -202,7 +202,11 @@ class WorkspaceMembersViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = WorkspaceMembershipSerializer
-    permission_classes = [IsMemberOfWorkspace, permissions.IsAuthenticated]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsAdminOfWorkspace,
+        IsSubscriptionActive,
+    ]
     queryset = WorkspaceMembership
     lookup_field = "user__pk"
 
@@ -213,10 +217,6 @@ class WorkspaceMembersViewSet(
         return super().get_serializer_class()
 
     def get_permissions(self):
-        if self.action in ["invite", "update", "partial_update", "destroy"]:
-            self.permission_classes = [permissions.IsAuthenticated, IsAdminOfWorkspace]
-        elif self.action in ["invitation_accept"]:
-            self.permission_classes = [permissions.IsAuthenticated]
         return super().get_permissions()
 
     @extend_schema(
@@ -287,7 +287,7 @@ class WorkspaceKeysViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = APIKeySerializer
-    permission_classes = [IsAdminOfWorkspace, permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated, IsAdminOfWorkspace, IsSubscriptionActive]
     queryset = WorkspaceAPIKey
     lookup_url_kwarg = "id"
 
