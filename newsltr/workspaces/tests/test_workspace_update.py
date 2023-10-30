@@ -10,11 +10,11 @@ from payments.tests.common import (create_subscription,
 from workspaces.models import Workspace
 
 from .common import TEST_DATA, invite_user_to_workspace
-from .mixins import WorkspaceTestCaseMixin
+from payments.tests.mixins import WithSubscriptionAndWorkspaceTestMixin
 
 
 class WorkspaceUpdateViewTest(
-    WorkspaceTestCaseMixin,
+    WithSubscriptionAndWorkspaceTestMixin,
     assertions.StatusCodeAssertionsMixin,
     assertions.InstanceAssertionsMixin,
 ):
@@ -25,12 +25,6 @@ class WorkspaceUpdateViewTest(
     def setUp(self):
         super().setUp()
         self.base_url = reverse("workspace-detail", args=(self.workspace.pk,))
-        self.created_customers = []
-
-    def tearDown(self):
-        for customer in self.created_customers:
-            stripe.Customer.delete(customer.customer_id)
-        return super().tearDown()
 
     def test_update_workspace_without_authorization(self):
         response = self.client.patch(self.base_url, data=TEST_DATA)
@@ -47,9 +41,7 @@ class WorkspaceUpdateViewTest(
 
     def test_update_workspace_with_authorization_with_subscription(self):
         login_user(self.client, self.user.email, TEST_USER_DATA["password"])
-        stripe_user = get_or_create_stripe_customer(self.user)
-        self.created_customers.append(stripe_user)
-        create_subscription(stripe_user)
+        self.provider.create_customer_with_subscription(self.user)
 
         response = self.client.patch(self.base_url, data=TEST_DATA)
         self.assert_status_equal(response, status.HTTP_200_OK)

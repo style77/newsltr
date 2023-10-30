@@ -11,11 +11,11 @@ from payments.tests.common import (create_subscription,
 from workspaces.models import WorkspaceAPIKey
 from workspaces.tests.common import create_user, invite_user_to_workspace
 
-from .mixins import WorkspaceKeyTestCaseMixin
+from payments.tests.mixins import WithSubscriptionAndWorkspaceAndKeysTestMixin
 
 
 class WorkspaceKeysDeleteViewTest(
-    WorkspaceKeyTestCaseMixin,
+    WithSubscriptionAndWorkspaceAndKeysTestMixin,
     assertions.StatusCodeAssertionsMixin,
     assertions.InstanceAssertionsMixin,
 ):
@@ -28,12 +28,6 @@ class WorkspaceKeysDeleteViewTest(
                 self.key.pk,
             ),
         )
-        self.created_customers = []
-
-    def tearDown(self):
-        for customer in self.created_customers:
-            stripe.Customer.delete(customer.customer_id)
-        return super().tearDown()
 
     def test_delete_workspace_key_without_authorization(self):
         response = self.client.delete(self.base_url)
@@ -49,9 +43,7 @@ class WorkspaceKeysDeleteViewTest(
 
     def test_delete_workspace_key_with_authorization_with_subscription(self):
         login_user(self.client, self.user.email, TEST_USER_DATA["password"])
-        stripe_user = get_or_create_stripe_customer(self.user)
-        self.created_customers.append(stripe_user)
-        create_subscription(stripe_user)
+        self.provider.create_customer_with_subscription(self.user)
 
         response = self.client.delete(self.base_url)
         self.assert_status_equal(response, status.HTTP_204_NO_CONTENT)

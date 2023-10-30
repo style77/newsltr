@@ -11,23 +11,17 @@ from payments.tests.common import (create_subscription,
 from workspaces.models import WorkspaceAPIKey
 from workspaces.tests.common import create_user, invite_user_to_workspace
 
-from .mixins import WorkspaceTestCaseMixin
+from payments.tests.mixins import WithSubscriptionAndWorkspaceTestMixin
 
 
 class WorkspaceKeysCreateViewTest(
-    WorkspaceTestCaseMixin,
+    WithSubscriptionAndWorkspaceTestMixin,
     assertions.StatusCodeAssertionsMixin,
     assertions.InstanceAssertionsMixin,
 ):
     def setUp(self):
         super().setUp()
         self.base_url = reverse("workspace-keys-list", args=(self.workspace.pk,))
-        self.created_customers = []
-
-    def tearDown(self):
-        for customer in self.created_customers:
-            stripe.Customer.delete(customer.customer_id)
-        return super().tearDown()
 
     def test_create_workspace_key_without_authorization(self):
         response = self.client.post(self.base_url)
@@ -42,9 +36,7 @@ class WorkspaceKeysCreateViewTest(
 
     def test_create_workspace_key_with_authorization_with_subscription(self):
         login_user(self.client, self.user.email, TEST_USER_DATA["password"])
-        stripe_user = get_or_create_stripe_customer(self.user)
-        self.created_customers.append(stripe_user)
-        create_subscription(stripe_user)
+        self.provider.create_customer_with_subscription(self.user)
 
         response = self.client.post(self.base_url, data={"name": "Test Key"})
         self.assert_status_equal(response, status.HTTP_201_CREATED)
