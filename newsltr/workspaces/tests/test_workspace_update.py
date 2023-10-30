@@ -2,7 +2,6 @@ import stripe
 from djet import assertions
 from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
 
 from authorization.tests.common import TEST_DATA as TEST_USER_DATA
 from authorization.tests.common import create_user, login_user
@@ -10,11 +9,12 @@ from payments.tests.common import (create_subscription,
                                    get_or_create_stripe_customer)
 from workspaces.models import Workspace
 
-from .common import TEST_DATA, create_workspace, invite_user_to_workspace
+from .common import TEST_DATA, invite_user_to_workspace
+from .mixins import WorkspaceTestCaseMixin
 
 
 class WorkspaceUpdateViewTest(
-    APITestCase,
+    WorkspaceTestCaseMixin,
     assertions.StatusCodeAssertionsMixin,
     assertions.InstanceAssertionsMixin,
 ):
@@ -23,7 +23,7 @@ class WorkspaceUpdateViewTest(
     # If we would use full update, we would have to provide all fields
     # in the request, otherwise they would be set to default values.
     def setUp(self):
-        self.workspace, self.user = create_workspace()
+        super().setUp()
         self.base_url = reverse("workspace-detail", args=(self.workspace.pk,))
         self.created_customers = []
 

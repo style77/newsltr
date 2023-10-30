@@ -11,15 +11,17 @@ from payments.tests.common import (create_subscription,
 from workspaces.models import Workspace
 from workspaces.tests.common import TEST_DATA
 
+from authorization.tests.mixins import UserTestCaseMixin
+
 
 class WorkspaceCreateViewTest(
+    UserTestCaseMixin,
     APITestCase,
     assertions.StatusCodeAssertionsMixin,
 ):
     def setUp(self):
+        super().setUp()
         self.base_url = reverse("workspace-list")
-        self.user = create_user()
-
         self.created_customers = []
 
     def tearDown(self):
