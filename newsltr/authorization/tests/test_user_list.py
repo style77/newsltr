@@ -24,11 +24,11 @@ class UserViewSetListTest(
         response = self.client.get(self.base_url)
 
         self.assert_status_equal(response, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()), 1)
+        self.assertEqual(len(response.json()["results"]), 1)
 
     def test_superuser_can_list_all_users(self):
         login_user(self.client, self.superuser, "Superuser123")
         response = self.client.get(self.base_url)
 
         self.assert_status_equal(response, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()), 2)
+        self.assertEqual(len(response.json()["results"]), 2)
