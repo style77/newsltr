@@ -1,6 +1,7 @@
 from authorization.tests.mixins import UserTestCaseMixin
-from .common import create_workspace
 from workspaces.models import WorkspaceAPIKey
+
+from .common import create_workspace
 
 
 class WorkspaceTestCaseMixin(UserTestCaseMixin):

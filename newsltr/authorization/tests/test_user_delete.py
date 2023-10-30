@@ -6,6 +6,7 @@ from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
 from authorization.tests.common import TEST_DATA, create_user, login_user
+
 from .mixins import UserTestCaseMixin
 
 User = get_user_model()

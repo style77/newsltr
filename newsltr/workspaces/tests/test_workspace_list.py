@@ -4,10 +4,9 @@ from rest_framework.reverse import reverse
 
 from authorization.tests.common import TEST_DATA as TEST_USER_DATA
 from authorization.tests.common import create_user, login_user
+from authorization.tests.mixins import UserTestCaseMixin
 from workspaces.models import Workspace
 from workspaces.tests.common import create_workspace
-
-from authorization.tests.mixins import UserTestCaseMixin
 
 
 class WorkspaceListViewTest(

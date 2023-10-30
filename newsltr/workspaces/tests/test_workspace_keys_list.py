@@ -7,8 +7,8 @@ from authorization.tests.common import TEST_DATA as TEST_USER_DATA
 from authorization.tests.common import login_user
 from payments.tests.common import (create_subscription,
                                    get_or_create_stripe_customer)
-from workspaces.tests.common import (create_user,
-                                     invite_user_to_workspace)
+from workspaces.tests.common import create_user, invite_user_to_workspace
+
 from .mixins import WorkspaceTestCaseMixin
 
 

@@ -1,5 +1,6 @@
 from rest_framework.test import APITestCase
-from .common import create_user, login_user, TEST_DATA
+
+from .common import TEST_DATA, create_user, login_user
 
 
 class UserTestCaseMixin(APITestCase):
