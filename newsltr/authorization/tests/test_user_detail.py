@@ -2,7 +2,6 @@ from djet import assertions
 from djoser import signals
 from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
 
 from authorization.tests.common import TEST_DATA, create_user, login_user
 

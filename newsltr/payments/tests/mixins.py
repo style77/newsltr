@@ -1,6 +1,5 @@
 from authorization.tests.mixins import UserTestCaseMixin
-from workspaces.tests.mixins import (WorkspaceKeyTestCaseMixin,
-                                     WorkspaceTestCaseMixin)
+from workspaces.tests.mixins import WorkspaceKeyTestCaseMixin, WorkspaceTestCaseMixin
 
 from .providers import CustomerProvider
 
@@ -25,9 +24,7 @@ class WithSubscriptionAndWorkspaceTestMixin(
 
 
 class WithSubscriptionAndWorkspaceAndKeysTestMixin(
-    WithSubscriptionAndWorkspaceTestMixin,
-    WorkspaceKeyTestCaseMixin
+    WithSubscriptionAndWorkspaceTestMixin, WorkspaceKeyTestCaseMixin
 ):
     def setUp(self):
-        super().setUp(
-)
+        super().setUp()

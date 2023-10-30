@@ -1,12 +1,9 @@
-from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.test import override_settings
 from djet import assertions
-from rest_framework import serializers, status
+from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
 
-from authorization.tests.common import TEST_DATA, create_user, login_user
+from authorization.tests.common import TEST_DATA, login_user
 
 from .mixins import AuthorizedUserTestCaseMixin, UserTestCaseMixin
 
@@ -28,7 +25,11 @@ class UserViewSetMeTest(
 
         self.assert_status_equal(response, status.HTTP_200_OK)
 
-        expected_keys = set([User.USERNAME_FIELD, User._meta.pk.name] + User.REQUIRED_FIELDS + ['last_login', 'date_joined'])
+        expected_keys = set(
+            [User.USERNAME_FIELD, User._meta.pk.name]
+            + User.REQUIRED_FIELDS
+            + ["last_login", "date_joined"]
+        )
         self.assertEqual(set(response.data.keys()), expected_keys)
 
     def test_patch_email_change(self):

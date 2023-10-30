@@ -11,7 +11,9 @@ from .mixins import UserTestCaseMixin
 
 
 class ActivationViewTest(
-    UserTestCaseMixin, assertions.EmailAssertionsMixin, assertions.StatusCodeAssertionsMixin
+    UserTestCaseMixin,
+    assertions.EmailAssertionsMixin,
+    assertions.StatusCodeAssertionsMixin,
 ):
     def setUp(self):
         self.base_url = reverse("user-activation")
@@ -36,7 +38,10 @@ class ActivationViewTest(
         self.assertTrue(self.user.is_active)
 
     def test_post_respond_with_bad_request_when_wrong_uid(self):
-        data = {"uid": "wrong-uid", "token": default_token_generator.make_token(self.user)}
+        data = {
+            "uid": "wrong-uid",
+            "token": default_token_generator.make_token(self.user),
+        }
 
         response = self.client.post(self.base_url, data)
 

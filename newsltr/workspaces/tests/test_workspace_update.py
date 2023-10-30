@@ -1,12 +1,9 @@
-import stripe
 from djet import assertions
 from rest_framework import status
 from rest_framework.reverse import reverse
 
 from authorization.tests.common import TEST_DATA as TEST_USER_DATA
 from authorization.tests.common import create_user, login_user
-from payments.tests.common import (create_subscription,
-                                   get_or_create_stripe_customer)
 from payments.tests.mixins import WithSubscriptionAndWorkspaceTestMixin
 from workspaces.models import Workspace
 

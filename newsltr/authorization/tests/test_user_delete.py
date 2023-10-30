@@ -3,9 +3,8 @@ from djet import assertions
 from djoser.views import UserViewSet
 from rest_framework import status
 from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
 
-from authorization.tests.common import TEST_DATA, create_user, login_user
+from authorization.tests.common import TEST_DATA, login_user
 
 from .mixins import UserTestCaseMixin
 
@@ -52,7 +51,9 @@ class UserViewSetDeletionTest(
 ):
     def setUp(self):
         super().setUp()
-        self.base_url = reverse("user-detail", kwargs={User._meta.pk.name: self.user.pk})
+        self.base_url = reverse(
+            "user-detail", kwargs={User._meta.pk.name: self.user.pk}
+        )
 
     def test_delete_user_if_logged_in(self):
         self.assert_instance_exists(User, email=TEST_DATA["email"])
