@@ -2,13 +2,13 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .common import setup_test_data_of_create_list_views
+from .common import set_up_test_data
 
 
 class CreateSubscriberCreateListViewTest(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        setup_test_data_of_create_list_views(cls)
+        set_up_test_data(cls)
 
         cls.url = reverse("create_subscriber", kwargs={"campaign_id": cls.campaign.id})
 
@@ -17,11 +17,13 @@ class CreateSubscriberCreateListViewTest(APITestCase):
             "tracking_data": {"ip": "127.420.69.1"},
         }
 
-        cls.expected_resp = {
-            "email": "newsltr@example.com",
-            "tracking_data": {"ip": "127.420.69.1"},
-            "joined_at": "2023-10-28T19:11:04.869Z",
-        }
+    def test_get_404(self):
+        bad_url = reverse(
+            "create_subscriber",
+            kwargs={"campaign_id": "00000000-0000-0000-0000-000000000000"},
+        )
+        req = self.client.post(bad_url)
+        self.assertEqual(req.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_create_subscriber_unauthorized(self):
         req = self.client.post(self.url)

@@ -3,13 +3,13 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 
 from campaigns.models import CampaignSubscriber
-from campaigns.tests.common import setup_test_data_of_create_list_views
+from campaigns.tests.common import set_up_test_data
 
 
 class TestRetrieveUpdateDeleteSubscriberView(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        setup_test_data_of_create_list_views(cls)
+        set_up_test_data(cls)
         cls.test_unauthorized_subscriber = CampaignSubscriber.objects.create(
             email="unauth@example.com",
             tracking_data={"test": "data"},
@@ -23,6 +23,17 @@ class TestRetrieveUpdateDeleteSubscriberView(APITestCase):
                 "user_id": cls.test_unauthorized_subscriber.id,
             },
         )
+
+    def test_get_404(self):
+        bad_url = reverse(
+            "retrieve_update_delete_subscriber",
+            kwargs={
+                "campaign_id": "00000000-0000-0000-0000-000000000000",
+                "user_id": "00000000-0000-0000-0000-000000000000",
+            },
+        )
+        req = self.client.post(bad_url)
+        self.assertEqual(req.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_retrieve_update_delete_unautiorized(self):
         res = self.client.get(self.auth_test_url)

@@ -4,7 +4,7 @@ from authorization.models import User
 from workspaces.models import Workspace, WorkspaceMembership
 
 
-def setup_test_data_of_create_list_views(cls):
+def set_up_test_data(cls):
     workspace = Workspace.objects.create(
         name="test_workspace", description="testing subscribers"
     )
