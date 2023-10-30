@@ -81,6 +81,7 @@ HEALTH_CHECK_APPS = [
 CUSTOM_APPS = [
     "authorization.apps.AuthorizationConfig",
     "workspaces.apps.WorkspacesConfig",
+    "campaigns.apps.CampaignsConfig",
 ]
 
 # Celery Apps
@@ -141,6 +142,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 50,
 }
 
 if DEVELOPMENT:

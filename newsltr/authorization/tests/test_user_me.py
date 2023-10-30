@@ -31,7 +31,11 @@ class UserViewSetMeTest(
 
         self.assert_status_equal(response, status.HTTP_200_OK)
 
-        expected_keys = set([User.USERNAME_FIELD, User._meta.pk.name] + User.REQUIRED_FIELDS + ['last_login', 'date_joined'])
+        expected_keys = set(
+            [User.USERNAME_FIELD, User._meta.pk.name]
+            + User.REQUIRED_FIELDS
+            + ["last_login", "date_joined"]
+        )
         self.assertEqual(set(response.data.keys()), expected_keys)
 
     def test_patch_email_change(self):

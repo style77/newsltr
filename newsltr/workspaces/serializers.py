@@ -67,8 +67,8 @@ class APIKeyDestroySerializer(serializers.ModelSerializer):
 class WorkspaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Workspace
-        fields = ("id", "name", "description", "created", "updated")
-        read_only_fields = ("id", "created", "updated")
+        fields = ("id", "name", "description", "created", "updated", "campaign")
+        read_only_fields = ("id", "created", "updated", "campaign")
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.name)
