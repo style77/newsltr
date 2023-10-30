@@ -5,19 +5,13 @@ from rest_framework.test import APITestCase
 
 from authorization.tests.common import TEST_DATA, create_user, login_user
 
+from .mixins import SuperUserAndUserTestCaseMixin
 
-class UserViewSetListTest(APITestCase, assertions.StatusCodeAssertionsMixin):
+
+class UserViewSetListTest(SuperUserAndUserTestCaseMixin, assertions.StatusCodeAssertionsMixin):
     def setUp(self):
+        super().setUp()
         self.base_url = reverse("user-list")
-        self.user = create_user()
-        self.superuser = create_user(
-            first_name="Super",
-            last_name="User",
-            email="superuser@example.com",
-            password="Superuser123",
-            is_superuser=True,
-            is_staff=True,
-        )
 
     def test_unauthenticated_user_cannot_list_users(self):
         response = self.client.get(self.base_url)
