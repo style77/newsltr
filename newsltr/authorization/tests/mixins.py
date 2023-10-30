@@ -5,6 +5,7 @@ from .common import TEST_DATA, create_user, login_user
 
 class UserTestCaseMixin(APITestCase):
     def setUp(self):
+        super().setUp()
         self.user = create_user()
 
 
@@ -16,6 +17,7 @@ class AuthorizedUserTestCaseMixin(UserTestCaseMixin):
 
 class SuperUserTestCaseMixin(APITestCase):
     def setUp(self):
+        super().setUp()
         self.superuser = create_user(
             first_name="super",
             last_name="user",
@@ -29,6 +31,7 @@ class SuperUserTestCaseMixin(APITestCase):
 # Todo fix error with inheriting from both UserTestCaseMixin and SuperUserTestCaseMixin
 class SuperUserAndUserTestCaseMixin(SuperUserTestCaseMixin, UserTestCaseMixin):
     def setUp(self):
+        super().setUp()
         self.user = create_user()
         self.superuser = create_user(
             first_name="super",

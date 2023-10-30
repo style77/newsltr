@@ -1,6 +1,6 @@
 import stripe
 
-from payments.customers import get_or_create_stripe_customer
+from .common import create_subscription, get_or_create_stripe_customer
 
 
 class SingletonMeta(type):
@@ -21,7 +21,8 @@ class CustomerProvider(metaclass=SingletonMeta):
         for customer in self.created_customers:
             stripe.Customer.delete(customer.customer_id)
 
-    def create_customer(self, user):
+    def create_customer_with_subscription(self, user):
         stripe_user = get_or_create_stripe_customer(user)
         self.created_customers.append(stripe_user)
+        create_subscription(stripe_user)
         return stripe_user
