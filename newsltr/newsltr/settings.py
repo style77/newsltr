@@ -238,11 +238,10 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
     "HIDE_USERS": True,
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": [
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3000/",
-        "http://127.0.0.1:3000/login",
-    ],
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": os.getenv(
+        "SOCIAL_REDIRECT_URI",
+        "http://127.0.0.1:3000,http://127.0.0.1:3000/,http://127.0.0.1:3000/google",
+    ).split(","),
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
         "user": "authorization.serializers.CustomUserSerializer",
