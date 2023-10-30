@@ -38,7 +38,7 @@ class CustomProviderAuthView(ProviderAuthView):
                 required=False,
                 location=OpenApiParameter.QUERY,
                 type=OpenApiTypes.STR,
-                default="http://127.0.0.1:3000/login",
+                default="http://127.0.0.1:3000/google",
                 description="Redirect URI",
             ),
         ]
