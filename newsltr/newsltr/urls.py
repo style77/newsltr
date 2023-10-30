@@ -8,6 +8,7 @@ urlpatterns = [
     path(r"api/v1/", include("workspaces.urls")),
     path(r"api/v1/payment/", include("payments.urls")),
     path(r"api/v1/health/", include("health_check.urls")),
+    path(r"api/v1/campaigns/", include("campaigns.urls")),
 ]
 
 if settings.DEVELOPMENT:

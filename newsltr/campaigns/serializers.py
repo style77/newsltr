@@ -1,0 +1,29 @@
+from rest_framework.exceptions import ValidationError
+from rest_framework.serializers import ModelSerializer, HiddenField
+from rest_framework.validators import UniqueTogetherValidator
+
+from .models import CampaignSubscriber
+
+
+class CampaignSubscriberSerializer(ModelSerializer):
+    campaign_id = HiddenField(default=None)
+
+    class Meta:
+        model = CampaignSubscriber
+        fields = ["email", "tracking_data", "joined_at", "campaign_id", "id"]
+        read_only_fields = ["campaign_id", "joined_at", "id"]
+        validators = [
+            UniqueTogetherValidator(
+                queryset=CampaignSubscriber.objects.all(),
+                fields=["email", "campaign_id"],
+            )
+        ]
+
+    def validate_campaign_id(self, *args, **kwargs):
+        request = self.context.get("request")
+        campaign_id = request.parser_context["kwargs"].get("campaign_id")
+
+        if not campaign_id:
+            raise ValidationError("Campaign ID is required from the URL.")
+
+        return campaign_id

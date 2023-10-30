@@ -1,5 +1,10 @@
-from django.conf import settings
+from rest_framework.authentication import BaseAuthentication
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.request import Request
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from django.conf import settings
+
+from workspaces.models import WorkspaceAPIKey
 
 
 class JWTCookiesAuthentication(JWTAuthentication):
@@ -15,3 +20,22 @@ class JWTCookiesAuthentication(JWTAuthentication):
 
         validated_token = self.get_validated_token(raw_token)
         return self.get_user(validated_token), validated_token
+
+
+class APIKeyAuthentication(BaseAuthentication):
+    def authenticate(self, request):
+        token = self.get_header(request)
+        if not token:
+            return None
+
+        is_valid_token = WorkspaceAPIKey.objects.is_valid(key=token)
+        if not is_valid_token:
+            raise AuthenticationFailed("Invalid apikey")
+        return None, token
+
+    def authenticate_header(self, request):
+        return "X-API-KEY"
+
+    @staticmethod
+    def get_header(request: Request) -> str:
+        return request.META.get("HTTP_X_API_KEY")
