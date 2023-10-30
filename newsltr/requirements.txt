@@ -29,6 +29,7 @@ django-health-check==3.17.0
 django-redis==5.4.0
 django-templated-mail==1.1.1
 django-timezone-field==6.0.1
+django-unfold==0.14.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.0
 djet==0.3.0

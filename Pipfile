@@ -29,6 +29,7 @@ install = "*"
 drf-nested-routers = "*"
 stripe = "*"
 pydantic = "*"
+django-unfold = "*"
 
 [dev-packages]
 flake8 = "*"

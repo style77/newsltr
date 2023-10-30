@@ -1,7 +1,13 @@
+from unfold.admin import ModelAdmin
+
 from .models import CampaignSubscriber, Campaign
 
 from django.contrib import admin
 
 
-admin.site.register(CampaignSubscriber)
-admin.site.register(Campaign)
+class CampaignBaseAdmin(ModelAdmin):
+    ...
+
+
+admin.site.register(CampaignSubscriber, CampaignBaseAdmin)
+admin.site.register(Campaign, CampaignBaseAdmin)
