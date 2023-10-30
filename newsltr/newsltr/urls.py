@@ -11,8 +11,8 @@ urlpatterns = [
 ]
 
 if settings.DEVELOPMENT:
-    from drf_spectacular.views import (SpectacularAPIView,  # noqa
-                                       SpectacularRedocView,
+    from drf_spectacular.views import SpectacularAPIView  # noqa
+    from drf_spectacular.views import (SpectacularRedocView,
                                        SpectacularSwaggerView)
 
     urlpatterns += [
