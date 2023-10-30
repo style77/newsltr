@@ -1,4 +1,3 @@
-from django.http import Http404
 from rest_framework import permissions
 from rest_framework.exceptions import NotFound
 from rest_framework_simplejwt.tokens import AccessToken

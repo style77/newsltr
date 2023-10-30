@@ -1,5 +1,3 @@
-from typing import Union, List
-
 from django.conf import settings
 from drf_spectacular.openapi import OpenApiAuthenticationExtension
 

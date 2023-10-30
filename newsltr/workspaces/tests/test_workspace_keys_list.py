@@ -33,7 +33,7 @@ class WorkspaceKeysListViewTest(
 
         response = self.client.get(self.base_url)
         self.assert_status_equal(response, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data["results"]), 1)
 
     def test_list_workspace_keys_with_authorization_as_member(self):
         member = create_user(email="test2@test.com")
