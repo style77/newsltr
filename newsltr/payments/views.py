@@ -2,14 +2,17 @@ from datetime import datetime
 
 import stripe
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics, permissions, status, views, viewsets
+from rest_framework import permissions, status, views, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .customers import get_or_create_stripe_customer
-from .serializers import (CancelSubscriptionSerializer,
-                          CreateSubscriptionSerializer, ProductSerializer,
-                          SubscriptionSerializer)
+from .serializers import (
+    CancelSubscriptionSerializer,
+    CreateSubscriptionSerializer,
+    ProductSerializer,
+    SubscriptionSerializer,
+)
 
 
 @extend_schema(
@@ -107,7 +110,9 @@ class MySubscriptions(viewsets.ViewSet):
         for subscription in user_subscriptions.data:
             subscription_dict = {
                 "id": subscription["id"],
-                "cancel_at": datetime.fromtimestamp(subscription["cancel_at"]) if subscription["cancel_at"] else None,
+                "cancel_at": datetime.fromtimestamp(subscription["cancel_at"])
+                if subscription["cancel_at"]
+                else None,
                 "current_period_end": datetime.fromtimestamp(
                     subscription["current_period_end"]
                 ),
@@ -147,8 +152,7 @@ class MySubscriptions(viewsets.ViewSet):
 
         try:
             stripe.Subscription.modify(
-                data.get("subscription_id"),
-                cancel_at_period_end=False
+                data.get("subscription_id"), cancel_at_period_end=False
             )
         except stripe.error.InvalidRequestError as e:
             return Response(

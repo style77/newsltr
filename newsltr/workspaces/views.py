@@ -6,17 +6,24 @@ from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 
-from payments.permissions import (CanCreateWorkspace, CanInviteMoreMembers,
-                                  IsSubscriptionActive)
+from payments.permissions import (
+    CanCreateWorkspace,
+    CanInviteMoreMembers,
+    IsSubscriptionActive,
+)
 
 from .email import WorkspaceInvitationEmail
 from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
 from .permissions import IsAdminOfWorkspace, IsMemberOfWorkspace
-from .serializers import (APIKeyDestroySerializer, APIKeySerializer,
-                          WorkspaceCreateSerializer,
-                          WorkspaceInvitationAcceptSerializer,
-                          WorkspaceInviteSerializer,
-                          WorkspaceMembershipSerializer, WorkspaceSerializer)
+from .serializers import (
+    APIKeyDestroySerializer,
+    APIKeySerializer,
+    WorkspaceCreateSerializer,
+    WorkspaceInvitationAcceptSerializer,
+    WorkspaceInviteSerializer,
+    WorkspaceMembershipSerializer,
+    WorkspaceSerializer,
+)
 
 User = get_user_model()
 
@@ -276,7 +283,11 @@ class WorkspaceKeysViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = APIKeySerializer
-    permission_classes = [permissions.IsAuthenticated, IsAdminOfWorkspace, IsSubscriptionActive]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsAdminOfWorkspace,
+        IsSubscriptionActive,
+    ]
     queryset = WorkspaceAPIKey
     lookup_url_kwarg = "id"
 
