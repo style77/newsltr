@@ -54,6 +54,8 @@ jobs:
       EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
       EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
       SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
+      STRIPE_SECRET_KEY_TEST: ${{ secrets.STRIPE_SECRET_KEY_TEST }}
+      STRIPE_PUBLISHABLE_KEY_TEST: ${{ secrets.STRIPE_PUBLISHABLE_KEY_TEST }}
 
     steps:
       - name: Checkout code
