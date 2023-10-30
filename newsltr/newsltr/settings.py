@@ -70,6 +70,9 @@ USER_CREATE_DEFAULTS_ATTRIBUTE_MAP = {
 
 # Application definition
 
+# Custom Admin Implementation
+UNFOLD_ADMIN = ["unfold"]
+
 # Core Django Apps
 CORE_APPS = [
     "django.contrib.admin",
@@ -119,7 +122,12 @@ CELERY_APPS = [
 
 # Combine all categories
 INSTALLED_APPS = (
-    CORE_APPS + THIRD_PARTY_APPS + HEALTH_CHECK_APPS + CUSTOM_APPS + CELERY_APPS
+    UNFOLD_ADMIN
+    + CORE_APPS
+    + THIRD_PARTY_APPS
+    + HEALTH_CHECK_APPS
+    + CUSTOM_APPS
+    + CELERY_APPS
 )
 
 # Redis
@@ -380,3 +388,11 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Admin styling
+UNFOLD = {
+    "SITE_TITLE": "newsltr",
+    "SITE_HEADER": "newsltr - admin panel",
+    "SITE_URL": None,
+}

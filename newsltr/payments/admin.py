@@ -1,8 +1,11 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 
 from .models import StripeUser
 
-# Register your models here.
+
+class PaymentsAdmin(ModelAdmin):
+    ...
 
 
-admin.site.register(StripeUser)
+admin.site.register(StripeUser, PaymentsAdmin)

@@ -1,10 +1,13 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 
 from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
 
-# Register your models here.
+
+class BaseWorkspaceAdmin(ModelAdmin):
+    ...
 
 
-admin.site.register(Workspace)
-admin.site.register(WorkspaceMembership)
-admin.site.register(WorkspaceAPIKey)
+admin.site.register(Workspace, BaseWorkspaceAdmin)
+admin.site.register(WorkspaceMembership, BaseWorkspaceAdmin)
+admin.site.register(WorkspaceAPIKey, BaseWorkspaceAdmin)
