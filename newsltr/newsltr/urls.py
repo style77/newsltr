@@ -1,20 +1,18 @@
-from django.urls import path, include
 from django.contrib import admin
+from django.urls import include, path
 
 from . import settings
 
 urlpatterns = [
     path(r"api/v1/", include("authorization.urls")),
     path(r"api/v1/", include("workspaces.urls")),
+    path(r"api/v1/payment/", include("payments.urls")),
     path(r"api/v1/health/", include("health_check.urls")),
 ]
 
 if settings.DEVELOPMENT:
-    from drf_spectacular.views import (
-        SpectacularAPIView,
-        SpectacularRedocView,
-        SpectacularSwaggerView,
-    )  # noqa
+    from drf_spectacular.views import SpectacularAPIView  # noqa
+    from drf_spectacular.views import SpectacularRedocView, SpectacularSwaggerView
 
     urlpatterns += [
         path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),

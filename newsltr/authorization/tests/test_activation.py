@@ -1,44 +1,47 @@
-from django.contrib.auth.tokens import default_token_generator
-from djet import assertions
-from rest_framework import status
-from rest_framework.reverse import reverse
-from rest_framework.test import APITestCase
-from authorization.tests.common import create_user
-
 import djoser.signals
 import djoser.utils
 import djoser.views
+from django.contrib.auth.tokens import default_token_generator
+from djet import assertions
 from djoser.conf import settings as default_settings
+from rest_framework import status
+from rest_framework.reverse import reverse
+
+from .mixins import UserTestCaseMixin
 
 
 class ActivationViewTest(
-    APITestCase, assertions.EmailAssertionsMixin, assertions.StatusCodeAssertionsMixin
+    UserTestCaseMixin,
+    assertions.EmailAssertionsMixin,
+    assertions.StatusCodeAssertionsMixin,
 ):
     def setUp(self):
         self.base_url = reverse("user-activation")
         self.signal_sent = False
+        super().setUp()
 
     def signal_receiver(self, *args, **kwargs):
         self.signal_sent = True
 
     def test_post_activate_user_and_not_login(self):
-        user = create_user()
-        user.is_active = False
-        user.save()
+        self.user.is_active = False
+        self.user.save()
         data = {
-            "uid": djoser.utils.encode_uid(user.pk),
-            "token": default_token_generator.make_token(user),
+            "uid": djoser.utils.encode_uid(self.user.pk),
+            "token": default_token_generator.make_token(self.user),
         }
 
         response = self.client.post(self.base_url, data)
-        user.refresh_from_db()
+        self.user.refresh_from_db()
 
         self.assert_status_equal(response, status.HTTP_204_NO_CONTENT)
-        self.assertTrue(user.is_active)
+        self.assertTrue(self.user.is_active)
 
     def test_post_respond_with_bad_request_when_wrong_uid(self):
-        user = create_user()
-        data = {"uid": "wrong-uid", "token": default_token_generator.make_token(user)}
+        data = {
+            "uid": "wrong-uid",
+            "token": default_token_generator.make_token(self.user),
+        }
 
         response = self.client.post(self.base_url, data)
 
@@ -50,11 +53,10 @@ class ActivationViewTest(
         )
 
     def test_post_respond_with_bad_request_when_stale_token(self):
-        user = create_user()
         djoser.signals.user_activated.connect(self.signal_receiver)
         data = {
-            "uid": djoser.utils.encode_uid(user.pk),
-            "token": default_token_generator.make_token(user),
+            "uid": djoser.utils.encode_uid(self.user.pk),
+            "token": default_token_generator.make_token(self.user),
         }
 
         response = self.client.post(self.base_url, data)
@@ -68,9 +70,8 @@ class ActivationViewTest(
         self.assertFalse(self.signal_sent)
 
     def test_post_respond_with_bad_request_when_wrong_token(self):
-        user = create_user()
         djoser.signals.user_activated.connect(self.signal_receiver)
-        data = {"uid": djoser.utils.encode_uid(user.pk), "token": "wrong-token"}
+        data = {"uid": djoser.utils.encode_uid(self.user.pk), "token": "wrong-token"}
 
         response = self.client.post(self.base_url, data)
 

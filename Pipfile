@@ -27,11 +27,14 @@ django-celery-beat = "*"
 django-anymail = {extras = ["sendgrid"] }
 install = "*"
 drf-nested-routers = "*"
+stripe = "*"
+pydantic = "*"
 
 [dev-packages]
 flake8 = "*"
 black = "*"
 pre-commit = "*"
+isort = {extras = ["requirements_deprecated_finder", "pipfile_deprecated_finder"], version = "*"}
 
 [requires]
 python_version = "3.12"

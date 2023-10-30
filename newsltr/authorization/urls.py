@@ -1,11 +1,11 @@
-from django.urls import path, include
+from django.urls import include, path
 
 # Override the default djoser.urls.jwt and add my custom view for token obtain
 from authorization.views import (
-    EmailTokenObtainPairView,
+    CustomProviderAuthView,
     CustomTokenRefreshView,
     CustomTokenVerifyView,
-    CustomProviderAuthView,
+    EmailTokenObtainPairView,
     LogoutView,
 )
 

@@ -1,25 +1,29 @@
 from django.contrib.auth import get_user_model, tokens
 from django.http import QueryDict
-from rest_framework import mixins, viewsets, permissions, status
-from rest_framework.response import Response
+from drf_spectacular.utils import OpenApiParameter, extend_schema
+from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import NotFound
+from rest_framework.response import Response
 
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from payments.permissions import (
+    CanCreateWorkspace,
+    CanInviteMoreMembers,
+    IsSubscriptionActive,
+)
 
+from .email import WorkspaceInvitationEmail
+from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
+from .permissions import IsAdminOfWorkspace, IsMemberOfWorkspace
 from .serializers import (
     APIKeyDestroySerializer,
     APIKeySerializer,
+    WorkspaceCreateSerializer,
+    WorkspaceInvitationAcceptSerializer,
+    WorkspaceInviteSerializer,
     WorkspaceMembershipSerializer,
     WorkspaceSerializer,
-    WorkspaceCreateSerializer,
-    WorkspaceInviteSerializer,
-    WorkspaceInvitationAcceptSerializer,
 )
-from .permissions import IsMemberOfWorkspace, IsAdminOfWorkspace
-from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
-from .email import WorkspaceInvitationEmail
-
 
 User = get_user_model()
 
@@ -29,7 +33,11 @@ User = get_user_model()
 )
 class WorkspaceViewSet(viewsets.ModelViewSet):
     serializer_class = WorkspaceSerializer
-    permission_classes = [permissions.IsAuthenticated, IsMemberOfWorkspace]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsMemberOfWorkspace,
+        IsSubscriptionActive,
+    ]
     queryset = Workspace.objects.all()
 
     token_generator = tokens.default_token_generator
@@ -41,13 +49,40 @@ class WorkspaceViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action in ["create"]:
-            self.permission_classes = [permissions.IsAuthenticated]
-        elif self.action in ["destroy", "update", "partial_update"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                IsSubscriptionActive,
+                CanCreateWorkspace,
+            ]
+        elif self.action in ["destroy"]:
             self.permission_classes = [
                 permissions.IsAuthenticated,
                 IsAdminOfWorkspace,
             ]
-        elif self.action in ["invite", "invitation_accept", "list"]:
+        elif self.action in ["update", "partial_update"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                IsSubscriptionActive,
+                IsAdminOfWorkspace,
+            ]
+        elif self.action in ["invite"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                IsSubscriptionActive,
+                IsAdminOfWorkspace,
+                CanInviteMoreMembers,
+            ]
+        elif self.action in ["invitation_accept"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                CanInviteMoreMembers,
+            ]
+        elif self.action in ["retrieve"]:
+            self.permission_classes = [
+                permissions.IsAuthenticated,
+                IsMemberOfWorkspace,
+            ]
+        elif self.action in ["list"]:
             self.permission_classes = [permissions.IsAuthenticated]
         return super().get_permissions()
 
@@ -163,7 +198,11 @@ class WorkspaceMembersViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = WorkspaceMembershipSerializer
-    permission_classes = [IsMemberOfWorkspace, permissions.IsAuthenticated]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsAdminOfWorkspace,
+        IsSubscriptionActive,
+    ]
     queryset = WorkspaceMembership
     lookup_field = "user__pk"
 
@@ -174,10 +213,6 @@ class WorkspaceMembersViewSet(
         return super().get_serializer_class()
 
     def get_permissions(self):
-        if self.action in ["invite", "update", "partial_update", "destroy"]:
-            self.permission_classes = [permissions.IsAuthenticated, IsAdminOfWorkspace]
-        elif self.action in ["invitation_accept"]:
-            self.permission_classes = [permissions.IsAuthenticated]
         return super().get_permissions()
 
     @extend_schema(
@@ -248,7 +283,11 @@ class WorkspaceKeysViewSet(
     viewsets.GenericViewSet,
 ):
     serializer_class = APIKeySerializer
-    permission_classes = [IsAdminOfWorkspace, permissions.IsAuthenticated]
+    permission_classes = [
+        permissions.IsAuthenticated,
+        IsAdminOfWorkspace,
+        IsSubscriptionActive,
+    ]
     queryset = WorkspaceAPIKey
     lookup_url_kwarg = "id"
 

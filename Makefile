@@ -6,10 +6,6 @@ test:
 	@echo Running tests...
 	cd newsltr && pipenv run python manage.py test --noinput
 
-test-workspaces:
-	@echo Running tests...
-	cd newsltr && pipenv run python manage.py test workspaces/tests/. --noinput
-
 migrate:
 	@echo Running migrations...
 	cd newsltr && pipenv run python manage.py migrate
@@ -21,6 +17,18 @@ makemigrations:
 runserver:
 	@echo Running server...
 	cd newsltr && pipenv run python manage.py runserver
+
+stripe:
+	@echo Running stripe webhook listener...
+	pipenv run stripe listen --forward-to 127.0.0.1:8000/api/v1/payment/webhook/
+
+pull-stripe:
+	@echo Pulling stripe events...
+	cd newsltr && pipenv run python manage.py pull_stripe
+
+test-workspaces:
+	@echo Testing Workspaces...
+	cd newsltr && pipenv run python manage.py test --noinput ./workspaces/.
 
 runcelery:
 	@echo Running celery...
@@ -47,3 +55,7 @@ flake8:
 black:
 	@echo Running black...
 	cd newsltr && pipenv run black .
+
+isort:
+	@echo Running isort...
+	cd newsltr && pipenv run isort .

@@ -1,19 +1,13 @@
 from django.contrib.auth import get_user_model
-from django.db import transaction, IntegrityError
+from django.db import IntegrityError, transaction
+from djoser.utils import decode_uid
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from djoser.utils import decode_uid
-
-from .models import (
-    Workspace,
-    WorkspaceMembership,
-    WorkspaceAPIKey,
-)
-from .permissions import IsAdminOfWorkspace
-
 from authorization.serializers import UserSerializer
 
+from .models import Workspace, WorkspaceAPIKey, WorkspaceMembership
+from .permissions import IsAdminOfWorkspace
 
 User = get_user_model()
 
@@ -42,7 +36,8 @@ class WorkspaceMembershipSerializer(serializers.ModelSerializer):
 
 class APIKeySerializer(serializers.ModelSerializer):
     default_error_messages = {
-        "cannot_create_api_key": "Cannot create API key for this workspace."
+        "cannot_create_api_key": "Cannot create API key for this workspace.",
+        "too_many_api_keys": "Cannot create more than 5 API keys for workspace.",
     }
 
     class Meta:
@@ -55,6 +50,9 @@ class APIKeySerializer(serializers.ModelSerializer):
             pk=self.context["request"].data.get("workspace")
         )
         validated_data["workspace"] = workspace
+
+        if workspace.keys.count() >= 5:
+            self.fail("too_many_api_keys")
 
         instance, _ = super().create(validated_data)
         return instance

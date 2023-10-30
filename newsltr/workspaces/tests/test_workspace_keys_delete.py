@@ -1,31 +1,21 @@
-from rest_framework import status
-from rest_framework.test import APITestCase
-from rest_framework.reverse import reverse
 from djet import assertions
+from rest_framework import status
+from rest_framework.reverse import reverse
 
+from authorization.tests.common import TEST_DATA as TEST_USER_DATA
+from authorization.tests.common import login_user
+from payments.tests.mixins import WithSubscriptionAndWorkspaceAndKeysTestMixin
 from workspaces.models import WorkspaceAPIKey
-from workspaces.tests.common import (
-    create_workspace,
-    create_user,
-    invite_user_to_workspace,
-)
-
-from authorization.tests.common import (
-    TEST_DATA as TEST_USER_DATA,
-    login_user,
-)
+from workspaces.tests.common import create_user, invite_user_to_workspace
 
 
 class WorkspaceKeysDeleteViewTest(
-    APITestCase,
+    WithSubscriptionAndWorkspaceAndKeysTestMixin,
     assertions.StatusCodeAssertionsMixin,
     assertions.InstanceAssertionsMixin,
 ):
     def setUp(self):
-        self.workspace, self.user = create_workspace()
-        self.key, _ = WorkspaceAPIKey.objects.create(
-            workspace=self.workspace, name="Test Key"
-        )
+        super().setUp()
         self.base_url = reverse(
             "workspace-keys-detail",
             args=(
@@ -38,8 +28,17 @@ class WorkspaceKeysDeleteViewTest(
         response = self.client.delete(self.base_url)
         self.assert_status_equal(response, status.HTTP_401_UNAUTHORIZED)
 
-    def test_delete_workspace_key_with_authorization_as_admin(self):
+    def test_delete_workspace_key_with_authorization_without_subscription(self):
         login_user(self.client, self.user.email, TEST_USER_DATA["password"])
+
+        response = self.client.delete(self.base_url)
+        self.assert_status_equal(response, status.HTTP_403_FORBIDDEN)
+        self.assert_instance_exists(WorkspaceAPIKey, pk=self.key.pk)
+        self.assertFalse(WorkspaceAPIKey.objects.get(pk=self.key.pk).revoked)
+
+    def test_delete_workspace_key_with_authorization_with_subscription(self):
+        login_user(self.client, self.user.email, TEST_USER_DATA["password"])
+        self.provider.create_customer_with_subscription(self.user)
 
         response = self.client.delete(self.base_url)
         self.assert_status_equal(response, status.HTTP_204_NO_CONTENT)
@@ -54,4 +53,4 @@ class WorkspaceKeysDeleteViewTest(
         response = self.client.delete(self.base_url)
         self.assert_status_equal(response, status.HTTP_403_FORBIDDEN)
         self.assert_instance_exists(WorkspaceAPIKey, pk=self.key.pk)
-        self.assertFalse(self.key.revoked)
+        self.assertFalse(WorkspaceAPIKey.objects.get(pk=self.key.pk).revoked)

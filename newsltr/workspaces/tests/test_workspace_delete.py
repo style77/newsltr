@@ -1,25 +1,22 @@
-from rest_framework.test import APITestCase
 from djet import assertions
-
 from rest_framework import status
 from rest_framework.reverse import reverse
 
+from authorization.tests.common import TEST_DATA as TEST_USER_DATA
+from authorization.tests.common import create_user, login_user
 from workspaces.models import Workspace
-from .common import create_workspace, invite_user_to_workspace
-from authorization.tests.common import (
-    TEST_DATA as TEST_USER_DATA,
-    create_user,
-    login_user,
-)
+
+from .common import invite_user_to_workspace
+from .mixins import WorkspaceTestCaseMixin
 
 
 class WorkspaceDeleteViewTest(
-    APITestCase,
+    WorkspaceTestCaseMixin,
     assertions.StatusCodeAssertionsMixin,
     assertions.InstanceAssertionsMixin,
 ):
     def setUp(self):
-        self.workspace, self.user = create_workspace()
+        super().setUp()
         self.base_url = reverse("workspace-detail", args=(self.workspace.pk,))
 
     def test_delete_workspace_without_authorization(self):
