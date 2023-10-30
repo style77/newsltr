@@ -4,9 +4,8 @@ from rest_framework.reverse import reverse
 
 from authorization.tests.common import TEST_DATA as TEST_USER_DATA
 from authorization.tests.common import login_user
-from workspaces.tests.common import create_user, invite_user_to_workspace
-
 from payments.tests.mixins import WithSubscriptionAndWorkspaceTestMixin
+from workspaces.tests.common import create_user, invite_user_to_workspace
 
 
 class WorkspaceKeysListViewTest(

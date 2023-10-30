@@ -6,10 +6,9 @@ from rest_framework.test import APITestCase
 
 from authorization.tests.common import TEST_DATA as TEST_USER_DATA
 from authorization.tests.common import login_user
+from payments.tests.mixins import WithSubscriptionTestMixin
 from workspaces.models import Workspace
 from workspaces.tests.common import TEST_DATA
-
-from payments.tests.mixins import WithSubscriptionTestMixin
 
 
 class WorkspaceCreateViewTest(
