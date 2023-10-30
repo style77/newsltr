@@ -32,12 +32,3 @@ class SuperUserTestCaseMixin(APITestCase):
 class SuperUserAndUserTestCaseMixin(SuperUserTestCaseMixin, UserTestCaseMixin):
     def setUp(self):
         super().setUp()
-        self.user = create_user()
-        self.superuser = create_user(
-            first_name="super",
-            last_name="user",
-            email="superuser@example.com",
-            password="Superuser123",
-            is_superuser=True,
-            is_staff=True,
-        )
