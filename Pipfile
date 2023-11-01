@@ -30,6 +30,8 @@ drf-nested-routers = "*"
 stripe = "*"
 pydantic = "*"
 django-unfold = "*"
+trix = "*"
+django-trix = "*"
 
 [dev-packages]
 flake8 = "*"

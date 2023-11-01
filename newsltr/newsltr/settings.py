@@ -112,6 +112,7 @@ CUSTOM_APPS = [
     "workspaces.apps.WorkspacesConfig",
     "payments.apps.PaymentsConfig",
     "campaigns.apps.CampaignsConfig",
+    "email_templates.apps.EmailTemplatesConfig",
 ]
 
 # Celery Apps
