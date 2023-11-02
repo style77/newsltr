@@ -13,9 +13,9 @@ RUN apt-get update \
  libfreetype6 libfreetype6-dev  libfontconfig1 libfontconfig1-dev\
   && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
+WORKDIR /code
 
-COPY requirements.txt /app/
+COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 
-COPY . /app/
+COPY . /code/

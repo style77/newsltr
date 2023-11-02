@@ -33,7 +33,7 @@ services:
       - newsltr-db
       - newsltr-redis
     volumes:
-      - ./newsltr/:/app/
+      - ./newsltr/:/code/
 
   newsltr-celery:
     build:
@@ -43,7 +43,7 @@ services:
     container_name: newsltr-celery
     command: celery -A newsltr worker -Q default -n newsltr.%%h --loglevel=INFO --max-memory-per-child=512000 --concurrency=1
     volumes:
-      - ./newsltr/:/app/
+      - ./newsltr/:/code/
     depends_on:
       - newsltr-api
       - newsltr-db
@@ -61,7 +61,7 @@ services:
     container_name: newsltr-celery-beat
     command: celery -A newsltr beat -S redbeat.RedBeatScheduler --loglevel=DEBUG --pidfile /tmp/newsltr-celerybeat.pid
     volumes:
-      - ./newsltr/:/app/
+      - ./newsltr/:/code/
     depends_on:
       - newsltr-api
       - newsltr-db
@@ -81,7 +81,7 @@ services:
       - "127.0.0.1:9090:9090"
     restart: unless-stopped
     volumes:
-      - ./newsltr/:/app/
+      - ./newsltr/:/code/
     depends_on:
       - newsltr-api
       - newsltr-db
