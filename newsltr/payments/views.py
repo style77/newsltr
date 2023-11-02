@@ -27,7 +27,6 @@ class Checkout(views.APIView):
         serializer.is_valid(raise_exception=True)
 
         data = serializer.validated_data
-        print(data)
 
         stripe_user = get_or_create_stripe_customer(request.user)
 
@@ -41,8 +40,6 @@ class Checkout(views.APIView):
             payment_behavior="default_incomplete",
             expand=["latest_invoice.payment_intent"],
         )
-
-        print(subscription)
 
         return Response(
             {
@@ -108,11 +105,15 @@ class MySubscriptions(viewsets.ViewSet):
 
         subscription_data = []
         for subscription in user_subscriptions.data:
+            cancel_at = (
+                datetime.fromtimestamp(subscription["cancel_at"])
+                if subscription.get("cancel_at")
+                else None
+            )
+
             subscription_dict = {
                 "id": subscription["id"],
-                "cancel_at": datetime.fromtimestamp(subscription["cancel_at"])
-                if subscription["cancel_at"]
-                else None,
+                "cancel_at": cancel_at,
                 "current_period_end": datetime.fromtimestamp(
                     subscription["current_period_end"]
                 ),

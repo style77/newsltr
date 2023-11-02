@@ -37,12 +37,14 @@ class CanCreateWorkspace(permissions.BasePermission):
         except StripeUser.DoesNotExist:
             return False
 
-        workspaces_count = len(Workspace.objects.filter(memberships__user=request.user))
+        workspaces_count = Workspace.objects.filter(
+            memberships__user=request.user
+        ).count()
         workspaces_limit = 0
 
         for subscription in subscriptions:
             product = stripe.Product.retrieve(subscription.plan.product)
-            workspaces_limit += int(product.metadata.get("workspace_limit"))
+            workspaces_limit += int(product.metadata.get("workspace_limit", 0))
 
         if workspaces_count >= workspaces_limit:
             return False
@@ -79,7 +81,7 @@ class CanInviteMoreMembers(permissions.BasePermission):
         members_limit = 0
         for subscription in subscriptions:
             product = stripe.Product.retrieve(subscription.plan.product)
-            members_limit += int(product.metadata.get("workspace_members_limit"))
+            members_limit += int(product.metadata.get("workspace_members_limit", 0))
 
         members_count += 1
 
