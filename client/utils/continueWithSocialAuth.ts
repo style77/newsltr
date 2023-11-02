@@ -11,10 +11,8 @@ export default async function continueWithSocialAuth(
     }/api/v1/auth/o/${provider}/?redirect_uri=${
       process.env.NODE_ENV === "production"
         ? process.env.NEXT_PUBLIC_REDIRECT_URL
-        : "http%3A%2F%2F127.0.0.1%3A3000%2Flogin"
+        : `http%3A%2F%2F127.0.0.1%3A3000%2F${redirect}`
     }`;
-    // "http:/127.0.0.1:3000/"
-    // }/${redirect}`;
 
     const res = await fetch(url, {
       method: "GET",
