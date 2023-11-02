@@ -42,31 +42,13 @@ if DEVELOPMENT:
     STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET_TEST")
     STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY_TEST")
 else:
-    RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
-    if RENDER_EXTERNAL_HOSTNAME:
-        ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME]
-    else:
-        ALLOWED_HOSTS = []
-
+    ALLOWED_HOSTS = ["*"]
     FRONT_END_BASE_URL = os.getenv("FRONT_END_BASE_URL")
     STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY")
     STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
     STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
 
 # Stripe
-
-NEW_USER_FREE_TRIAL_DAYS = None
-CHECKOUT_SUCCESS_URL_PATH = "payment"
-CHECKOUT_CANCEL_URL_PATH = "manage-subscription"
-DEFAULT_PAYMENT_METHOD_TYPES = ["card"]
-DEFAULT_CHECKOUT_MODE = "subscription"
-DEFAULT_DISCOUNTS = None
-ALLOW_PROMOTION_CODES = True
-DJANGO_USER_EMAIL_FIELD = "email"
-USER_CREATE_DEFAULTS_ATTRIBUTE_MAP = {
-    "email": "email",
-    "first_name": "name",
-}
 
 # Application definition
 
@@ -88,8 +70,10 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "djoser",
-    "djoser.social",
-    "social_django",
+    # "allauth",
+    # "allauth.account",
+    # "allauth.socialaccount",
+    # "allauth.socialaccount.providers.google",
 ]
 
 # Health Check Apps
@@ -142,6 +126,7 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_IMPORTS = ()
+CELERY_REDBEAT_URL = os.getenv("REDBEAT_REDIS_URL", REDIS_URL)
 
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
@@ -246,10 +231,6 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
     "HIDE_USERS": True,
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": os.getenv(
-        "SOCIAL_REDIRECT_URI",
-        "http://127.0.0.1:3000,http://127.0.0.1:3000/,http://127.0.0.1:3000/google",
-    ).split(","),
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
         "user": "authorization.serializers.CustomUserSerializer",
@@ -266,19 +247,20 @@ DJOSER = {
 }
 
 AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
     "django.contrib.auth.backends.AllowAllUsersModelBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
     # "django.contrib.auth.backends.ModelBackend",
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_OAUTH2_SECRET")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "openid",
-]
-SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.getenv("GOOGLE_OAUTH2_CLIENT_ID"),
+            'secret': os.getenv("GOOGLE_OAUTH2_SECRET"),
+            'key': os.getenv("GOOGLE_OAUTH2_KEY")
+        }
+    }
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -290,6 +272,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 # Cors

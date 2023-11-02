@@ -1,6 +1,4 @@
 from django.conf import settings
-from djoser.social.views import ProviderAuthView
-from drf_spectacular.utils import OpenApiParameter, OpenApiTypes, extend_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,63 +14,6 @@ from rest_framework_simplejwt.views import (
 )
 
 from authorization.serializers import CustomTokenObtainPairSerializer, InActiveUser
-
-
-@extend_schema(
-    tags=["social authorization"],
-    parameters=[
-        OpenApiParameter(
-            name="provider",
-            required=True,
-            location=OpenApiParameter.PATH,
-            type=OpenApiTypes.STR,
-            description="Provider name",
-        ),
-    ],
-)
-class CustomProviderAuthView(ProviderAuthView):
-    @extend_schema(
-        parameters=[
-            OpenApiParameter(
-                name="redirect_uri",
-                required=False,
-                location=OpenApiParameter.QUERY,
-                type=OpenApiTypes.STR,
-                default="http://127.0.0.1:3000/google",
-                description="Redirect URI",
-            ),
-        ]
-    )
-    def get(self, request, *args, **kwargs):
-        return super().get(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-
-        if response.status_code == 201:
-            access_token = response.data.get("access")
-            refresh_token = response.data.get("refresh")
-
-            response.set_cookie(
-                "access",
-                access_token,
-                max_age=settings.SIMPLE_JWT["AUTH_COOKIE_MAX_AGE"],
-                path=settings.SIMPLE_JWT["AUTH_COOKIE_PATH"],
-                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-                httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-                samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
-            )
-            response.set_cookie(
-                "refresh",
-                refresh_token,
-                max_age=settings.SIMPLE_JWT["AUTH_COOKIE_MAX_AGE"],
-                path=settings.SIMPLE_JWT["AUTH_COOKIE_PATH"],
-                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-                httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-                samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"],
-            )
-
-        return response
 
 
 class EmailTokenObtainPairView(TokenViewBase):

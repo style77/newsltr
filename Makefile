@@ -39,8 +39,8 @@ generateschema:
 	cd newsltr && pipenv run python manage.py spectacular --file openapi-schema.yml
 
 up-dev:
-	@echo Building dev image...
-	docker compose -f docker-compose.dev.yml up --build
+	@echo Building image...
+	docker compose up
 
 freeze:
 	@echo Freezing dependencies...
