@@ -2,7 +2,7 @@ from django.urls import reverse
 from rest_framework.test import APITestCase
 
 from email_templates.models import EmailTemplate
-from email_templates.tests.common import setup_tests_data
+from email_templates.tests.common import setup_tests_data, deserialize_datetime
 
 
 class TestEmailTemplatesListView(APITestCase):
@@ -44,13 +44,11 @@ class TestEmailTemplatesListView(APITestCase):
             "previous": None,
             "results": [
                 {
-                    "id": template.id,
+                    "id": str(template.id),
                     "subject": "test_subject",
                     "content": "test_content",
                     "extra_data": {"tracking_data": {}},
-                    "last_sent_at": template.last_sent_at.strftime(
-                        "%Y-%m-%dT%H:%M:%S.%fZ"
-                    ),
+                    "last_sent_at": deserialize_datetime(template.last_sent_at),
                 },
             ],
         }

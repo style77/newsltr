@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework_simplejwt.tokens import AccessToken
 
 from authorization.models import User
@@ -14,3 +16,7 @@ def setup_tests_data(cls) -> None:
 
     cls.campaign = workspace.campaign
     cls.jwt = AccessToken.for_user(user)
+
+
+def deserialize_datetime(_datetime: datetime) -> str:
+    return _datetime.strftime("%Y-%m-%dT%H:%M:%S.%fZ")

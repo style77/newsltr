@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -7,6 +9,7 @@ from campaigns.models import Campaign
 
 
 class EmailTemplate(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     campaign = models.ForeignKey(
         Campaign, on_delete=models.CASCADE, related_name="email_tempaltes"
     )
