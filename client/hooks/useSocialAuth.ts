@@ -11,12 +11,14 @@ export default function useSocialAuth(authenticate: any, provider: string) {
   const searchParams = useSearchParams();
 
   const effectRan = useRef(false);
+  console.log(searchParams.getAll);
 
   useEffect(() => {
     const state = searchParams.get("state");
     const code = searchParams.get("code");
 
-    console.log(code, state);
+    console.log("code", code);
+    console.log("state", state);
 
     if (state && code && !effectRan.current) {
       authenticate({ provider, state, code })
@@ -28,7 +30,7 @@ export default function useSocialAuth(authenticate: any, provider: string) {
         })
         .catch(() => {
           toast({ title: "Failed to log in" });
-          router.push("/login");
+          // router.push("/login");
         });
     }
 
