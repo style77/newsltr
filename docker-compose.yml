@@ -1,0 +1,92 @@
+version: '3.3'
+services:
+  newsltr-redis:
+    image: redis:latest
+    container_name: newsltr-redis
+    ports:
+      - "6379:6379"
+
+  newsltr-db:
+    image: postgres:latest
+    container_name: newsltr-db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: newsltr
+
+  newsltr-api:
+    build:
+      context: ./newsltr
+    restart: always
+    command: python manage.py runserver 0.0.0.0:8000
+    image: newsltr-api:latest
+    container_name: newsltr-api
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@newsltr-db:5432/newsltr
+      REDIS_URL: redis://newsltr-redis:6379
+      DJANGO_SETTINGS_MODULE: newsltr.settings
+    depends_on:
+      - newsltr-db
+      - newsltr-redis
+    volumes:
+      - ./newsltr/:/app/
+
+  newsltr-celery:
+    build:
+      context: ./newsltr
+      dockerfile: Dockerfile
+    image: newsltr-celery:latest
+    container_name: newsltr-celery
+    command: celery -A newsltr worker -Q default -n newsltr.%%h --loglevel=INFO --max-memory-per-child=512000 --concurrency=1
+    volumes:
+      - ./newsltr/:/app/
+    depends_on:
+      - newsltr-api
+      - newsltr-db
+      - newsltr-redis
+    links:
+      - newsltr-api
+      - newsltr-db
+      - newsltr-redis
+
+  newsltr-celery-beat:
+    build:
+      context: ./newsltr
+      dockerfile: Dockerfile
+    image: newsltr-celery-beat:latest
+    container_name: newsltr-celery-beat
+    command: celery -A newsltr beat -S redbeat.RedBeatScheduler --loglevel=DEBUG --pidfile /tmp/newsltr-celerybeat.pid
+    volumes:
+      - ./newsltr/:/app/
+    depends_on:
+      - newsltr-api
+      - newsltr-db
+      - newsltr-redis
+    links:
+      - newsltr-api
+      - newsltr-db
+      - newsltr-redis
+
+  newsltr-celery-flower:
+    build:
+      context: ./newsltr
+      dockerfile: Dockerfile
+    container_name: newsltr-celery-flower
+    command: celery -A newsltr flower --loglevel=INFO --port=9090 --broker=redis://newsltr-redis:6379/0 --basic_auth=newsltr:newsltr
+    ports:
+      - "127.0.0.1:9090:9090"
+    restart: unless-stopped
+    volumes:
+      - ./newsltr/:/app/
+    depends_on:
+      - newsltr-api
+      - newsltr-db
+      - newsltr-redis
+    links:
+      - newsltr-api
+      - newsltr-db
+      - newsltr-redis
