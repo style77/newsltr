@@ -1,19 +1,28 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-// import counterReducer from "./features/counter/counterSlice";
 import authReducer from "./features/authSlice";
 import { apiSlice } from "./services/apiSlice";
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 
-const store = configureStore({
+const persistConfig = {
+  key: "root",
+  storage,
+};
+
+const persistedAuth = persistReducer(persistConfig, authReducer);
+
+export const store = configureStore({
   reducer: {
-    // count: counterReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
-    auth: authReducer,
+    auth: persistedAuth,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
+
+  devTools: process.env.NODE_ENV !== "production",
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export default store;
+export const persistor = persistStore(store);
