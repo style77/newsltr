@@ -45,6 +45,9 @@ jobs:
   test:
     name: Run Django Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./newsltr
 
     env:
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
@@ -62,6 +65,6 @@ jobs:
       - name: Django Test CI   
         uses: UKnowWhoIm/django-test-action@v0.6.1
         with:
-          settings-dir-path: newsltr/newsltr
-          requirements-file: newsltr/requirements.txt
+          settings-dir-path: newsltr
+          requirements-file: requirements.txt
           parallel-tests: true
