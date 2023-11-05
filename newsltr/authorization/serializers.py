@@ -1,12 +1,12 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers, status
-from djoser.serializers import UserCreatePasswordRetypeSerializer, UserSerializer
 from djoser.conf import settings
+from djoser.serializers import UserCreatePasswordRetypeSerializer, UserSerializer
+from rest_framework import serializers, status
+from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.serializers import (
     TokenObtainSerializer,
     update_last_login,
 )
-from rest_framework_simplejwt.exceptions import AuthenticationFailed
 from rest_framework_simplejwt.tokens import RefreshToken, UntypedToken
 
 from newsltr.schemas import JWTCookiesScheme  # noqa
@@ -68,6 +68,20 @@ class InActiveUser(AuthenticationFailed):
 
 
 class CustomUserSerializer(UserSerializer):
+    class Meta:
+        model = User
+        fields = tuple(User.REQUIRED_FIELDS) + (
+            settings.USER_ID_FIELD,
+            settings.LOGIN_FIELD,
+            "first_name",
+            "last_name",
+            "date_joined",
+            "last_login",
+        )
+        read_only_fields = (settings.LOGIN_FIELD, "date_joined", "last_login")
+
+
+class CurrentUserSerializer(UserSerializer):
     class Meta:
         model = User
         fields = tuple(User.REQUIRED_FIELDS) + (

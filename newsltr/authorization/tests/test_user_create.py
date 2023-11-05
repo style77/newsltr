@@ -1,11 +1,11 @@
-from rest_framework import status
-from rest_framework.test import APITestCase
-from rest_framework.reverse import reverse
-from djet import assertions
 from django.contrib.auth import get_user_model
+from djet import assertions
+from djoser.conf import settings as default_settings
+from rest_framework import status
+from rest_framework.reverse import reverse
+from rest_framework.test import APITestCase
 
 from authorization.tests.common import TEST_DATA, create_user, mock, perform_create_mock
-from djoser.conf import settings as default_settings
 
 User = get_user_model()
 
@@ -17,17 +17,12 @@ class UserCreateViewTest(
     assertions.InstanceAssertionsMixin,
 ):
     def setUp(self):
+        super().setUp()
         self.base_url = reverse("user-list")
 
     def test_post_create_user_without_login(self):
-        data = {
-            "first_name": TEST_DATA["first_name"],
-            "last_name": TEST_DATA["last_name"],
-            "email": TEST_DATA["email"],
-            "password": TEST_DATA["password"],
-            "re_password": TEST_DATA["password"],
-        }
-
+        data = TEST_DATA.copy()
+        data["re_password"] = TEST_DATA["password"]
         response = self.client.post(self.base_url, data)
         self.assert_status_equal(response, status.HTTP_201_CREATED)
         self.assertTrue("password" not in response.data)
@@ -36,7 +31,7 @@ class UserCreateViewTest(
         user = User.objects.get(email=TEST_DATA["email"])
         self.assertTrue(user.check_password(TEST_DATA["password"]))
         self.assert_emails_in_mailbox(1)
-        self.assert_email_exists(to=[data["email"]])
+        self.assert_email_exists(to=[TEST_DATA["email"]])
         self.assertFalse(user.is_active)
 
     def test_post_not_create_new_user_if_email_exists(self):

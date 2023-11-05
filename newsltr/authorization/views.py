@@ -1,53 +1,19 @@
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.response import Response
-
 from django.conf import settings
-
-from djoser.social.views import ProviderAuthView
-
-from rest_framework_simplejwt.views import (
-    TokenViewBase,
-    TokenVerifyView,
-    TokenRefreshView,
-)
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework_simplejwt.exceptions import (
     AuthenticationFailed,
-    TokenError,
     InvalidToken,
+    TokenError,
+)
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+    TokenVerifyView,
+    TokenViewBase,
 )
 
 from authorization.serializers import CustomTokenObtainPairSerializer, InActiveUser
-
-
-class CustomProviderAuthView(ProviderAuthView):
-    def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-
-        if response.status_code == 201:
-            access_token = response.data.get('access')
-            refresh_token = response.data.get('refresh')
-
-            response.set_cookie(
-                'access',
-                access_token,
-                max_age=settings.SIMPLE_JWT["AUTH_COOKIE_MAX_AGE"],
-                path=settings.SIMPLE_JWT["AUTH_COOKIE_PATH"],
-                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-                httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-                samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"]
-            )
-            response.set_cookie(
-                'refresh',
-                refresh_token,
-                max_age=settings.SIMPLE_JWT["AUTH_COOKIE_MAX_AGE"],
-                path=settings.SIMPLE_JWT["AUTH_COOKIE_PATH"],
-                secure=settings.SIMPLE_JWT["AUTH_COOKIE_SECURE"],
-                httponly=settings.SIMPLE_JWT["AUTH_COOKIE_HTTP_ONLY"],
-                samesite=settings.SIMPLE_JWT["AUTH_COOKIE_SAMESITE"]
-            )
-
-        return response
 
 
 class EmailTokenObtainPairView(TokenViewBase):
@@ -119,6 +85,7 @@ class CustomTokenVerifyView(TokenVerifyView):
     """
     Takes a token and returns correct HTTP status if it is valid or not.
     """
+
     def post(self, request, *args, **kwargs):
         access_token = request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE"])
 
@@ -132,6 +99,7 @@ class LogoutView(APIView):
     """
     Logout user by deleting cookies.
     """
+
     serializer_class = None
 
     def post(self, request, *args, **kwargs):

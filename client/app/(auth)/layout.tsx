@@ -3,13 +3,14 @@ import React from "react";
 import formDecor from "@/public/login-decor.svg";
 import "../globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Nunito_Sans } from "next/font/google";
 import Provider from "@/redux/Provider";
-import { Toaster } from "@/components/ui/toaster";
+import Setup from "@/components/utils/Setup";
 
-import Setup from "@/utils/Setup";
-
-const inter = Inter({ subsets: ["latin"] });
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,7 +24,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={nunitoSans.className}>
         <Provider>
           <div className="flex justify-between h-screen min-h-[900px] w-full ">
             <div className="grow flex justify-center">{children}</div>

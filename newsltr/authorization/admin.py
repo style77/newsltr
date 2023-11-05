@@ -1,4 +1,11 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
+
 from .models import User
 
-admin.site.register(User)
+
+class UserAdmin(ModelAdmin):
+    ...
+
+
+admin.site.register(User, UserAdmin)

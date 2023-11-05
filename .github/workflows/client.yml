@@ -61,7 +61,7 @@ jobs:
 
   vitest:
     name: 🃏 Vitest
-    # needs: [changes]
+    needs: [lint]
     # if: needs.changes.outputs.DEPLOYABLE == 'true'
     runs-on: ubuntu-latest
     steps:

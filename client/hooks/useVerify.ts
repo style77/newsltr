@@ -4,7 +4,7 @@ import { isLoadingFinished, setAuth } from "@/redux/features/authSlice";
 import { useAppDispatch } from "@/redux/hooks";
 
 export const useVerify = () => {
-  const [verify] = useVerifyMutation();
+  const [verify, { isLoading }] = useVerifyMutation();
   const dispatch = useAppDispatch();
   useEffect(() => {
     try {
@@ -17,4 +17,5 @@ export const useVerify = () => {
       dispatch(isLoadingFinished());
     }
   }, []);
+  return isLoading;
 };

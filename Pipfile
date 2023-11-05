@@ -20,11 +20,22 @@ psutil = "*"
 django-cors-headers = "*"
 django-redis = "*"
 djet = "*"
-drf-spectacular = {extras = ["sidecar"], version = "*"}
+drf-spectacular = {extras = ["sidecar"] }
 celery = "*"
 django-celery-results = "*"
 django-celery-beat = "*"
-django-anymail = {extras = ["sendgrid"], version = "*"}
+django-anymail = {extras = ["sendgrid"] }
+install = "*"
+drf-nested-routers = "*"
+stripe = "*"
+pydantic = "*"
+django-unfold = "*"
+isort = {extras = ["requirements_deprecated_finder", "pipfile_deprecated_finder"], version = "*"}
+django-allauth = "*"
+celery-redbeat = "*"
+flower = "*"
+trix = "*"
+django-trix = "*"
 
 [dev-packages]
 flake8 = "*"

@@ -46,42 +46,47 @@ jobs:
     name: Run Django Tests
     runs-on: ubuntu-latest
 
-    env:
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      REDIS_URL: ${{ secrets.REDIS_URL }}
-      EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-      EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-      EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-      SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v2
         with:
-          python-version: 3.11 
-
+          python-version: 3.11
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/newsltr/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
       - name: Install dependencies
         run: |
-          pip install -r newsltr/requirements.txt
-          pip install coverage
-
-      - name: Run Django tests
+          python -m pip install --upgrade pip
+          python -m pip install -r newsltr/requirements.txt
+        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Run Django Tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+          EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+          EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+          SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
+          STRIPE_SECRET_KEY_TEST: ${{ secrets.STRIPE_SECRET_KEY_TEST }}
+          STRIPE_PUBLISHABLE_KEY_TEST: ${{ secrets.STRIPE_PUBLISHABLE_KEY_TEST }}
         working-directory: newsltr
         run: |
           python manage.py test --noinput
-
-      - name: Collect test coverage
-        working-directory: newsltr
-        run: |
-          coverage run manage.py test --noinput
-          coverage xml
-
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage-report
-          path: newsltr/coverage.xml

@@ -13,17 +13,6 @@ import {
 import { UserNav } from "./UserNav";
 import { useAppSelector } from "@/redux/hooks";
 
-const guestList = [
-  {
-    name: "Log in",
-    url: "/login",
-  },
-  {
-    name: "Sign up",
-    url: "/register",
-  },
-];
-
 const Navbar = () => {
   const { isUserAuthenticated } = useAppSelector((state) => state.auth);
   console.log(isUserAuthenticated);
@@ -34,8 +23,10 @@ const Navbar = () => {
         <NavigationMenuLink className="mr-3" href="login">
           Log in
         </NavigationMenuLink>
+      </NavigationMenuItem>
+      <NavigationMenuItem>
         <NavigationMenuLink
-          className="border border-text p-2 rounded"
+          className="border border-text py-2 px-4 rounded"
           href="register"
         >
           Sign up
@@ -55,10 +46,10 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="flex border-b border-red-300 justify-between py-8 px-4">
+    <nav className="flex max-w-6xl mx-auto justify-between py-8 px-4">
       <div className="h-6 w-6 bg-zinc-200" />
       <NavigationMenu>
-        <NavigationMenuList className="space-x-4">
+        <NavigationMenuList className="space-x-8">
           {isUserAuthenticated ? authLinks : guestLinks}
         </NavigationMenuList>
       </NavigationMenu>

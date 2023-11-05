@@ -1,17 +1,16 @@
+from django.contrib.auth import get_user_model
 from django.test import TestCase
+from djoser.social.token.jwt import TokenStrategy
 from rest_framework_simplejwt.serializers import TokenVerifySerializer
 
-from djoser.social.token.jwt import TokenStrategy
-from django.contrib.auth import get_user_model
-
-from authorization.tests.common import TEST_DATA, create_user
+from authorization.tests.common import create_user
 
 User = get_user_model()
 
 
 class JWTStrategyTestCase(TestCase):
     def test_obtain_provides_valid_token_for_given_user(self):
-        user = create_user(**TEST_DATA)
+        user = create_user()
 
         res = TokenStrategy.obtain(user)
         self.assertEqual(res["user"], user)

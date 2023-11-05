@@ -11,10 +11,11 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
-from pathlib import Path
 from datetime import timedelta
-from dotenv import load_dotenv
+from pathlib import Path
+
 import dj_database_url
+from dotenv import load_dotenv
 
 DEVELOPMENT = os.getenv("DJANGO_DEVELOPMENT", True)
 if DEVELOPMENT:
@@ -36,14 +37,23 @@ DEBUG = DEVELOPMENT
 
 if DEVELOPMENT:
     ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
+    FRONT_END_BASE_URL = "http://localhost:3000"
+    STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY_TEST")
+    STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET_TEST")
+    STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY_TEST")
 else:
-    RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME")
-    if RENDER_EXTERNAL_HOSTNAME:
-        ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME]
-    else:
-        ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ["*"]
+    FRONT_END_BASE_URL = os.getenv("FRONT_END_BASE_URL")
+    STRIPE_KEY = os.getenv("STRIPE_SECRET_KEY")
+    STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+    STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+
+# Stripe
 
 # Application definition
+
+# Custom Admin Implementation
+UNFOLD_ADMIN = ["unfold"]
 
 # Core Django Apps
 CORE_APPS = [
@@ -60,7 +70,10 @@ THIRD_PARTY_APPS = [
     "corsheaders",
     "rest_framework",
     "djoser",
-    "djoser.social",
+    # "allauth",
+    # "allauth.account",
+    # "allauth.socialaccount",
+    # "allauth.socialaccount.providers.google",
 ]
 
 # Health Check Apps
@@ -78,7 +91,13 @@ HEALTH_CHECK_APPS = [
 ]
 
 # Custom Apps
-CUSTOM_APPS = ["authorization.apps.AuthorizationConfig"]
+CUSTOM_APPS = [
+    "authorization.apps.AuthorizationConfig",
+    "workspaces.apps.WorkspacesConfig",
+    "payments.apps.PaymentsConfig",
+    "campaigns.apps.CampaignsConfig",
+    "email_templates.apps.EmailTemplatesConfig",
+]
 
 # Celery Apps
 CELERY_APPS = [
@@ -88,7 +107,12 @@ CELERY_APPS = [
 
 # Combine all categories
 INSTALLED_APPS = (
-    CORE_APPS + THIRD_PARTY_APPS + HEALTH_CHECK_APPS + CUSTOM_APPS + CELERY_APPS
+    UNFOLD_ADMIN
+    + CORE_APPS
+    + THIRD_PARTY_APPS
+    + HEALTH_CHECK_APPS
+    + CUSTOM_APPS
+    + CELERY_APPS
 )
 
 # Redis
@@ -103,6 +127,7 @@ CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_IMPORTS = ()
+CELERY_REDBEAT_URL = os.getenv("REDBEAT_REDIS_URL", REDIS_URL)
 
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
@@ -138,6 +163,8 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
     ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
+    "PAGE_SIZE": 50,
 }
 
 if DEVELOPMENT:
@@ -160,12 +187,15 @@ if DEVELOPMENT:
         "REDOC_DIST": "SIDECAR",
         "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
         "SERVE_AUTHENTICATION": [],
+        "AUTHENTICATION_WHITELIST": [],
         # OTHER SETTINGS
     }
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "ACCESS_TOKEN_LIFETIME": timedelta(hours=2)
+    if DEVELOPMENT
+    else timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
     # To include additional security let refresh_tokens be blacklisted
     # after using one of them
@@ -177,6 +207,7 @@ SIMPLE_JWT = {
     "USER_ID_CLAIM": "user_id",
     "TOKEN_OBTAIN_SERIALIZER": "authorization.serializers.CustomTokenObtainSerializer",
     # "TOKEN_REFRESH_SERIALIZER": "authorization.serializers.CustomTokenRefreshSerializer",
+    "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "TOKEN_VERIFY_SERIALIZER": "authorization.serializers.CustomTokenVerifySerializer",
     "USER_AUTHENTICATION_RULE": "authorization.utils.user_authentication_rule",
     "AUTH_COOKIE": "access_token",
@@ -201,35 +232,36 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "TOKEN_MODEL": None,
     "HIDE_USERS": True,
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": os.getenv("REDIRECT_URLS", "").split(","),
     "SERIALIZERS": {
         "user_create_password_retype": "authorization.serializers.CustomUserCreateSerliazier",
         "user": "authorization.serializers.CustomUserSerializer",
+        "current_user": "authorization.serializers.CurrentUserSerializer",
     },
     "EMAIL": {
-        "activation": "newsltr.email.ActivationEmail",
-        "confirmation": "newsltr.email.ConfirmationEmail",
-        "password_reset": "newsltr.email.PasswordResetEmail",
-        "password_changed_confirmation": "newsltr.email.PasswordChangedConfirmationEmail",
-        "username_changed_confirmation": "newsltr.email.UsernameChangedConfirmationEmail",
-        "username_reset": "newsltr.email.UsernameResetEmail",
+        "activation": "authorization.email.ActivationEmail",
+        "confirmation": "authorization.email.ConfirmationEmail",
+        "password_reset": "authorization.email.PasswordResetEmail",
+        "password_changed_confirmation": "authorization.email.PasswordChangedConfirmationEmail",
+        "username_changed_confirmation": "authorization.email.UsernameChangedConfirmationEmail",
+        "username_reset": "authorization.email.UsernameResetEmail",
     },
 }
 
 AUTHENTICATION_BACKENDS = (
-    "social_core.backends.google.GoogleOAuth2",
     "django.contrib.auth.backends.AllowAllUsersModelBackend",
+    # "allauth.account.auth_backends.AuthenticationBackend",
     # "django.contrib.auth.backends.ModelBackend",
 )
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("GOOGLE_OAUTH2_KEY")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_OAUTH2_SECRET")
-SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/userinfo.profile",
-    "openid",
-]
-SOCIAL_AUTH_GOOGLE_OAUTH2_EXTRA_DATA = ["first_name", "last_name"]
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': os.getenv("GOOGLE_OAUTH2_CLIENT_ID"),
+            'secret': os.getenv("GOOGLE_OAUTH2_SECRET"),
+            'key': os.getenv("GOOGLE_OAUTH2_KEY")
+        }
+    }
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -241,6 +273,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 # Cors
@@ -273,6 +306,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "newsltr.wsgi.application"
 
+
+WORKSPACES = {
+    "ACTIVATION_URL": "invite/accept/{uid}/{workspace_id}/{token}",
+    "API_KEY_LENGTH": 40,
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -334,3 +372,11 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Admin styling
+UNFOLD = {
+    "SITE_TITLE": "newsltr",
+    "SITE_HEADER": "newsltr - admin panel",
+    "SITE_URL": None,
+}

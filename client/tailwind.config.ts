@@ -17,7 +17,7 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
+        border: "var(--border)",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -29,6 +29,9 @@ module.exports = {
         secondary: {
           DEFAULT: "var(--secondary)",
           foreground: "hsl(var(--secondary-foreground))",
+        },
+        grey: {
+          DEFAULT: "var(--grey)",
         },
         text: "var(--text)",
         error: "var(--error)",
@@ -71,6 +74,10 @@ module.exports = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      backgroundImage: {
+        "bg-1": "url('/bg-1.svg')",
+        "bg-2": "url('/mailbox.svg')",
       },
     },
   },

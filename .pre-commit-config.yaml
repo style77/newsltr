@@ -8,9 +8,9 @@ repos:
     rev: 22.10.0
     hooks:
       - id: black
-  - repo: local
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v2.4.0
     hooks:
-      - id: generate-requirements
-        name: Run pip freeze > requirements.txt
-        entry: pipenv run pip freeze > newsltr/requirements.txt
-        language: system
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+        args: []

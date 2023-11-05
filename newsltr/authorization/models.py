@@ -57,3 +57,10 @@ class User(AbstractUser):
     username = None
 
     objects = UserManager()
+
+    workspaces = models.ManyToManyField(
+        "workspaces.Workspace",
+        through="workspaces.WorkspaceMembership",
+        related_name="members",
+        related_query_name="member",
+    )

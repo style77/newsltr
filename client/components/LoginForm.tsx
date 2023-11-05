@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { useLogin } from "@/hooks/useLogin";
 import { useAppSelector } from "@/redux/hooks";
@@ -32,7 +33,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <Error error={error} />
+      <Error error={error} getValues={getValues} />
       <Form
         config={config}
         register={registerInput}
