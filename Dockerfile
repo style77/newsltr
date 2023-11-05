@@ -1,5 +1,4 @@
 FROM python:3.11
-SHELL ["/bin/bash", "-c"]
 
 ENV PIP_NO_CACHE_DIR off
 ENV PIP_DISABLE_PIP_VERSION_CHECK on
