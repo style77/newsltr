@@ -58,6 +58,7 @@ jobs:
       SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
       STRIPE_SECRET_KEY_TEST: ${{ secrets.STRIPE_SECRET_KEY_TEST }}
       STRIPE_PUBLISHABLE_KEY_TEST: ${{ secrets.STRIPE_PUBLISHABLE_KEY_TEST }}
+      working-directory: ./newsltr
 
     steps:
       - name: Checkout code
