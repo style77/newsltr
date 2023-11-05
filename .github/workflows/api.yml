@@ -55,6 +55,7 @@ jobs:
       SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
       STRIPE_SECRET_KEY_TEST: ${{ secrets.STRIPE_SECRET_KEY_TEST }}
       STRIPE_PUBLISHABLE_KEY_TEST: ${{ secrets.STRIPE_PUBLISHABLE_KEY_TEST }}
+      working-directory: ./newsltr
 
     steps:
       - name: Checkout code
@@ -62,6 +63,6 @@ jobs:
       - name: Django Test CI   
         uses: UKnowWhoIm/django-test-action@v0.6.1
         with:
-          settings-dir-path: newsltr/newsltr
-          requirements-file: newsltr/requirements.txt
+          settings-dir-path: newsltr
+          requirements-file: requirements.txt
           parallel-tests: true
