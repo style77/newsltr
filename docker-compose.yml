@@ -18,75 +18,86 @@ services:
 
   newsltr-api:
     build:
-      context: ./newsltr
+      dockerfile: Dockerfile
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
     image: newsltr-api:latest
     container_name: newsltr-api
     ports:
       - "127.0.0.1:8000:8000"
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@newsltr-db:5432/newsltr
-      REDIS_URL: redis://newsltr-redis:6379
-      DJANGO_SETTINGS_MODULE: newsltr.settings
+    env_file:
+      - newsltr/.env
     depends_on:
       - newsltr-db
       - newsltr-redis
     volumes:
-      - .:/code
+      - .:/app
 
-  newsltr-celery:
+  newsltr-migrations:
     build:
-      context: ./newsltr
       dockerfile: Dockerfile
-    image: newsltr-celery:latest
-    container_name: newsltr-celery
-    command: celery -A newsltr worker -Q default -n newsltr.%%h --loglevel=INFO --max-memory-per-child=512000 --concurrency=1
+    image: newsltr-migrations:latest
+    container_name: newsltr-migrations
+    restart: no
+    command: python manage.py migrate
+    env_file:
+      - newsltr/.env
     volumes:
-      - .:/code
+      - .:/app
     depends_on:
-      - newsltr-api
       - newsltr-db
-      - newsltr-redis
-    links:
       - newsltr-api
-      - newsltr-db
       - newsltr-redis
 
-  newsltr-celery-beat:
-    build:
-      context: ./newsltr
-      dockerfile: Dockerfile
-    image: newsltr-celery-beat:latest
-    container_name: newsltr-celery-beat
-    command: celery -A newsltr beat -S redbeat.RedBeatScheduler --loglevel=DEBUG --pidfile /tmp/newsltr-celerybeat.pid
-    volumes:
-      - .:/code
-    depends_on:
-      - newsltr-api
-      - newsltr-db
-      - newsltr-redis
-    links:
-      - newsltr-api
-      - newsltr-db
-      - newsltr-redis
+  # newsltr-celery:
+  #   build:
+  #     dockerfile: Dockerfile
+  #   image: newsltr-celery:latest
+  #   container_name: newsltr-celery
+  #   command: celery -A newsltr worker -Q default -n newsltr.%%h --loglevel=INFO --max-memory-per-child=512000 --concurrency=1
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - newsltr-api
+  #     - newsltr-db
+  #     - newsltr-redis
+  #   links:
+  #     - newsltr-api
+  #     - newsltr-db
+  #     - newsltr-redis
 
-  newsltr-celery-flower:
-    build:
-      context: ./newsltr
-      dockerfile: Dockerfile
-    container_name: newsltr-celery-flower
-    command: celery -A newsltr flower --loglevel=INFO --port=9090 --broker=redis://newsltr-redis:6379/0 --basic_auth=newsltr:newsltr
-    ports:
-      - "127.0.0.1:9090:9090"
-    restart: unless-stopped
-    volumes:
-      - .:/code
-    depends_on:
-      - newsltr-api
-      - newsltr-db
-      - newsltr-redis
-    links:
-      - newsltr-api
-      - newsltr-db
-      - newsltr-redis
+  # newsltr-celery-beat:
+  #   build:
+  #     dockerfile: Dockerfile
+  #   image: newsltr-celery-beat:latest
+  #   container_name: newsltr-celery-beat
+  #   command: celery -A newsltr beat -S redbeat.RedBeatScheduler --loglevel=DEBUG --pidfile /tmp/newsltr-celerybeat.pid
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - newsltr-api
+  #     - newsltr-db
+  #     - newsltr-redis
+  #   links:
+  #     - newsltr-api
+  #     - newsltr-db
+  #     - newsltr-redis
+
+  # newsltr-celery-flower:
+  #   build:
+  #     dockerfile: Dockerfile
+  #   container_name: newsltr-celery-flower
+  #   command: celery -A newsltr flower --loglevel=INFO --port=9090 --broker=redis://newsltr-redis:6379/0 --basic_auth=newsltr:newsltr
+  #   ports:
+  #     - "127.0.0.1:9090:9090"
+  #   restart: unless-stopped
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - newsltr-api
+  #     - newsltr-db
+  #     - newsltr-redis
+  #   links:
+  #     - newsltr-api
+  #     - newsltr-db
+  #     - newsltr-redis
