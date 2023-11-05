@@ -48,7 +48,6 @@ jobs:
 
     env:
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
       EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
@@ -60,30 +59,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
+      - name: Django Test CI   
+        uses: UKnowWhoIm/django-test-action@v0.6.1
         with:
-          python-version: 3.11 
-
-      - name: Install dependencies
-        run: |
-          pip install -r newsltr/requirements.txt
-          pip install coverage
-
-      - name: Run Django tests
-        working-directory: newsltr
-        run: |
-          python manage.py test --noinput
-
-      - name: Collect test coverage
-        working-directory: newsltr
-        run: |
-          coverage run manage.py test --noinput
-          coverage xml
-
-      - name: Upload coverage report
-        uses: actions/upload-artifact@v2
-        with:
-          name: coverage-report
-          path: newsltr/coverage.xml
+          settings-dir-path: newsltr/newsltr
