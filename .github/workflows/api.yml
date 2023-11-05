@@ -63,3 +63,5 @@ jobs:
         uses: UKnowWhoIm/django-test-action@v0.6.1
         with:
           settings-dir-path: newsltr/newsltr
+          requirements-file: newsltr/requirements.txt
+          parallel-tests: true
