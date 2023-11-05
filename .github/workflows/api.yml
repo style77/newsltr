@@ -45,27 +45,48 @@ jobs:
   test:
     name: Run Django Tests
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./newsltr
 
-    env:
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-      REDIS_URL: ${{ secrets.REDIS_URL }}
-      EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
-      EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
-      EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
-      SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
-      STRIPE_SECRET_KEY_TEST: ${{ secrets.STRIPE_SECRET_KEY_TEST }}
-      STRIPE_PUBLISHABLE_KEY_TEST: ${{ secrets.STRIPE_PUBLISHABLE_KEY_TEST }}
-      working-directory: ./newsltr
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Django Test CI   
-        uses: UKnowWhoIm/django-test-action@v0.6.1
+      - uses: actions/checkout@v2
         with:
-          settings-dir-path: newsltr
-          requirements-file: requirements.txt
-          parallel-tests: true
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+      - uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/newsltr/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r newsltr/requirements.txt
+        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Run Django Tests
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/postgres
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          REDIS_URL: ${{ secrets.REDIS_URL }}
+          EMAIL_HOST_USER: ${{ secrets.EMAIL_HOST_USER }}
+          EMAIL_HOST_PASSWORD: ${{ secrets.EMAIL_HOST_PASSWORD }}
+          EMAIL_HOST: ${{ secrets.EMAIL_HOST }}
+          SENDINBLUE_API_KEY: ${{ secrets.SENDINBLUE_API_KEY }}
+          STRIPE_SECRET_KEY_TEST: ${{ secrets.STRIPE_SECRET_KEY_TEST }}
+          STRIPE_PUBLISHABLE_KEY_TEST: ${{ secrets.STRIPE_PUBLISHABLE_KEY_TEST }}
+        working-directory: newsltr
+        run: |
+          python manage.py test --noinput
