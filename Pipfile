@@ -24,7 +24,6 @@ drf-spectacular = {extras = ["sidecar"] }
 celery = "*"
 django-celery-results = "*"
 django-celery-beat = "*"
-django-anymail = {extras = ["sendgrid"] }
 install = "*"
 drf-nested-routers = "*"
 stripe = "*"
@@ -36,6 +35,7 @@ celery-redbeat = "*"
 flower = "*"
 trix = "*"
 django-trix = "*"
+django-ses = "*"
 
 [dev-packages]
 flake8 = "*"
