@@ -129,23 +129,15 @@ CELERY_REDBEAT_URL = os.getenv("REDBEAT_REDIS_URL", REDIS_URL)
 
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
-# Email
+# AWS
 
 AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
 AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
-EMAIL_BACKEND = (
-    "django_ses.SESBackend"
-    if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
-    else "django.core.mail.backends.smtp.EmailBackend"
-)
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_TIMEOUT = 300  # in seconds
-DEFAULT_FROM_EMAIL = f"Newsltr <{'newsltr@newsltr.io' if os.getenv('SENDINBLUE_API_KEY') else EMAIL_HOST}>"
+# Email
+
+EMAIL_BACKEND = "django_ses.SESBackend"
+DEFAULT_FROM_EMAIL = f"Newsltr <{'newsltr@newsltr.io' if DEVELOPMENT else os.getenv('DEFAULT_FROM_EMAIL')}>"
 
 CELERY_EMAIL_CHUNK_SIZE = 10
 # CELERY_IMPORTS = ("newsltr.tasks",)
@@ -251,11 +243,11 @@ AUTHENTICATION_BACKENDS = (
 )
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'APP': {
-            'client_id': os.getenv("GOOGLE_OAUTH2_CLIENT_ID"),
-            'secret': os.getenv("GOOGLE_OAUTH2_SECRET"),
-            'key': os.getenv("GOOGLE_OAUTH2_KEY")
+    "google": {
+        "APP": {
+            "client_id": os.getenv("GOOGLE_OAUTH2_CLIENT_ID"),
+            "secret": os.getenv("GOOGLE_OAUTH2_SECRET"),
+            "key": os.getenv("GOOGLE_OAUTH2_KEY"),
         }
     }
 }
