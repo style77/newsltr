@@ -126,7 +126,6 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_IMPORTS = ()
 CELERY_REDBEAT_URL = os.getenv("REDBEAT_REDIS_URL", REDIS_URL)
-
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
 
 # AWS
@@ -139,8 +138,6 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 EMAIL_BACKEND = "django_ses.SESBackend"
 DEFAULT_FROM_EMAIL = f"Newsltr <{os.getenv('DEFAULT_FROM_EMAIL', 'newsltr@newsltr.io')}>"
 
-CELERY_EMAIL_CHUNK_SIZE = 10
-# CELERY_IMPORTS = ("newsltr.tasks",)
 # Rest Framework
 
 AUTH_USER_MODEL = "authorization.User"
