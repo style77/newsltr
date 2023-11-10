@@ -137,7 +137,7 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 # Email
 
 EMAIL_BACKEND = "django_ses.SESBackend"
-DEFAULT_FROM_EMAIL = f"Newsltr <{'newsltr@newsltr.io' if DEVELOPMENT else os.getenv('DEFAULT_FROM_EMAIL')}>"
+DEFAULT_FROM_EMAIL = f"Newsltr <{os.getenv('DEFAULT_FROM_EMAIL', 'newsltr@newsltr.io')}>"
 
 CELERY_EMAIL_CHUNK_SIZE = 10
 # CELERY_IMPORTS = ("newsltr.tasks",)
