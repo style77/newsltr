@@ -5,12 +5,12 @@ from .views import Checkout, MySubscriptions, Subscriptions
 
 router = routers.DefaultRouter()
 router.register(
-    r"payment/me/subscriptions", MySubscriptions, basename="my-subscriptions"
+    r"me/subscriptions", MySubscriptions, basename="my-subscriptions"
 )
 
 urlpatterns = [
-    path("payment/subscribe/", Checkout.as_view(), name="payment-create-subscription"),
+    path("subscribe/", Checkout.as_view(), name="payment-create-subscription"),
     path(
-        "payment/subscriptions/", Subscriptions.as_view(), name="payment-subscriptions"
+        "subscriptions/", Subscriptions.as_view(), name="payment-subscriptions"
     ),
 ] + router.urls
