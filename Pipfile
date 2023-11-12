@@ -33,7 +33,6 @@ isort = {extras = ["requirements_deprecated_finder", "pipfile_deprecated_finder"
 django-allauth = "*"
 celery-redbeat = "*"
 flower = "*"
-trix = "*"
 django-trix = "*"
 django-ses = "*"
 
