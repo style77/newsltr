@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.http import HttpResponseRedirect
 
 import stripe
 from drf_spectacular.utils import extend_schema
@@ -25,19 +26,23 @@ class Checkout(views.APIView):
     serializer_class = CreateSubscriptionSerializer
 
     def post(self, request, *args, **kwargs):
+        """
+            Subscribe to plan, this endpoint will redirect user to checkout session
+        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
         data = serializer.validated_data
 
-        get_or_create_stripe_customer(request.user)
+        stripe_user = get_or_create_stripe_customer(request.user)
 
-        checkout_session = stripe.checkout.Session.create(
+        session = stripe.checkout.Session.create(
             client_reference_id=request.user.id,
             success_url=settings.FRONT_END_BASE_URL
             + "/workspaces?checkout_id={CHECKOUT_SESSION_ID}",
             cancel_url=settings.FRONT_END_BASE_URL + "/payment/cancel",
             payment_method_types=["card"],
+            customer=stripe_user.customer_id,
             mode="subscription",
             line_items=[
                 {
@@ -47,7 +52,7 @@ class Checkout(views.APIView):
             ],
         )
 
-        return Response({"session_id": checkout_session.get("id")})
+        return HttpResponseRedirect(session.url)
 
 
 @extend_schema(
