@@ -61,16 +61,17 @@ class Subscriptions(views.APIView):
         """
         Get all subscription plans
         """
-        customer_id = None
+        subscribed_product_ids = []
         if request.user.is_authenticated:
             stripe_user = get_or_create_stripe_customer(request.user)
             customer_id = stripe_user.customer_id
 
-        user_subscriptions = stripe.Subscription.list(customer=customer_id)
-        subscribed_product_ids = set(
-            subscription["items"]["data"][0]["price"]["product"]
-            for subscription in user_subscriptions.data
-        )
+            user_subscriptions = stripe.Subscription.list(customer=customer_id)
+            subscribed_product_ids = set(
+                subscription["items"]["data"][0]["price"]["product"]
+                for subscription in user_subscriptions.data
+            )
+
         all_products = stripe.Product.list(active=True, expand=["data.price"])
         available_products = [
             product
