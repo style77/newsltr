@@ -4,8 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
-djangorestframework = "*"
+django = "==4.2.7"
+djangorestframework = "==3.14.0"
 djoser = "==2.2.2"
 djangorestframework-simplejwt = "*"
 social-auth-app-django = "*"
