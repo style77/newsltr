@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),
-                ("customer_id", models.CharField(max_length=128, null=True)),
+                ("customer_id", models.CharField(max_length=128, null=False)),
             ],
         ),
     ]

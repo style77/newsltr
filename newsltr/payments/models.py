@@ -11,4 +11,4 @@ class StripeUser(models.Model):
         related_name="stripe_user",
         primary_key=True,
     )
-    customer_id = models.CharField(max_length=128, null=True)
+    customer_id = models.CharField(max_length=128, null=False)
