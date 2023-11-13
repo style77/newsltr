@@ -90,8 +90,6 @@ Thank you to all the contributors who have played a part in expanding this platf
 
 Ready to get started? Visit our [website](https://github.com/Style77/newsltr) to explore Newsltr, and let's transform the way you manage newsletters!
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 ### Built With
 
@@ -104,10 +102,6 @@ Ready to get started? Visit our [website](https://github.com/Style77/newsltr) to
 * [![Celery][Celery]][Celery-url]
 * [![Docker][Docker]][Docker-url]
 * [![Docker Compose][Docker-Compose]][Docker-Compose-url]
-* [![Kubernetes][Kubernetes]][Kubernetes-url]
-* [![Helm][Helm]][Helm-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 ## Getting Started
@@ -142,8 +136,6 @@ This is an list of things you need to use the software for development purposes 
 
 Coming soon...
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ## Roadmap
 
 - [ ] AI-powered content generation
@@ -153,8 +145,6 @@ Coming soon...
     - [ ] Go
 
 See the [open issues](https://github.com/Style77/newsltr/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -170,16 +160,12 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- LICENSE -->
 ## License
 
 Distributed under the CC BY-NC-ND License. See `LICENSE` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -189,8 +175,6 @@ Distributed under the CC BY-NC-ND License. See `LICENSE` for more information.
 [Joachim Hodana](https://www.linkedin.com/in/joachim-hodana-33815b245/) ([stylek777@gmail.com](mailto:stylek777@gmail.com)) and [Mohamed Younes Abdat](https://www.linkedin.com/in/mohamed-younes-abdat-506603132)
 
 Project Link: [https://github.com/Style77/newsltr](https://github.com/Style77/newsltr)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
