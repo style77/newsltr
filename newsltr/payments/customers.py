@@ -1,4 +1,5 @@
 import stripe
+
 from authorization.models import User
 
 from .models import StripeUser

@@ -1,5 +1,6 @@
 from authorization.tests.mixins import UserTestCaseMixin
-from workspaces.tests.mixins import WorkspaceKeyTestCaseMixin, WorkspaceTestCaseMixin
+from workspaces.tests.mixins import (WorkspaceKeyTestCaseMixin,
+                                     WorkspaceTestCaseMixin)
 
 from .providers import CustomerProvider
 

@@ -5,7 +5,8 @@ from rest_framework import status
 from rest_framework.reverse import reverse
 from rest_framework.test import APITestCase
 
-from authorization.tests.common import TEST_DATA, create_user, mock, perform_create_mock
+from authorization.tests.common import (TEST_DATA, create_user, mock,
+                                        perform_create_mock)
 
 User = get_user_model()
 

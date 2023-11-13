@@ -1,5 +1,6 @@
-import stripe
 from typing import Dict, List
+
+import stripe
 
 from payments.models import StripeUser
 

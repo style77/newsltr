@@ -14,7 +14,8 @@ urlpatterns = [
 
 if settings.DEVELOPMENT:
     from drf_spectacular.views import SpectacularAPIView  # noqa
-    from drf_spectacular.views import SpectacularRedocView, SpectacularSwaggerView
+    from drf_spectacular.views import (SpectacularRedocView,
+                                       SpectacularSwaggerView)
 
     urlpatterns += [
         path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),  # type: ignore

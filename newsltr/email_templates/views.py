@@ -1,16 +1,13 @@
-from drf_spectacular.utils import extend_schema
-from rest_framework.generics import (
-    ListAPIView,
-    CreateAPIView,
-    RetrieveUpdateDestroyAPIView,
-)
+from typing import Any, Type
 
-from email_templates.models import EmailTemplate
-from email_templates.serializers import EmailTemplateSerializer
-from campaigns.permissions import IsMemberOfWorkspace
+from drf_spectacular.utils import extend_schema
+from rest_framework.generics import (CreateAPIView, ListAPIView,
+                                     RetrieveUpdateDestroyAPIView)
 from rest_framework.serializers import BaseSerializer
 
-from typing import Type, Any
+from campaigns.permissions import IsMemberOfWorkspace
+from email_templates.models import EmailTemplate
+from email_templates.serializers import EmailTemplateSerializer
 
 
 class EmailTemplatesViewBase:

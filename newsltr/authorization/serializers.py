@@ -1,12 +1,11 @@
 from django.contrib.auth import get_user_model
 from djoser.conf import settings
-from djoser.serializers import UserCreatePasswordRetypeSerializer, UserSerializer
+from djoser.serializers import (UserCreatePasswordRetypeSerializer,
+                                UserSerializer)
 from rest_framework import serializers, status
 from rest_framework_simplejwt.exceptions import AuthenticationFailed
-from rest_framework_simplejwt.serializers import (
-    TokenObtainSerializer,
-    update_last_login,
-)
+from rest_framework_simplejwt.serializers import (TokenObtainSerializer,
+                                                  update_last_login)
 from rest_framework_simplejwt.tokens import RefreshToken, UntypedToken
 
 from newsltr.schemas import JWTCookiesScheme  # noqa

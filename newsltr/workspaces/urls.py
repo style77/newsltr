@@ -1,7 +1,8 @@
 from rest_framework.routers import DefaultRouter
 from rest_framework_nested import routers
 
-from .views import WorkspaceKeysViewSet, WorkspaceMembersViewSet, WorkspaceViewSet
+from .views import (WorkspaceKeysViewSet, WorkspaceMembersViewSet,
+                    WorkspaceViewSet)
 
 router = DefaultRouter()
 router.register(r"workspace", WorkspaceViewSet, basename="workspace")

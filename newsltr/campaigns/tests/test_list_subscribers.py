@@ -2,8 +2,8 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .common import set_up_test_data
 from ..models import CampaignSubscriber
+from .common import set_up_test_data
 
 
 class TestListSubscribersView(APITestCase):

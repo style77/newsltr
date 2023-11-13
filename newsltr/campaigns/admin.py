@@ -1,8 +1,7 @@
+from django.contrib import admin
 from unfold.admin import ModelAdmin
 
-from .models import CampaignSubscriber, Campaign
-
-from django.contrib import admin
+from .models import Campaign, CampaignSubscriber
 
 
 class CampaignBaseAdmin(ModelAdmin):

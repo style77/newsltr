@@ -1,10 +1,7 @@
 from django.urls import path
 
-from .views import (
-    CampaignUserCreateView,
-    CampaignUserListView,
-    CampaignUserRetrieveUpdateDeleteView,
-)
+from .views import (CampaignUserCreateView, CampaignUserListView,
+                    CampaignUserRetrieveUpdateDeleteView)
 
 urlpatterns = [
     path(

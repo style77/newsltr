@@ -1,8 +1,9 @@
+from typing import Literal
+
 import stripe
 
-from typing import Literal
-from payments.models import StripeUser
 from authorization.models import User
+from payments.models import StripeUser
 
 
 def get_or_create_stripe_customer(user: User):

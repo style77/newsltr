@@ -1,21 +1,17 @@
 from datetime import datetime
-from django.http import HttpResponseRedirect
 
 import stripe
+from django.conf import settings
+from django.http import HttpResponseRedirect
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status, views, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from django.conf import settings
-
 from .customers import get_or_create_stripe_customer
-from .serializers import (
-    CancelSubscriptionSerializer,
-    CreateSubscriptionSerializer,
-    ProductSerializer,
-    SubscriptionSerializer,
-)
+from .serializers import (CancelSubscriptionSerializer,
+                          CreateSubscriptionSerializer, ProductSerializer,
+                          SubscriptionSerializer)
 
 
 @extend_schema(

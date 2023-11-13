@@ -1,8 +1,8 @@
 from rest_framework.exceptions import ValidationError
-from rest_framework.serializers import ModelSerializer, HiddenField
+from rest_framework.serializers import HiddenField, ModelSerializer
 from rest_framework.validators import UniqueTogetherValidator
 
-from .models import CampaignSubscriber, Campaign
+from .models import Campaign, CampaignSubscriber
 
 
 class CampaignIdMixin(ModelSerializer[Campaign]):

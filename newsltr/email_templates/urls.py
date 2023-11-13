@@ -1,10 +1,7 @@
 from django.urls import path
 
-from .views import (
-    EmailTemplatesListView,
-    EmailTemplatesCreateView,
-    EmailTemplatesGetUpdateDeleteView,
-)
+from .views import (EmailTemplatesCreateView,
+                    EmailTemplatesGetUpdateDeleteView, EmailTemplatesListView)
 
 urlpatterns = [
     path(

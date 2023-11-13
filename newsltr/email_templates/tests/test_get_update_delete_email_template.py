@@ -1,8 +1,8 @@
 from django.urls import reverse
 from rest_framework.test import APITestCase
 
-from .common import setup_tests_data, deserialize_datetime
 from ..models import EmailTemplate
+from .common import deserialize_datetime, setup_tests_data
 
 
 class TestGetUpdateDeleteEmailTemplateView(APITestCase):
