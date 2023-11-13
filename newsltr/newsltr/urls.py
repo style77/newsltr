@@ -4,12 +4,12 @@ from django.urls import include, path
 from . import settings
 
 urlpatterns = [
-    path(r"api/v1/", include("authorization.urls")),
-    path(r"api/v1/", include("workspaces.urls")),
+    path(r"api/v1/auth/", include("authorization.urls")),
+    path(r"api/v1/workspace/", include("workspaces.urls")),
     path(r"api/v1/payment/", include("payments.urls")),
     path(r"api/v1/health/", include("health_check.urls")),
     path(r"api/v1/campaigns/", include("campaigns.urls")),
-    path("api/v1/email-templates/", include("email_templates.urls")),
+    path(r"api/v1/email-templates/", include("email_templates.urls")),
 ]
 
 if settings.DEVELOPMENT:

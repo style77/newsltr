@@ -5,9 +5,9 @@ from .views import (WorkspaceKeysViewSet, WorkspaceMembersViewSet,
                     WorkspaceViewSet)
 
 router = DefaultRouter()
-router.register(r"workspace", WorkspaceViewSet, basename="workspace")
+router.register(r"", WorkspaceViewSet, basename="workspace")
 
-workspace_router = routers.NestedSimpleRouter(router, r"workspace", lookup="workspace")
+workspace_router = routers.NestedSimpleRouter(router, r"", lookup="workspace")
 workspace_router.register(r"keys", WorkspaceKeysViewSet, basename="workspace-keys")
 workspace_router.register(
     r"members", WorkspaceMembersViewSet, basename="workspace-members"
