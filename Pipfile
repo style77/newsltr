@@ -35,6 +35,9 @@ celery-redbeat = "*"
 flower = "*"
 django-trix = "*"
 django-ses = "*"
+mypy = "*"
+djangorestframework-stubs = {extras = ["compatible-mypy"], version = "*"}
+django-stubs = {extras = ["compatible-mypy"], version = "*"}
 
 [dev-packages]
 flake8 = "*"

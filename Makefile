@@ -59,3 +59,7 @@ black:
 isort:
 	@echo Running isort...
 	cd newsltr && pipenv run isort .
+
+mypy:
+	@echo Running mypy...
+	cd newsltr && pipenv run mypy .
