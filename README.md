@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Style77/newsltr">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="docs/images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Newsltr</h3>
@@ -209,7 +209,7 @@ Project Link: [https://github.com/Style77/newsltr](https://github.com/Style77/ne
 [client-build-shield]: https://img.shields.io/github/actions/workflow/status/Style77/newsltr/client.yml?label=Client&style=for-the-badge
 [client-build-url]: https://github.com/Style77/newsltr
 <!-- Images -->
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: docs/images/product-screenshot.png
 <!-- Made with -->
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
