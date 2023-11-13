@@ -141,7 +141,7 @@ AUTH_USER_MODEL = "authorization.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "authorization.authentication.JWTCookiesAuthentication"
+        "authorization.authentication.JWTCookiesAuthentication",
     ),
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.IsAuthenticated",
