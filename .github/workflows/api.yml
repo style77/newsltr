@@ -41,7 +41,30 @@ jobs:
         working-directory: newsltr
         run: |
           flake8 .
-          
+  mypy:
+    name: Type Check Python Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.11
+      
+      - name: Install dependencies
+        run: |
+          pip install -r newsltr/requirements.txt
+          pip install mypy
+          pip install djangorestframework-stubs[compatible-mypy]
+          pip install django-stubs[compatible-mypy]
+
+      - name: Type Check Python code
+        run: |
+          cd newsltr && mypy .
+
   test:
     name: Run Django Tests
     runs-on: ubuntu-latest
