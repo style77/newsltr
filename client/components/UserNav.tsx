@@ -26,17 +26,6 @@ export function UserNav() {
   // const [logout] = useLogoutMutation();
   const handleLogout = useLogout();
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await logout({}).unwrap();
-  //     dispatch(setLogout());
-  //   } catch (e) {
-  //     console.log(e);
-  //   } finally {
-  //     router.push("/");
-  //   }
-  // };
-
   console.log(userData);
   return (
     <DropdownMenu>
