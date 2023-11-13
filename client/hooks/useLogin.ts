@@ -6,11 +6,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { setAuth } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useRetrieveSubscriptionsQuery } from "@/redux/features/paymentApiSlice";
 
 export const useLogin = () => {
   const route = useRouter();
   const dispatch = useAppDispatch();
   const [login, { isLoading, error, isSuccess }] = useLoginMutation();
+  // const { data: sub, isLoading: isSubsribtionloading } =
+  //   useRetrieveSubscriptionsQuery();
   const { toast } = useToast();
   const {
     register: registerInput,
@@ -23,7 +26,7 @@ export const useLogin = () => {
     resolver: zodResolver(loginFormSchema),
     mode: "onBlur",
   });
-  // console.log("MYERROR", error);
+
   const onSubmit = async (data: LoginFormSchemaType) => {
     const { email, password } = data;
     try {

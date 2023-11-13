@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { RiTeamLine } from "react-icons/ri";
 import { TbReportAnalytics, TbMoneybag, TbTemplate } from "react-icons/tb";
