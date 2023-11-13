@@ -23,7 +23,6 @@ defusedxml==0.8.0rc2
 distlib==0.3.7
 dj-database-url==2.1.0
 Django==4.2.7
-django-allauth==0.58.2
 django-celery-beat==2.5.0
 django-celery-results==2.5.1
 django-cors-headers==4.3.0
@@ -73,8 +72,8 @@ psutil==5.9.6
 psycopg2==2.9.9
 pycodestyle==2.11.0
 pycparser==2.21
-pydantic==2.4.2
-pydantic_core==2.10.1
+pydantic==2.5.0
+pydantic_core==2.14.1
 pyflakes==3.1.0
 PyJWT==2.8.0
 python-crontab==3.0.0
