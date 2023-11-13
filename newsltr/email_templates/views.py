@@ -8,18 +8,16 @@ from rest_framework.generics import (
 from email_templates.models import EmailTemplate
 from email_templates.serializers import EmailTemplateSerializer
 from campaigns.permissions import IsMemberOfWorkspace
-from collections.abc import Sequence
-from rest_framework.permissions import _PermissionClass
 from rest_framework.serializers import BaseSerializer
 
-from typing import Type
+from typing import Type, Any
 
 
 class EmailTemplatesViewBase:
-    permission_classes: Sequence[_PermissionClass] = [IsMemberOfWorkspace]
+    # TODO change Any to correct type
+    permission_classes: Any = [IsMemberOfWorkspace]
     serializer_class: Type[BaseSerializer] | None = EmailTemplateSerializer
-    # TODO
-    queryset = EmailTemplate.objects.all()  # type: ignore
+    queryset: Any = EmailTemplate.objects.all()  # type: ignore
     lookup_field: str = "campaign__id"
     lookup_url_kwarg: str | None = "campaign_id"
 
