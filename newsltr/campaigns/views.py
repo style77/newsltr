@@ -12,11 +12,17 @@ from .permissions import IsMemberOfWorkspace
 from .models import CampaignSubscriber
 from .serializers import CampaignSubscriberSerializer
 
+from typing import Type
+from rest_framework.serializers import BaseSerializer
+from collections.abc import Sequence
+from rest_framework.permissions import _PermissionClass
+from rest_framework.authentication import BaseAuthentication
+
 
 class CampaignUserViewBase:
-    serializer_class = CampaignSubscriberSerializer
-    authentication_classes = [APIKeyAuthentication, JWTCookiesAuthentication]
-    permission_classes = [IsMemberOfWorkspace]
+    serializer_class: Type[BaseSerializer] | None = CampaignSubscriberSerializer
+    authentication_classes: Sequence[type[BaseAuthentication]] = [APIKeyAuthentication, JWTCookiesAuthentication]
+    permission_classes: Sequence[_PermissionClass] = [IsMemberOfWorkspace]
 
     def get_queryset(self):
         campaign_id = self.kwargs.get("campaign_id")

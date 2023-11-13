@@ -12,7 +12,7 @@ from .permissions import IsAdminOfWorkspace
 User = get_user_model()
 
 
-class WorkspaceMembershipSerializer(serializers.ModelSerializer):
+class WorkspaceMembershipSerializer(serializers.ModelSerializer[WorkspaceMembership]):
     user = UserSerializer(read_only=True)
 
     class Meta:
@@ -34,7 +34,7 @@ class WorkspaceMembershipSerializer(serializers.ModelSerializer):
         return super().validate(attrs)
 
 
-class APIKeySerializer(serializers.ModelSerializer):
+class APIKeySerializer(serializers.ModelSerializer[WorkspaceAPIKey]):
     default_error_messages = {
         "cannot_create_api_key": "Cannot create API key for this workspace.",
         "too_many_api_keys": "Cannot create more than 5 API keys for workspace.",
@@ -62,7 +62,7 @@ class APIKeyDestroySerializer(serializers.ModelSerializer):
     ...
 
 
-class WorkspaceSerializer(serializers.ModelSerializer):
+class WorkspaceSerializer(serializers.ModelSerializer[Workspace]):
     class Meta:
         model = Workspace
         fields = ("id", "name", "description", "created", "updated", "campaign")
@@ -75,7 +75,7 @@ class WorkspaceSerializer(serializers.ModelSerializer):
         return super().update(instance, validated_data)
 
 
-class WorkspaceCreateSerializer(serializers.ModelSerializer):
+class WorkspaceCreateSerializer(serializers.ModelSerializer[Workspace]):
     memberships = WorkspaceMembershipSerializer(many=True, read_only=True)
 
     class Meta:

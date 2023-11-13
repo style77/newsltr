@@ -203,7 +203,7 @@ class WorkspaceMembersViewSet(
         IsAdminOfWorkspace,
         IsSubscriptionActive,
     ]
-    queryset = WorkspaceMembership
+    queryset = WorkspaceMembership.objects.all()
     lookup_field = "user__pk"
 
     def get_queryset(self):
@@ -288,7 +288,7 @@ class WorkspaceKeysViewSet(
         IsAdminOfWorkspace,
         IsSubscriptionActive,
     ]
-    queryset = WorkspaceAPIKey
+    queryset = WorkspaceAPIKey.objects.all()
     lookup_url_kwarg = "id"
 
     def get_queryset(self):

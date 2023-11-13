@@ -3,7 +3,7 @@ from email_templates.models import EmailTemplate
 
 
 class EmailTemplateSerializer(CampaignIdMixin):
-    class Meta(CampaignIdMixin.Meta):
+    class Meta:
         model = EmailTemplate
         fields = CampaignIdMixin.Meta.fields + [
             "id",

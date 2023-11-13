@@ -37,5 +37,5 @@ class APIKeyAuthentication(BaseAuthentication):
         return "X-API-KEY"
 
     @staticmethod
-    def get_header(request: Request) -> str:
+    def get_header(request: Request) -> str | None:
         return request.META.get("HTTP_X_API_KEY")

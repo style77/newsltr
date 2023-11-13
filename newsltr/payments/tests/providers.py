@@ -1,12 +1,15 @@
 import stripe
+from typing import Dict, List
+
+from payments.models import StripeUser
 
 from .common import create_subscription, get_or_create_stripe_customer
 
 
 class SingletonMeta(type):
-    _instances = {}
+    _instances: Dict[type, 'CustomerProvider'] = {}
 
-    def __call__(cls, *args, **kwargs):
+    def __call__(cls, *args, **kwargs) -> 'CustomerProvider':
         if cls not in cls._instances:
             instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance
@@ -14,14 +17,14 @@ class SingletonMeta(type):
 
 
 class CustomerProvider(metaclass=SingletonMeta):
-    def __init__(self):
-        self.created_customers = []
+    def __init__(self) -> None:
+        self.created_customers: List[StripeUser] = []
 
-    def __del__(self):
+    def __del__(self) -> None:
         for customer in self.created_customers:
             stripe.Customer.delete(customer.customer_id)
 
-    def create_customer_with_subscription(self, user):
+    def create_customer_with_subscription(self, user) -> StripeUser:
         stripe_user = get_or_create_stripe_customer(user)
         self.created_customers.append(stripe_user)
         create_subscription(stripe_user)

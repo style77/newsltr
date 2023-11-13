@@ -23,7 +23,7 @@ if DEVELOPMENT:
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR: str = str(Path(__file__).resolve().parent.parent)
 
 
 # Quick-start development settings - unsuitable for production
@@ -35,7 +35,7 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEVELOPMENT
 ALLOWED_HOSTS = ["*"]
-FRONT_END_BASE_URL = os.getenv("FRONT_END_BASE_URL")
+FRONT_END_BASE_URL: str = os.getenv("FRONT_END_BASE_URL", "http://localhost:3000")
 
 if DEVELOPMENT:
     ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
@@ -135,7 +135,9 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 # Email
 
 EMAIL_BACKEND = "django_ses.SESBackend"
-DEFAULT_FROM_EMAIL = f"Newsltr <{os.getenv('DEFAULT_FROM_EMAIL', 'newsltr@newsltr.io')}>"
+DEFAULT_FROM_EMAIL = (
+    f"Newsltr <{os.getenv('DEFAULT_FROM_EMAIL', 'newsltr@newsltr.io')}>"
+)
 
 # Rest Framework
 
@@ -208,9 +210,11 @@ DJOSER = {
     "LOGIN_FIELD": "email",
     "UPDATE_LAST_LOGIN": True,
     "SEND_ACTIVATION_EMAIL": True,
-    "ACTIVATION_URL": FRONT_END_BASE_URL+"/activate/{uid}/{token}",
-    "PASSWORD_RESET_CONFIRM_URL": FRONT_END_BASE_URL+"/password/reset/confirm/{uid}/{token}",
-    "USERNAME_RESET_CONFIRM_URL": FRONT_END_BASE_URL+"/email/reset/confirm/{uid}/{token}",
+    "ACTIVATION_URL": FRONT_END_BASE_URL + "/activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": FRONT_END_BASE_URL
+    + "/password/reset/confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": FRONT_END_BASE_URL
+    + "/email/reset/confirm/{uid}/{token}",
     "SEND_CONFIRMATION_EMAIL": True,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_PASSWORD_RETYPE": True,
@@ -272,7 +276,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = "newsltr.urls"
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -293,7 +296,8 @@ WSGI_APPLICATION = "newsltr.wsgi.application"
 
 
 WORKSPACES = {
-    "ACTIVATION_URL": FRONT_END_BASE_URL + "/invite/accept/{uid}/{workspace_id}/{token}",
+    "ACTIVATION_URL": FRONT_END_BASE_URL
+    + "/invite/accept/{uid}/{workspace_id}/{token}",
     "API_KEY_LENGTH": 40,
 }
 

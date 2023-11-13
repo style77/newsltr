@@ -5,7 +5,7 @@ from rest_framework.validators import UniqueTogetherValidator
 from .models import CampaignSubscriber, Campaign
 
 
-class CampaignIdMixin(ModelSerializer):
+class CampaignIdMixin(ModelSerializer[Campaign]):
     campaign_id = HiddenField(default=None)
 
     class Meta:
@@ -22,8 +22,10 @@ class CampaignIdMixin(ModelSerializer):
         return campaign_id
 
 
-class CampaignSubscriberSerializer(CampaignIdMixin, ModelSerializer):
-    class Meta(CampaignIdMixin.Meta):
+class CampaignSubscriberSerializer(
+    CampaignIdMixin, ModelSerializer[CampaignSubscriber]
+):
+    class Meta:
         model = CampaignSubscriber
         fields = CampaignIdMixin.Meta.fields + [
             "email",

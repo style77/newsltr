@@ -1,11 +1,12 @@
 import uuid
+from typing import Type
 
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class UserManager(BaseUserManager):
+class AbstractUserManager(UserManager['User']):
     def _create_user(self, email, password, **extra_fields):
         """
         Create and save a user with the given email, and password.
@@ -54,9 +55,9 @@ class User(AbstractUser):
         primary_key=True, default=uuid.uuid4, editable=False, unique=True, max_length=36
     )
     email = models.EmailField(_("email address"), blank=False, unique=True)
-    username = None
+    username = None  # type: ignore
 
-    objects = UserManager()
+    objects = AbstractUserManager()  # type: ignore
 
     workspaces = models.ManyToManyField(
         "workspaces.Workspace",

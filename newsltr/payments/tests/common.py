@@ -1,9 +1,11 @@
 import stripe
 
+from typing import Literal
 from payments.models import StripeUser
+from authorization.models import User
 
 
-def get_or_create_stripe_customer(user):
+def get_or_create_stripe_customer(user: User):
     """
     Get or create a test Stripe customer for a given user.
     """
@@ -26,7 +28,7 @@ def get_or_create_stripe_customer(user):
     return stripe_user
 
 
-def create_subscription(stripe_user, plan="basic", interval="month"):
+def create_subscription(stripe_user: StripeUser, plan: Literal["basic", "pro", "enterprise"] = "basic", interval: Literal["month", "year"] = "month"):
     plans = {
         "basic": {
             "month": "price_1O5ClvKwAtttJJGBvSigfzXw",

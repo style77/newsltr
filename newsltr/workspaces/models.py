@@ -69,9 +69,12 @@ def create_keys(sender, instance, *args, **kwargs):
 class AbstractWorkspaceAPIKeyManager(models.Manager):
     key_generator = KeyGenerator(key_length=settings.WORKSPACES["API_KEY_LENGTH"])
 
+    def model(self, *args, **kwargs):
+        return super().model()
+
     def create(self, **kwargs: Any) -> Any:
         key = self.key_generator.generate()
-        obj = self.model(**kwargs)
+        obj: WorkspaceAPIKey = self.model(**kwargs)
         obj.key = key
         obj.save()
         return obj, key

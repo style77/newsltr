@@ -1,9 +1,10 @@
 import stripe
+from authorization.models import User
 
 from .models import StripeUser
 
 
-def get_or_create_stripe_customer(user):
+def get_or_create_stripe_customer(user: User) -> StripeUser:
     """
     Get or create a Stripe customer for a given user.
     """

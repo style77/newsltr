@@ -17,17 +17,17 @@ if settings.DEVELOPMENT:
     from drf_spectacular.views import SpectacularRedocView, SpectacularSwaggerView
 
     urlpatterns += [
-        path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),
+        path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),  # type: ignore
         # Optional UI:
         path(
             "api/v1/schema/swagger-ui/",
             SpectacularSwaggerView.as_view(url_name="schema"),
             name="swagger-ui",
-        ),
+        ),  # type: ignore
         path(
             "api/v1/schema/redoc/",
             SpectacularRedocView.as_view(url_name="schema"),
             name="redoc",
-        ),
+        ),  # type: ignore
         path(r"admin/", admin.site.urls),
     ]
