@@ -34,13 +34,12 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = DEVELOPMENT
+ALLOWED_HOSTS = ["*"]
+FRONT_END_BASE_URL = os.getenv("FRONT_END_BASE_URL")
 
 if DEVELOPMENT:
     ALLOWED_HOSTS = ["0.0.0.0", "localhost", "127.0.0.1"]
     FRONT_END_BASE_URL = "http://localhost:3000"
-else:
-    ALLOWED_HOSTS = ["*"]
-    FRONT_END_BASE_URL = os.getenv("FRONT_END_BASE_URL")
 
 # Stripe
 
@@ -209,9 +208,9 @@ DJOSER = {
     "LOGIN_FIELD": "email",
     "UPDATE_LAST_LOGIN": True,
     "SEND_ACTIVATION_EMAIL": True,
-    "ACTIVATION_URL": "activate/{uid}/{token}",
-    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
-    "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
+    "ACTIVATION_URL": FRONT_END_BASE_URL+"/activate/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": FRONT_END_BASE_URL+"/password/reset/confirm/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": FRONT_END_BASE_URL+"/email/reset/confirm/{uid}/{token}",
     "SEND_CONFIRMATION_EMAIL": True,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_PASSWORD_RETYPE": True,
@@ -294,7 +293,7 @@ WSGI_APPLICATION = "newsltr.wsgi.application"
 
 
 WORKSPACES = {
-    "ACTIVATION_URL": "invite/accept/{uid}/{workspace_id}/{token}",
+    "ACTIVATION_URL": FRONT_END_BASE_URL + "/invite/accept/{uid}/{workspace_id}/{token}",
     "API_KEY_LENGTH": 40,
 }
 
