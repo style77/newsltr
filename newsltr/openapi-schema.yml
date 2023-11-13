@@ -89,80 +89,33 @@ paths:
       description: Logout user by deleting cookies.
       tags:
       - api
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           description: No response body
-  /api/v1/auth/o/{provider}/:
-    get:
-      operationId: api_v1_auth_o_retrieve
-      parameters:
-      - in: path
-        name: provider
-        schema:
-          type: string
-          pattern: ^\S+$
-        required: true
-      tags:
-      - api
-      security:
-      - JWTCookiesAuthentication: []
-      - {}
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProviderAuth'
-          description: ''
-    post:
-      operationId: api_v1_auth_o_create
-      parameters:
-      - in: path
-        name: provider
-        schema:
-          type: string
-          pattern: ^\S+$
-        required: true
-      tags:
-      - api
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ProviderAuth'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/ProviderAuth'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/ProviderAuth'
-      security:
-      - JWTCookiesAuthentication: []
-      - {}
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProviderAuth'
-          description: ''
   /api/v1/auth/users/:
     get:
       operationId: api_v1_auth_users_list
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       tags:
       - api
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CustomUser'
+                $ref: '#/components/schemas/PaginatedCustomUserList'
           description: ''
     post:
       operationId: api_v1_auth_users_create
@@ -181,7 +134,6 @@ paths:
               $ref: '#/components/schemas/CustomUserCreateSerliazier'
         required: true
       security:
-      - JWTCookiesAuthentication: []
       - {}
       responses:
         '201':
@@ -202,8 +154,6 @@ paths:
         required: true
       tags:
       - api
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -233,8 +183,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CustomUser'
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -264,8 +212,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedCustomUser'
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -284,8 +230,6 @@ paths:
         required: true
       tags:
       - api
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
@@ -307,7 +251,6 @@ paths:
               $ref: '#/components/schemas/Activation'
         required: true
       security:
-      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -321,8 +264,6 @@ paths:
       operationId: api_v1_auth_users_me_retrieve
       tags:
       - api
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -345,8 +286,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/CurrentUser'
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -369,8 +308,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedCurrentUser'
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -382,8 +319,6 @@ paths:
       operationId: api_v1_auth_users_me_destroy
       tags:
       - api
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
@@ -405,7 +340,6 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
-      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -432,7 +366,6 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
-      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -459,7 +392,6 @@ paths:
               $ref: '#/components/schemas/UsernameResetConfirm'
         required: true
       security:
-      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -486,7 +418,6 @@ paths:
               $ref: '#/components/schemas/SendEmailReset'
         required: true
       security:
-      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -513,7 +444,6 @@ paths:
               $ref: '#/components/schemas/PasswordResetConfirmRetype'
         required: true
       security:
-      - JWTCookiesAuthentication: []
       - {}
       responses:
         '200':
@@ -539,8 +469,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SetUsername'
         required: true
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -565,8 +493,6 @@ paths:
             schema:
               $ref: '#/components/schemas/SetPasswordRetype'
         required: true
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -574,14 +500,356 @@ paths:
               schema:
                 $ref: '#/components/schemas/SetPasswordRetype'
           description: ''
-  /api/v1/workspace/:
+  /api/v1/campaigns/{campaign_id}/subscribers/:
     get:
-      operationId: api_v1_workspace_list
-      description: List all workspaces that the user is a member of.
+      operationId: api_v1_campaigns_subscribers_retrieve
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
       tags:
-      - workspace
-      security:
-      - JWTCookiesAuthentication: []
+      - campaigns
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSubscriber'
+          description: ''
+  /api/v1/campaigns/{campaign_id}/subscribers/user/:
+    post:
+      operationId: api_v1_campaigns_subscribers_user_create
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - campaigns
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignSubscriber'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CampaignSubscriber'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CampaignSubscriber'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSubscriber'
+          description: ''
+  /api/v1/campaigns/{campaign_id}/subscribers/user/{user_id}/:
+    get:
+      operationId: api_v1_campaigns_subscribers_user_retrieve
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - campaigns
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSubscriber'
+          description: ''
+    put:
+      operationId: api_v1_campaigns_subscribers_user_update
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - campaigns
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignSubscriber'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CampaignSubscriber'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CampaignSubscriber'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSubscriber'
+          description: ''
+    patch:
+      operationId: api_v1_campaigns_subscribers_user_partial_update
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - campaigns
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCampaignSubscriber'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCampaignSubscriber'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCampaignSubscriber'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampaignSubscriber'
+          description: ''
+    delete:
+      operationId: api_v1_campaigns_subscribers_user_destroy
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: user_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - campaigns
+      responses:
+        '204':
+          description: No response body
+  /api/v1/email-templates/{campaign_id}/:
+    get:
+      operationId: api_v1_email_templates_list
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - email templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedEmailTemplateList'
+          description: ''
+  /api/v1/email-templates/{campaign_id}/templates/:
+    post:
+      operationId: api_v1_email_templates_templates_create
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - email templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailTemplate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmailTemplate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmailTemplate'
+        required: true
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailTemplate'
+          description: ''
+  /api/v1/email-templates/{campaign_id}/templates/{template_id}/:
+    get:
+      operationId: api_v1_email_templates_templates_retrieve
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: template_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - email templates
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailTemplate'
+          description: ''
+    put:
+      operationId: api_v1_email_templates_templates_update
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: template_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - email templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EmailTemplate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EmailTemplate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EmailTemplate'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailTemplate'
+          description: ''
+    patch:
+      operationId: api_v1_email_templates_templates_partial_update
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: template_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - email templates
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedEmailTemplate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedEmailTemplate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedEmailTemplate'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailTemplate'
+          description: ''
+    delete:
+      operationId: api_v1_email_templates_templates_destroy
+      parameters:
+      - in: path
+        name: campaign_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: template_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - email templates
+      responses:
+        '204':
+          description: No response body
+  /api/v1/payment/me/subscriptions/:
+    get:
+      operationId: api_v1_payment_me_subscriptions_list
+      description: Get all current user subscriptions
+      tags:
+      - payments
       responses:
         '200':
           content:
@@ -589,7 +857,124 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Workspace'
+                  $ref: '#/components/schemas/Subscription'
+          description: ''
+  /api/v1/payment/me/subscriptions/cancel/:
+    post:
+      operationId: api_v1_payment_me_subscriptions_cancel_create
+      description: Cancel a subscription
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelSubscription'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CancelSubscription'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CancelSubscription'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelSubscription'
+          description: ''
+  /api/v1/payment/me/subscriptions/resume/:
+    post:
+      operationId: api_v1_payment_me_subscriptions_resume_create
+      description: Resume a subscription
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelSubscription'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CancelSubscription'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CancelSubscription'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelSubscription'
+          description: ''
+  /api/v1/payment/subscribe/:
+    post:
+      operationId: api_v1_payment_subscribe_create
+      description: Subscribe to plan, this endpoint will redirect user to checkout
+        session
+      tags:
+      - payments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSubscription'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CreateSubscription'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateSubscription'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateSubscription'
+          description: ''
+  /api/v1/payment/subscriptions/:
+    get:
+      operationId: api_v1_payment_subscriptions_retrieve
+      description: Get all subscription plans
+      tags:
+      - payments
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/v1/workspace/:
+    get:
+      operationId: api_v1_workspace_list
+      description: List all workspaces that the user is a member of.
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      tags:
+      - workspace
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkspaceList'
           description: ''
     post:
       operationId: api_v1_workspace_create
@@ -608,8 +993,6 @@ paths:
             schema:
               $ref: '#/components/schemas/WorkspaceCreate'
         required: true
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '201':
           content:
@@ -630,8 +1013,6 @@ paths:
         required: true
       tags:
       - workspace
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -663,8 +1044,6 @@ paths:
             schema:
               $ref: '#/components/schemas/Workspace'
         required: true
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -695,8 +1074,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedWorkspace'
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -716,8 +1093,6 @@ paths:
         required: true
       tags:
       - workspace
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
@@ -746,8 +1121,6 @@ paths:
             schema:
               $ref: '#/components/schemas/WorkspaceInvite'
         required: true
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -760,6 +1133,18 @@ paths:
       operationId: api_v1_workspace_keys_list
       description: List all workspace API Keys
       parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       - in: path
         name: workspace_pk
         schema:
@@ -767,16 +1152,12 @@ paths:
         required: true
       tags:
       - workspace keys
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/APIKey'
+                $ref: '#/components/schemas/PaginatedAPIKeyList'
           description: ''
     post:
       operationId: api_v1_workspace_keys_create
@@ -800,8 +1181,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/APIKey'
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '201':
           content:
@@ -826,8 +1205,6 @@ paths:
         required: true
       tags:
       - workspace keys
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
@@ -836,6 +1213,18 @@ paths:
       operationId: api_v1_workspace_members_list
       description: List workspace members.
       parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
       - in: path
         name: workspace_pk
         schema:
@@ -843,16 +1232,12 @@ paths:
         required: true
       tags:
       - workspace members
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/WorkspaceMembership'
+                $ref: '#/components/schemas/PaginatedWorkspaceMembershipList'
           description: ''
   /api/v1/workspace/{workspace_pk}/members/{user__pk}/:
     get:
@@ -871,8 +1256,6 @@ paths:
         required: true
       tags:
       - workspace members
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -908,8 +1291,6 @@ paths:
             schema:
               $ref: '#/components/schemas/WorkspaceMembership'
         required: true
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -944,8 +1325,6 @@ paths:
           multipart/form-data:
             schema:
               $ref: '#/components/schemas/PatchedWorkspaceMembership'
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -969,8 +1348,6 @@ paths:
         required: true
       tags:
       - workspace members
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '204':
           description: No response body
@@ -992,8 +1369,6 @@ paths:
             schema:
               $ref: '#/components/schemas/WorkspaceInvitationAccept'
         required: true
-      security:
-      - JWTCookiesAuthentication: []
       responses:
         '200':
           content:
@@ -1042,6 +1417,44 @@ components:
       required:
       - token
       - uid
+    CampaignSubscriber:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          title: Subscriber email
+          maxLength: 254
+        tracking_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        joined_at:
+          type: string
+          format: date-time
+          readOnly: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+      required:
+      - email
+      - id
+      - joined_at
+    CancelSubscription:
+      type: object
+      properties:
+        subscription_id:
+          type: string
+      required:
+      - subscription_id
+    CreateSubscription:
+      type: object
+      properties:
+        price_id:
+          type: string
+      required:
+      - price_id
     CurrentUser:
       type: object
       properties:
@@ -1148,6 +1561,131 @@ components:
       - last_name
       - password
       - re_password
+    EmailTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        subject:
+          type: string
+          maxLength: 998
+        content:
+          type: string
+        extra_data:
+          type: object
+          additionalProperties: {}
+        last_sent_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - content
+      - extra_data
+      - id
+      - last_sent_at
+      - subject
+    PaginatedAPIKeyList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/APIKey'
+    PaginatedCustomUserList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomUser'
+    PaginatedEmailTemplateList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/EmailTemplate'
+    PaginatedWorkspaceList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Workspace'
+    PaginatedWorkspaceMembershipList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=400&limit=100
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?offset=200&limit=100
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkspaceMembership'
     PasswordResetConfirmRetype:
       type: object
       properties:
@@ -1164,6 +1702,26 @@ components:
       - re_new_password
       - token
       - uid
+    PatchedCampaignSubscriber:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          title: Subscriber email
+          maxLength: 254
+        tracking_data:
+          type: object
+          additionalProperties: {}
+          nullable: true
+        joined_at:
+          type: string
+          format: date-time
+          readOnly: true
+        id:
+          type: string
+          format: uuid
+          readOnly: true
     PatchedCurrentUser:
       type: object
       properties:
@@ -1216,6 +1774,25 @@ components:
           format: date-time
           readOnly: true
           nullable: true
+    PatchedEmailTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        subject:
+          type: string
+          maxLength: 998
+        content:
+          type: string
+        extra_data:
+          type: object
+          additionalProperties: {}
+        last_sent_at:
+          type: string
+          format: date-time
+          readOnly: true
     PatchedWorkspace:
       type: object
       properties:
@@ -1238,6 +1815,10 @@ components:
           type: string
           format: date-time
           readOnly: true
+        campaign:
+          type: string
+          format: uuid
+          readOnly: true
     PatchedWorkspaceMembership:
       type: object
       properties:
@@ -1247,22 +1828,28 @@ components:
           readOnly: true
         role:
           $ref: '#/components/schemas/WorkspaceMembershipRoleEnum'
-    ProviderAuth:
+    Product:
       type: object
       properties:
-        access:
+        product_id:
           type: string
-          readOnly: true
-        refresh:
+        name:
           type: string
-          readOnly: true
-        user:
+        description:
           type: string
+        features:
+          type: array
+          items: {}
+        prices:
+          type: array
+          items: {}
           readOnly: true
       required:
-      - access
-      - refresh
-      - user
+      - description
+      - features
+      - name
+      - prices
+      - product_id
     SendEmailReset:
       type: object
       properties:
@@ -1297,6 +1884,35 @@ components:
       required:
       - current_password
       - new_email
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+        current_period_end:
+          type: string
+          format: date-time
+        cancel_at:
+          type: string
+          format: date-time
+          nullable: true
+        status:
+          type: string
+        price:
+          type: integer
+        currency:
+          type: string
+        plan_name:
+          type: string
+          maxLength: 255
+        plan_description:
+          type: string
+          maxLength: 500
+      required:
+      - cancel_at
+      - current_period_end
+      - id
+      - status
     TokenRefresh:
       type: object
       properties:
@@ -1361,7 +1977,12 @@ components:
           type: string
           format: date-time
           readOnly: true
+        campaign:
+          type: string
+          format: uuid
+          readOnly: true
       required:
+      - campaign
       - created
       - description
       - id
@@ -1456,8 +2077,3 @@ components:
         * `admin` - Admin
         * `moderator` - Moderator
         * `member` - Member
-  securitySchemes:
-    JWTCookiesAuthentication:
-      type: apiKey
-      in: cookie
-      name: access_token
