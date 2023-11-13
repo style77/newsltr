@@ -21,7 +21,10 @@ from rest_framework.authentication import BaseAuthentication
 class CampaignUserViewBase:
     # TODO change Any to correct type
     serializer_class: Type[BaseSerializer] | None = CampaignSubscriberSerializer
-    authentication_classes: Sequence[type[BaseAuthentication]] = [APIKeyAuthentication, JWTCookiesAuthentication]
+    authentication_classes: Sequence[type[BaseAuthentication]] = [
+        APIKeyAuthentication,
+        JWTCookiesAuthentication,
+    ]
     permission_classes: Any = [IsMemberOfWorkspace]
 
     def get_queryset(self):

@@ -7,9 +7,9 @@ from .common import create_subscription, get_or_create_stripe_customer
 
 
 class SingletonMeta(type):
-    _instances: Dict[type, 'CustomerProvider'] = {}
+    _instances: Dict[type, "CustomerProvider"] = {}
 
-    def __call__(cls, *args, **kwargs) -> 'CustomerProvider':
+    def __call__(cls, *args, **kwargs) -> "CustomerProvider":
         if cls not in cls._instances:
             instance = super().__call__(*args, **kwargs)
             cls._instances[cls] = instance

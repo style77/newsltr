@@ -28,7 +28,11 @@ def get_or_create_stripe_customer(user: User):
     return stripe_user
 
 
-def create_subscription(stripe_user: StripeUser, plan: Literal["basic", "pro", "enterprise"] = "basic", interval: Literal["month", "year"] = "month"):
+def create_subscription(
+    stripe_user: StripeUser,
+    plan: Literal["basic", "pro", "enterprise"] = "basic",
+    interval: Literal["month", "year"] = "month",
+):
     plans = {
         "basic": {
             "month": "price_1O5ClvKwAtttJJGBvSigfzXw",

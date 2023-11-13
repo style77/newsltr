@@ -27,7 +27,7 @@ class Checkout(views.APIView):
 
     def post(self, request, *args, **kwargs):
         """
-            Subscribe to plan, this endpoint will redirect user to checkout session
+        Subscribe to plan, this endpoint will redirect user to checkout session
         """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
