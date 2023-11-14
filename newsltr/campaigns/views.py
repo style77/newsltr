@@ -1,30 +1,22 @@
-from collections.abc import Sequence
-from typing import Any, Type
-
 from drf_spectacular.utils import extend_schema
-from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import NotFound
 from rest_framework.generics import (CreateAPIView, GenericAPIView,
                                      RetrieveUpdateDestroyAPIView)
 from rest_framework.response import Response
-from rest_framework.serializers import BaseSerializer
 
 from authorization.authentication import (APIKeyAuthentication,
                                           JWTCookiesAuthentication)
+from payments.permissions import IsSubscriptionActive
 
 from .models import CampaignSubscriber
 from .permissions import IsMemberOfWorkspace
 from .serializers import CampaignSubscriberSerializer
 
 
-class CampaignUserViewBase:
-    # TODO change Any to correct type
-    serializer_class: Type[BaseSerializer] | None = CampaignSubscriberSerializer
-    authentication_classes: Sequence[type[BaseAuthentication]] = [
-        APIKeyAuthentication,
-        JWTCookiesAuthentication,
-    ]
-    permission_classes: Any = [IsMemberOfWorkspace]
+class CampaignUserViewBase(GenericAPIView):
+    serializer_class = CampaignSubscriberSerializer
+    authentication_classes = [APIKeyAuthentication, JWTCookiesAuthentication]
+    permission_classes = [IsMemberOfWorkspace]
 
     def get_queryset(self):
         campaign_id = self.kwargs.get("campaign_id")
@@ -32,7 +24,9 @@ class CampaignUserViewBase:
 
 
 @extend_schema(tags=["campaigns"])
-class CampaignUserListView(CampaignUserViewBase, GenericAPIView):
+class CampaignUserListView(CampaignUserViewBase):
+    permission_classes = [IsSubscriptionActive & IsMemberOfWorkspace]
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         if not queryset:
@@ -60,3 +54,10 @@ class CampaignUserRetrieveUpdateDeleteView(
     CampaignUserViewBase, RetrieveUpdateDestroyAPIView
 ):
     lookup_url_kwarg = "user_id"
+
+    def get_permissions(self):
+        if self.request.method != "DELETE":
+            return [permission() for permission in self.permission_classes] + [
+                IsSubscriptionActive()
+            ]
+        return super().get_permissions()

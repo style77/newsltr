@@ -1,22 +1,19 @@
-from typing import Any, Type
-
 from drf_spectacular.utils import extend_schema
-from rest_framework.generics import (CreateAPIView, ListAPIView,
-                                     RetrieveUpdateDestroyAPIView)
-from rest_framework.serializers import BaseSerializer
+from rest_framework.generics import (CreateAPIView, GenericAPIView,
+                                     ListAPIView, RetrieveUpdateDestroyAPIView)
 
 from campaigns.permissions import IsMemberOfWorkspace
 from email_templates.models import EmailTemplate
 from email_templates.serializers import EmailTemplateSerializer
+from payments.permissions import IsSubscriptionActive
 
 
-class EmailTemplatesViewBase:
-    # TODO change Any to correct type
-    permission_classes: Any = [IsMemberOfWorkspace]
-    serializer_class: Type[BaseSerializer] | None = EmailTemplateSerializer
-    queryset: Any = EmailTemplate.objects.all()  # type: ignore
-    lookup_field: str = "campaign__id"
-    lookup_url_kwarg: str | None = "campaign_id"
+class EmailTemplatesViewBase(GenericAPIView):
+    permission_classes = [IsMemberOfWorkspace & IsSubscriptionActive]
+    serializer_class = EmailTemplateSerializer
+    queryset = EmailTemplate.objects.all()
+    lookup_field = "campaign__id"
+    lookup_url_kwarg = "campaign_id"
 
 
 @extend_schema(tags=["email templates"])
