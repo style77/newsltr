@@ -1,15 +1,7 @@
 import { apiSlice } from "../services/apiSlice";
 
-interface Subscription {
-  id: string;
-  current_period_end: string;
-  cancel_at: string;
-  status: string;
-  prices: number[];
-  currency: string;
-  name: string;
-  description: string;
-}
+import { Subscription } from "@/lib/types";
+
 const paymentApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     retrieveSubscriptions: builder.query<Subscription[], void>({

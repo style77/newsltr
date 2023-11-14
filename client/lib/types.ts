@@ -62,3 +62,22 @@ export interface ParamsType {
   uid: string;
   token: string;
 }
+
+interface Prices {
+  price_id: string;
+  unit_amount: number;
+  interval: "year" | "month";
+}
+
+interface Feature {
+  name: string;
+}
+
+export interface Subscription {
+  product_id: string;
+  features: Feature[];
+  prices: Prices[];
+  currency: string;
+  name: string;
+  description: string;
+}
