@@ -49,7 +49,7 @@ const Pricing = () => {
             </motion.div>
           </div>
         </div>
-        <div className="flex gap-4 items-center">
+        <div className="flex flex-row-reverse gap-4 items-center">
           {subscriptions?.map((subscription) => (
             <PricingCard
               key={subscription.product_id}
