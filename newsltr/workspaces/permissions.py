@@ -125,7 +125,7 @@ class BearerKeyParser:
             return None
 
         try:
-            _, key = authorization.split("{} ".format(self.keyword))
+            _, key = authorization.split(f"{self.keyword} ")
         except ValueError:
             key = None
 
@@ -140,14 +140,11 @@ class HasWorkspaceAPIKey(permissions.BasePermission):
         return self.key_parser.get(request)
 
     def has_permission(self, request, view):
-        assert self.model is not None, (
-            "%s must define `.model` with the API key model to use"
-            % self.__class__.__name__
-        )
+        assert (
+            self.model is not None
+        ), f"{self.__class__.__name__} must define `.model` with the API key model to use"
         key = self.get_key(request)
-        if not key:
-            return False
-        return self.model.objects.is_valid(key)
+        return False if not key else self.model.objects.is_valid(key)
 
     def has_object_permission(self, request, view, obj):
         return self.has_permission(request, view)

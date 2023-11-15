@@ -144,9 +144,7 @@ class AbstractWorkspaceAPIKey(models.Model):
         self._initial_revoked = self.revoked
 
     def _has_expired(self):
-        if self.expiry_date is None:
-            return False
-        return self.expiry_date < timezone.now()
+        return False if self.expiry_date is None else self.expiry_date < timezone.now()
 
     _has_expired.short_description = "Has expired"  # type: ignore
     _has_expired.boolean = True  # type: ignore

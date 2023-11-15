@@ -39,7 +39,7 @@ def login_user(client, email, password):
         reverse("jwt-create"), {"email": email, "password": password}
     )
     token = response.data["access"]
-    client.credentials(HTTP_AUTHORIZATION="Bearer " + token)
+    client.credentials(HTTP_AUTHORIZATION=f"Bearer {token}")
 
 
 def perform_create_mock(x):

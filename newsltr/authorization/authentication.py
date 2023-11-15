@@ -28,10 +28,10 @@ class APIKeyAuthentication(BaseAuthentication):
         if not token:
             return None
 
-        is_valid_token = WorkspaceAPIKey.objects.is_valid(key=token)
-        if not is_valid_token:
+        if is_valid_token := WorkspaceAPIKey.objects.is_valid(key=token):
+            return None, token
+        else:
             raise AuthenticationFailed("Invalid apikey")
-        return None, token
 
     def authenticate_header(self, request):
         return "X-API-KEY"

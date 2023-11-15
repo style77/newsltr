@@ -23,4 +23,4 @@ class EmailTemplate(models.Model):
         verbose_name = _("Email template")
 
     def __str__(self) -> str:
-        return self.subject[:30] + "…"
+        return f"{self.subject[:30]}…"

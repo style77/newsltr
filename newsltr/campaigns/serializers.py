@@ -14,12 +14,10 @@ class CampaignIdMixin(ModelSerializer):
 
     def validate_campaign_id(self, *args, **kwargs):
         request = self.context.get("request")
-        campaign_id = request.parser_context["kwargs"].get("campaign_id")
-
-        if not campaign_id:
+        if campaign_id := request.parser_context["kwargs"].get("campaign_id"):
+            return campaign_id
+        else:
             raise ValidationError("Campaign ID is required from the URL.")
-
-        return campaign_id
 
 
 class CampaignSubscriberSerializer(CampaignIdMixin, ModelSerializer):

@@ -153,13 +153,11 @@ class WorkspaceInvitationAcceptSerializer(serializers.Serializer):
                 {"detail": [self.error_messages[key_error]]}, code=key_error
             )
 
-        is_token_valid = self.context["view"].token_generator.check_token(
+        if is_token_valid := self.context["view"].token_generator.check_token(
             self.user, self.initial_data.get("token", "")
-        )
-        if is_token_valid:
+        ):
             return validated_data
-        else:
-            key_error = "invalid_token"
-            raise ValidationError(
-                {"token": [self.error_messages[key_error]]}, code=key_error
-            )
+        key_error = "invalid_token"
+        raise ValidationError(
+            {"token": [self.error_messages[key_error]]}, code=key_error
+        )

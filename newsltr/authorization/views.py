@@ -61,9 +61,9 @@ class CustomTokenRefreshView(TokenRefreshView):
     """
 
     def post(self, request, *args, **kwargs):
-        refresh_token = request.COOKIES.get(settings.SIMPLE_JWT["REFRESH_COOKIE"])
-
-        if refresh_token:
+        if refresh_token := request.COOKIES.get(
+            settings.SIMPLE_JWT["REFRESH_COOKIE"]
+        ):
             request.data["refresh"] = refresh_token
 
         response = super().post(request, *args, **kwargs)
@@ -87,9 +87,7 @@ class CustomTokenVerifyView(TokenVerifyView):
     """
 
     def post(self, request, *args, **kwargs):
-        access_token = request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE"])
-
-        if access_token:
+        if access_token := request.COOKIES.get(settings.SIMPLE_JWT["AUTH_COOKIE"]):
             request.data["token"] = access_token
 
         return super().post(request, *args, **kwargs)

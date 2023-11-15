@@ -45,5 +45,4 @@ class IsMemberOfWorkspace(permissions.BasePermission):
 
     @staticmethod
     def _has_permission_using_api_key(key: str, campaign: int) -> bool:
-        key_exists = key in campaign.workspace.keys.values_list("key", flat=True)
-        return key_exists
+        return key in campaign.workspace.keys.values_list("key", flat=True)

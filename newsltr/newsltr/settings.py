@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+
 import os
 from datetime import timedelta
 from pathlib import Path
@@ -197,23 +198,18 @@ SIMPLE_JWT = {
     if DEVELOPMENT
     else timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
-    # To include additional security let refresh_tokens be blacklisted
-    # after using one of them
-    # "ROTATE_REFRESH_TOKENS": True,
-    # "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "USER_ID_FIELD": "id",
     "USER_ID_CLAIM": "user_id",
     "TOKEN_OBTAIN_SERIALIZER": "authorization.serializers.CustomTokenObtainSerializer",
-    # "TOKEN_REFRESH_SERIALIZER": "authorization.serializers.CustomTokenRefreshSerializer",
     "SOCIAL_AUTH_TOKEN_STRATEGY": "djoser.social.token.jwt.TokenStrategy",
     "TOKEN_VERIFY_SERIALIZER": "authorization.serializers.CustomTokenVerifySerializer",
     "USER_AUTHENTICATION_RULE": "authorization.utils.user_authentication_rule",
     "AUTH_COOKIE": "access_token",
     "REFRESH_COOKIE": "refresh_token",
     "AUTH_COOKIE_DOMAIN": None,
-    "AUTH_COOKIE_SECURE": False if DEVELOPMENT else True,
+    "AUTH_COOKIE_SECURE": not DEVELOPMENT,
     "AUTH_COOKIE_HTTP_ONLY": True,
     "AUTH_COOKIE_PATH": "/",
     "AUTH_COOKIE_SAMESITE": "Lax",

@@ -66,10 +66,10 @@ class Subscriptions(views.APIView):
             customer_id = stripe_user.customer_id
 
         user_subscriptions = stripe.Subscription.list(customer=customer_id)
-        subscribed_product_ids = set(
+        subscribed_product_ids = {
             subscription["items"]["data"][0]["price"]["product"]
             for subscription in user_subscriptions.data
-        )
+        }
         all_products = stripe.Product.list(active=True, expand=["data.price"])
         available_products = [
             product
