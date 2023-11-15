@@ -63,7 +63,13 @@ The SDK raises specific exceptions for various error conditions:
 
 .. code-block:: python
 
-    from exceptions import ServiceError, Unauthorized, InactiveSubscribtion, UnknownException
+    from newsltr.exceptions import (
+        ServiceError,
+        Unauthorized,
+        InactiveSubscribtion,
+        UnknownException,
+        InvalidEmailException
+       )
 
     try:
         sdk.subscribe_sync("user@example.com", {"source": "website"})

@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="newsltr_sdk",
-    version="0.1",
+    version="0.0.1",
     license="ISC",
     author="newsltr.io",
     author_email="sdk@newsltr.io",
