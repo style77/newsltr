@@ -20,7 +20,6 @@ module.exports = {
         border: "var(--border)",
         border2: "var(--border2)",
         input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         background2: "var(--background2)",
         foreground: "hsl(var(--foreground))",
@@ -40,10 +39,6 @@ module.exports = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",

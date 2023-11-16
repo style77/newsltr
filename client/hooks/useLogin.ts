@@ -12,8 +12,6 @@ export const useLogin = () => {
   const route = useRouter();
   const dispatch = useAppDispatch();
   const [login, { isLoading, error, isSuccess }] = useLoginMutation();
-  // const { data: sub, isLoading: isSubsribtionloading } =
-  //   useRetrieveSubscriptionsQuery();
   const { toast } = useToast();
   const {
     register: registerInput,
@@ -39,7 +37,7 @@ export const useLogin = () => {
       toast({
         title: "You are succesfully logged in!",
       });
-      // route.push("/");
+      route.push("/dashboard");
     } catch (error) {
       toast({
         variant: "destructive",
