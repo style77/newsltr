@@ -1,12 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import Heading from "./Heading";
 import { useRetrieveSubscriptionsQuery } from "@/redux/features/paymentApiSlice";
+import Heading from "./Heading";
 import PricingCard from "./PricingCard";
 import { motion } from "framer-motion";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "./ui/tabs";
-import { Button } from "./ui/button";
-import { Switch } from "./ui/switch";
 
 const Pricing = () => {
   const [isYearly, setIsYearly] = useState(false);
@@ -15,8 +12,6 @@ const Pricing = () => {
     setIsYearly((prevIsYearly) => !prevIsYearly);
   };
   const { data: subscriptions, isLoading } = useRetrieveSubscriptionsQuery();
-
-  console.log(subscriptions);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -33,7 +28,7 @@ const Pricing = () => {
         <div className="flex justify-center mb-8">
           <div
             onClick={togglePricing}
-            className="px-2 relative flex w-32 h-11 items-center text-center bg-background2 rounded-full cursor-pointer"
+            className="px-2 relative flex w-40 h-11 items-center text-center bg-background2 rounded-full cursor-pointer"
           >
             <motion.div className="pr-2 flex-1 text-secondary">
               Month
@@ -43,7 +38,7 @@ const Pricing = () => {
               layout
               className={`absolute rounded-full flex items-center justify-center text-background2 ${
                 isYearly ? "right-0" : "left-0"
-              } h-full w-16 bg-secondary`}
+              } h-full w-20 bg-secondary`}
             >
               {isYearly ? "Year" : "Month"}
             </motion.div>

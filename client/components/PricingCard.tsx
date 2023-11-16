@@ -26,7 +26,9 @@ const PricingCard = ({ subscription, isPro, isYearly }: PricingCardProps) => {
       <p className="text-center mb-4">{subscription.description}</p>
       <span className="self-center text-5xl font-bold mb-12">
         ${subscription.prices[isYearly ? 0 : 1].unit_amount / 100}
-        <span className="text-xl">/{isYearly ? "year" : "month"}</span>
+        <span className="text-xl font-normal">
+          /{isYearly ? "year" : "month"}
+        </span>
       </span>
       <ul className="grow space-y-2">
         {subscription.features.map((feature, i) => (
