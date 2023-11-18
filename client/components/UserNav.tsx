@@ -18,7 +18,7 @@ import { useRetrieveUserQuery } from "@/redux/features/authApiSlice";
 import { useRouter } from "next/navigation";
 import { useLogout } from "@/hooks/useLogout";
 
-export function UserNav() {
+function UserNav() {
   // const router = useRouter();
   const { data: userData, isError, isLoading } = useRetrieveUserQuery();
   // const dispatch = useAppDispatch();
@@ -80,3 +80,5 @@ export function UserNav() {
     </DropdownMenu>
   );
 }
+
+export default UserNav;

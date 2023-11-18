@@ -4,6 +4,8 @@ import { cn } from "@/lib/utils";
 import { Nunito_Sans } from "next/font/google";
 import Setup from "@/components/utils/Setup";
 import "../globals.css";
+import SideNav from "@/components/dashboard/Sidenav";
+import Topnav from "@/components/dashboard/Topnav";
 
 const nunitoSans = Nunito_Sans({
   subsets: ["latin"],
@@ -20,7 +22,15 @@ const Layout = ({ children }: LayoutProps) => {
       <body className={cn(nunitoSans.className)}>
         <Provider>
           <div className="bg-white">
-            <RequireAuth>{children}</RequireAuth>
+            <RequireAuth>
+              <div className="flex">
+                <SideNav />
+                <div className="w-full">
+                  <Topnav />
+                  {children}
+                </div>
+              </div>
+            </RequireAuth>
             <Setup />
           </div>
         </Provider>
