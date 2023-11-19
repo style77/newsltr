@@ -10,7 +10,7 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import { UserNav } from "./UserNav";
+import UserNav from "@/components/UserNav";
 import { useAppSelector } from "@/redux/hooks";
 
 const Navbar = () => {
