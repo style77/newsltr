@@ -25,7 +25,7 @@ const Layout = ({ children }: LayoutProps) => {
             <RequireAuth>
               <div className="flex">
                 <SideNav />
-                <div className="w-full">
+                <div className="w-full flex flex-col">
                   <Topnav />
                   {children}
                 </div>
