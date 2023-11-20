@@ -232,9 +232,7 @@ DJOSER = {
     },
 }
 
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.AllowAllUsersModelBackend",
-)
+AUTHENTICATION_BACKENDS = ("django.contrib.auth.backends.AllowAllUsersModelBackend",)
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv("GOOGLE_OAUTH2_KEY")
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv("GOOGLE_OAUTH2_SECRET")
@@ -255,10 +253,12 @@ MIDDLEWARE = [
 
 # Cors
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
-CORS_ORIGIN_WHITELIST = [
+CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://localhost:8000",
+    "http://127.0.0.1:8000",
+    "https://checkout.stripe.com"
 ]
 CORS_ALLOW_CREDENTIALS = True
 
@@ -274,7 +274,7 @@ TEMPLATES = [
                 "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages"
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
