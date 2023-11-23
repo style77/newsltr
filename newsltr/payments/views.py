@@ -48,7 +48,9 @@ class Checkout(views.APIView):
             ],
         )
 
-        return HttpResponseRedirect(session.url)
+        return {
+            "sessionId": session.id
+        }
 
 
 @extend_schema(
