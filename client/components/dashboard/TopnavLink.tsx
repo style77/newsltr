@@ -15,7 +15,7 @@ const TopnavLink = ({ href, children }: TopnavLinkProps) => {
 
   return (
     <li
-      className={`h-full border-b-4 ${
+      className={`h-full border-b-4 hover:bg-background2 ${
         active ? " border-text font-bold" : "border-transparent"
       }`}
     >

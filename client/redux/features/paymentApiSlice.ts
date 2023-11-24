@@ -7,7 +7,18 @@ const paymentApiSlice = apiSlice.injectEndpoints({
     retrieveSubscriptions: builder.query<Subscription[], void>({
       query: () => "/payment/subscriptions/",
     }),
+    subscribe: builder.mutation({
+      query: ({ price_id }) => ({
+        url: "/payment/subscribe/",
+        method: "POST",
+        body: { price_id },
+        headers: {
+          Accept: "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useRetrieveSubscriptionsQuery } = paymentApiSlice;
+export const { useRetrieveSubscriptionsQuery, useSubscribeMutation } =
+  paymentApiSlice;
