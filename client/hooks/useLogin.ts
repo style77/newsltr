@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { setAuth } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useRetrieveSubscriptionsQuery } from "@/redux/features/paymentApiSlice";
 
 export const useLogin = () => {
   const route = useRouter();
@@ -23,7 +24,7 @@ export const useLogin = () => {
     resolver: zodResolver(loginFormSchema),
     mode: "onBlur",
   });
-  // console.log("MYERROR", error);
+
   const onSubmit = async (data: LoginFormSchemaType) => {
     const { email, password } = data;
     try {
@@ -36,7 +37,7 @@ export const useLogin = () => {
       toast({
         title: "You are succesfully logged in!",
       });
-      // route.push("/");
+      route.push("/dashboard");
     } catch (error) {
       toast({
         variant: "destructive",

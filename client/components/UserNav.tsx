@@ -18,7 +18,7 @@ import { useRetrieveUserQuery } from "@/redux/features/authApiSlice";
 import { useRouter } from "next/navigation";
 import { useLogout } from "@/hooks/useLogout";
 
-export function UserNav() {
+function UserNav() {
   // const router = useRouter();
   const { data: userData, isError, isLoading } = useRetrieveUserQuery();
   // const dispatch = useAppDispatch();
@@ -26,22 +26,14 @@ export function UserNav() {
   // const [logout] = useLogoutMutation();
   const handleLogout = useLogout();
 
-  // const handleLogout = async () => {
-  //   try {
-  //     await logout({}).unwrap();
-  //     dispatch(setLogout());
-  //   } catch (e) {
-  //     console.log(e);
-  //   } finally {
-  //     router.push("/");
-  //   }
-  // };
-
   console.log(userData);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button
+          variant="ghost"
+          className="relative h-8 w-8 rounded-full border"
+        >
           {isLoading ? (
             <Skeleton className="h-8 w-8 rounded-full" />
           ) : (
@@ -88,3 +80,5 @@ export function UserNav() {
     </DropdownMenu>
   );
 }
+
+export default UserNav;

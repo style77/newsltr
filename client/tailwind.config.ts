@@ -18,9 +18,10 @@ module.exports = {
     extend: {
       colors: {
         border: "var(--border)",
+        border2: "var(--border2)",
         input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        background2: "var(--background2)",
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "var(--primary)",
@@ -38,10 +39,6 @@ module.exports = {
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
           DEFAULT: "hsl(var(--accent))",
@@ -61,6 +58,9 @@ module.exports = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      boxShadow: {
+        1: "0px 24px 24px 0px rgba(0, 0, 0, 0.03)",
+      },
       keyframes: {
         "accordion-down": {
           from: { height: 0 },
@@ -78,6 +78,7 @@ module.exports = {
       backgroundImage: {
         "bg-1": "url('/bg-1.svg')",
         "bg-2": "url('/mailbox.svg')",
+        "card-decor": "url('/card-decor.svg')",
       },
     },
   },
