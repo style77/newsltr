@@ -2,6 +2,8 @@ import React from "react";
 import { Subscription } from "@/lib/types";
 import { Check, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
+import { useSubscribeMutation } from "@/redux/features/paymentApiSlice";
+import { useToast } from "../ui/use-toast";
 
 interface PlanCardProps {
   subscription: Subscription;
@@ -10,6 +12,23 @@ interface PlanCardProps {
 }
 
 const PlansCard = ({ subscription, isPro, isYearly }: PlanCardProps) => {
+  const { toast } = useToast();
+  const [subscribe, { isLoading: isSubscribeLoading }] = useSubscribeMutation();
+
+  const onSubscibe = async (price_id: string) => {
+    try {
+      const res = await subscribe({ price_id }).unwrap();
+      // console.log(res);
+      // window.location.href = res.url;
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        description: "Something went wrong!",
+      });
+    }
+  };
+
   return (
     <div
       className="flex flex-1 flex-col p-6 rounded-md border border-border"
@@ -33,7 +52,11 @@ const PlansCard = ({ subscription, isPro, isYearly }: PlanCardProps) => {
           </div>
         ))}
       </ul>
-      <Button variant={isPro ? "default" : "outline"} size="sm">
+      <Button
+        onClick={() => onSubscibe("price_1O5CmbKwAtttJJGBeLtUzl2H")}
+        variant={isPro ? "default" : "outline"}
+        size="sm"
+      >
         Subscribe
         {isPro && <Sparkles className="text-text ml-2" size={18} />}
       </Button>

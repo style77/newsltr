@@ -11,18 +11,25 @@ import {
 import { Button } from "../ui/button";
 import PlansCard from "./PlansCard";
 import { MdAdd } from "react-icons/md";
-import { useRetrieveSubscriptionsQuery } from "@/redux/features/paymentApiSlice";
+import {
+  useRetrieveSubscriptionsQuery,
+  useSubscribeMutation,
+} from "@/redux/features/paymentApiSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { onClose } from "@/redux/features/dialogSlice";
 
 const SubscriptionDialog = () => {
+  const dispatch = useAppDispatch();
+  const { isOpen } = useAppSelector((state) => state.dialog);
   const { data: subscriptions, isLoading } = useRetrieveSubscriptionsQuery();
+  const [subscribe, { isLoading: isSubscribeLoading }] = useSubscribeMutation();
+
+  const handleCloseDialog = () => {
+    dispatch(onClose());
+  };
+
   return (
-    <Dialog>
-      <DialogTrigger>
-        <Button variant="dashboard" size="md">
-          <MdAdd className="mr-2" size={20} />
-          Add a workspace
-        </Button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={handleCloseDialog}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Can&apos;t create workspaces?</DialogTitle>
