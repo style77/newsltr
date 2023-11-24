@@ -48,9 +48,9 @@ class Checkout(views.APIView):
             ],
         )
 
-        return {
+        return Response({
             "sessionId": session.id
-        }
+        })
 
 
 @extend_schema(
