@@ -4,6 +4,7 @@ import { Check, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import { useSubscribeMutation } from "@/redux/features/paymentApiSlice";
 import { useToast } from "../ui/use-toast";
+import Link from "next/link";
 
 interface PlanCardProps {
   subscription: Subscription;
@@ -18,7 +19,7 @@ const PlansCard = ({ subscription, isPro, isYearly }: PlanCardProps) => {
   const onSubscibe = async (price_id: string) => {
     try {
       const res = await subscribe({ price_id }).unwrap();
-      // console.log(res);
+      console.log(res);
       // window.location.href = res.url;
     } catch (error) {
       console.error(error);
@@ -52,6 +53,7 @@ const PlansCard = ({ subscription, isPro, isYearly }: PlanCardProps) => {
           </div>
         ))}
       </ul>
+      <Link href="/payment">Payment</Link>
       <Button
         onClick={() => onSubscibe("price_1O5CmbKwAtttJJGBeLtUzl2H")}
         variant={isPro ? "default" : "outline"}
