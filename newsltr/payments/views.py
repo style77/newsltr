@@ -9,9 +9,20 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .customers import get_or_create_stripe_customer
-from .serializers import (CancelSubscriptionSerializer,
-                          CreateSubscriptionSerializer, ProductSerializer,
-                          SubscriptionSerializer)
+from .serializers import (
+    CancelSubscriptionSerializer,
+    CreateSubscriptionSerializer,
+    ProductSerializer,
+    SubscriptionSerializer,
+)
+
+
+@extend_schema(tags=["config"])
+class Config(views.APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, *args, **kwargs):
+        return Response({"publishable_key": settings.STRIPE_PUBLISHABLE_KEY})
 
 
 @extend_schema(
