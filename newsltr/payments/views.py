@@ -22,9 +22,6 @@ class Checkout(views.APIView):
     serializer_class = CreateSubscriptionSerializer
 
     def post(self, request, *args, **kwargs):
-        """
-        Subscribe to plan, this endpoint will redirect user to checkout session
-        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -32,25 +29,23 @@ class Checkout(views.APIView):
 
         stripe_user = get_or_create_stripe_customer(request.user)
 
-        session = stripe.checkout.Session.create(
-            client_reference_id=request.user.id,
-            success_url=settings.FRONT_END_BASE_URL
-            + "/workspaces?checkout_id={CHECKOUT_SESSION_ID}",
-            cancel_url=settings.FRONT_END_BASE_URL + "/payment/cancel",
-            payment_method_types=["card"],
+        subscription = stripe.Subscription.create(
             customer=stripe_user.customer_id,
-            mode="subscription",
-            line_items=[
+            items=[
                 {
                     "price": data.get("price_id"),
-                    "quantity": 1,
                 }
             ],
+            payment_behavior="default_incomplete",
+            expand=["latest_invoice.payment_intent"],
         )
 
-        return Response({
-            "sessionId": session.id
-        })
+        return Response(
+            {
+                "subscription_id": subscription.id,
+                "client_secret": subscription.latest_invoice.payment_intent.client_secret,
+            }
+        )
 
 
 @extend_schema(
