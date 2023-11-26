@@ -4,6 +4,7 @@ import { AlignJustify, LayoutGrid } from "lucide-react";
 import { Button } from "../ui/button";
 import { useAppDispatch } from "@/redux/hooks";
 import { onOpen } from "@/redux/features/dialogSlice";
+import { MdAdd } from "react-icons/md";
 
 const Workspaces = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +22,10 @@ const Workspaces = () => {
             <AlignJustify size={20} />
           </Button>
         </div>
-        <Button onClick={handleDialogClick}>Test</Button>
+        <Button variant="dashboard" onClick={handleDialogClick}>
+          <MdAdd className="mr-2" size={18} />
+          Add workspace
+        </Button>
       </div>
     </div>
   );

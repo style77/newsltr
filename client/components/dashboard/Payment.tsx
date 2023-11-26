@@ -1,31 +1,21 @@
 "use client";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import React, { useEffect, useState } from "react";
-import { useSubscribeMutation } from "@/redux/features/paymentApiSlice";
+import React from "react";
 import CheckoutForm from "./CheckoutForm";
+import { useAppSelector } from "@/redux/hooks";
+import { useRetrieveUserSubscriptionsQuery } from "@/redux/features/paymentApiSlice";
 
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_KEY}`);
 
 const Payment = () => {
-  const [clientSecret, setClientSecret] = useState("");
+  const { data } = useRetrieveUserSubscriptionsQuery({});
+  const { clientSecret } = useAppSelector((state) => state.payment);
+  console.log(data);
+
   const options = {
     clientSecret: clientSecret,
   };
-
-  const [subscribe, { isLoading: isSubscribeLoading }] = useSubscribeMutation();
-
-  useEffect(() => {
-    const getSessionId = async () => {
-      const { client_secret, ...rest } = await subscribe({
-        price_id: "price_1O5CmbKwAtttJJGBeLtUzl2H",
-      }).unwrap();
-      setClientSecret(client_secret);
-      console.log(rest);
-    };
-
-    getSessionId();
-  }, []);
 
   return (
     <div className="max-w-xl mx-auto pt-20">

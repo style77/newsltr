@@ -10,10 +10,12 @@ interface PlanState {
 }
 interface InitialState {
   plan: PlanState | null;
+  clientSecret: string;
 }
 
 const initialState: InitialState = {
   plan: null,
+  clientSecret: "",
 };
 
 const paymentSlice = createSlice({
@@ -23,8 +25,11 @@ const paymentSlice = createSlice({
     setChosenPlan: (state, action) => {
       state.plan = action.payload;
     },
+    setClientSecret: (state, action) => {
+      state.clientSecret = action.payload;
+    },
   },
 });
 
-export const { setChosenPlan } = paymentSlice.actions;
+export const { setChosenPlan, setClientSecret } = paymentSlice.actions;
 export default paymentSlice.reducer;

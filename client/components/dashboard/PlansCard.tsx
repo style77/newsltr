@@ -1,10 +1,13 @@
 import React from "react";
+import { useRouter } from "next/navigation";
 import { Subscription } from "@/lib/types";
 import { Check, Sparkles } from "lucide-react";
 import { Button } from "../ui/button";
 import { useSubscribeMutation } from "@/redux/features/paymentApiSlice";
 import { useToast } from "../ui/use-toast";
 import Link from "next/link";
+import { setClientSecret } from "@/redux/features/paymentSlice";
+import { useAppDispatch } from "@/redux/hooks";
 
 interface PlanCardProps {
   subscription: Subscription;
@@ -13,13 +16,17 @@ interface PlanCardProps {
 }
 
 const PlansCard = ({ subscription, isPro, isYearly }: PlanCardProps) => {
+  const router = useRouter();
   const { toast } = useToast();
+  const dispatch = useAppDispatch();
   const [subscribe, { isLoading: isSubscribeLoading }] = useSubscribeMutation();
 
   const onSubscibe = async () => {
     const priceId = subscription.prices[isYearly ? 0 : 1].price_id;
     try {
-      await subscribe({ price_id: priceId }).unwrap();
+      const { client_secret } = await subscribe({ price_id: priceId }).unwrap();
+      dispatch(setClientSecret(client_secret));
+      router.push("/payment");
     } catch (error) {
       console.error(error);
       toast({

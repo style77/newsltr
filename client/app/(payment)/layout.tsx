@@ -1,6 +1,12 @@
+import { Nunito_Sans } from "next/font/google";
 import Provider from "@/redux/Provider";
 import RequireAuth from "@/components/RequireAuth";
 import "../globals.css";
+
+const nunitoSans = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 export const metadata = {
   title: "Next.js",
@@ -14,7 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={nunitoSans.className}>
         <Provider>
           <RequireAuth>{children}</RequireAuth>
         </Provider>

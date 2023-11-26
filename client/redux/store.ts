@@ -12,13 +12,14 @@ const persistConfig = {
 };
 
 const persistedAuth = persistReducer(persistConfig, authReducer);
+const persistedPayment = persistReducer(persistConfig, paymentReducer);
 
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: persistedAuth,
     dialog: dialogReducer,
-    payment: paymentReducer,
+    payment: persistedPayment,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

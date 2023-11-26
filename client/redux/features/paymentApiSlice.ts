@@ -17,8 +17,14 @@ const paymentApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    retrieveUserSubscriptions: builder.query({
+      query: () => "/payment/me/subscriptions/",
+    }),
   }),
 });
 
-export const { useRetrieveSubscriptionsQuery, useSubscribeMutation } =
-  paymentApiSlice;
+export const {
+  useRetrieveSubscriptionsQuery,
+  useRetrieveUserSubscriptionsQuery,
+  useSubscribeMutation,
+} = paymentApiSlice;

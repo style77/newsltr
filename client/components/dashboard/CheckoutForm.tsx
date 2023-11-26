@@ -4,8 +4,13 @@ import {
   PaymentElement,
 } from "@stripe/react-stripe-js";
 import { Button } from "../ui/button";
+import { useRetrieveUserSubscriptionsQuery } from "@/redux/features/paymentApiSlice";
+import Spinner from "../ui/spinner";
+import { useState } from "react";
 
 const CheckoutForm = () => {
+  const [errorMessage, setErrorMessage] = useState<string | undefined>("");
+  const { data, isLoading } = useRetrieveUserSubscriptionsQuery({});
   const stripe = useStripe();
   const elements = useElements();
 
@@ -24,20 +29,37 @@ const CheckoutForm = () => {
       },
     });
 
+    console.log(result);
+
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
       console.log(result.error.message);
+      setErrorMessage(result?.error?.message);
     } else {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
     }
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
+
+  const { price, plan_name, currency } = data[0];
+
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
       <div className="mt-4">
-        <Button disabled={!stripe}>Submit payment</Button>
+        <div className="flex justify-between mb-1">
+          <span>Total ({currency.toUpperCase()})</span>
+          <span>${price / 100}.00</span>
+        </div>
+        <Button disabled={!stripe} className="w-full font-bold">
+          {!stripe ? "loading" : `Subscribe to ${plan_name}`}
+        </Button>
+        {errorMessage && <span>{errorMessage}</span>}
       </div>
     </form>
   );
