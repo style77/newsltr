@@ -16,11 +16,10 @@ const PlansCard = ({ subscription, isPro, isYearly }: PlanCardProps) => {
   const { toast } = useToast();
   const [subscribe, { isLoading: isSubscribeLoading }] = useSubscribeMutation();
 
-  const onSubscibe = async (price_id: string) => {
+  const onSubscibe = async () => {
+    const priceId = subscription.prices[isYearly ? 0 : 1].price_id;
     try {
-      const res = await subscribe({ price_id }).unwrap();
-      console.log(res);
-      // window.location.href = res.url;
+      await subscribe({ price_id: priceId }).unwrap();
     } catch (error) {
       console.error(error);
       toast({
@@ -53,9 +52,8 @@ const PlansCard = ({ subscription, isPro, isYearly }: PlanCardProps) => {
           </div>
         ))}
       </ul>
-      <Link href="/payment">Payment</Link>
       <Button
-        onClick={() => onSubscibe("price_1O5CmbKwAtttJJGBeLtUzl2H")}
+        onClick={onSubscibe}
         variant={isPro ? "default" : "outline"}
         size="sm"
       >

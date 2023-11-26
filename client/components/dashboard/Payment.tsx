@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useSubscribeMutation } from "@/redux/features/paymentApiSlice";
 import CheckoutForm from "./CheckoutForm";
 
-const stripePromise = loadStripe(`${process.env.STRIPE_PUBLISHABLE_KEY}`);
+const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_KEY}`);
 
 const Payment = () => {
   const [clientSecret, setClientSecret] = useState("");
@@ -17,20 +17,20 @@ const Payment = () => {
 
   useEffect(() => {
     const getSessionId = async () => {
-      const { sessionId } = await subscribe({
+      const { client_secret, ...rest } = await subscribe({
         price_id: "price_1O5CmbKwAtttJJGBeLtUzl2H",
       }).unwrap();
-      setClientSecret(sessionId);
-      console.log(sessionId);
+      setClientSecret(client_secret);
+      console.log(rest);
     };
 
     getSessionId();
   }, []);
 
   return (
-    <div>
+    <div className="max-w-xl mx-auto pt-20">
       {clientSecret && (
-        <Elements stripe={stripePromise} options={{ clientSecret }}>
+        <Elements stripe={stripePromise} options={options} key={clientSecret}>
           <CheckoutForm />
         </Elements>
       )}

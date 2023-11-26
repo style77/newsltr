@@ -63,13 +63,14 @@ export interface ParamsType {
   token: string;
 }
 
-interface Prices {
+export interface Prices {
   price_id: string;
   unit_amount: number;
+  currency: string;
   interval: "year" | "month";
 }
 
-interface Feature {
+export interface Feature {
   name: string;
 }
 

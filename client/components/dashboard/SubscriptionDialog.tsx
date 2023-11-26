@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "../ui/button";
 import PlansCard from "./PlansCard";
 import { MdAdd } from "react-icons/md";
@@ -37,16 +38,26 @@ const SubscriptionDialog = () => {
             You need to be subscribed in order to be able to create workspaces.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-row-reverse gap-x-4 mb-2">
-          {subscriptions?.map((subscription) => (
-            <PlansCard
-              key={subscription.product_id}
-              subscription={subscription}
-              isPro={subscription.name === "Pro"}
-              // isYearly={isYearly}
-            />
-          ))}
-        </div>
+        <>
+          <div className="flex flex-row-reverse gap-x-4 mb-2">
+            {!isLoading ? (
+              subscriptions?.map((subscription) => (
+                <PlansCard
+                  key={subscription.product_id}
+                  subscription={subscription}
+                  isPro={subscription.name === "Pro"}
+                  // isYearly={isYearly}
+                />
+              ))
+            ) : (
+              <>
+                <Skeleton className="flex-1 h-[334px]" />
+                <Skeleton className="flex-1 h-[334px]" />
+                <Skeleton className="flex-1 h-[334px]" />
+              </>
+            )}
+          </div>
+        </>
       </DialogContent>
     </Dialog>
   );

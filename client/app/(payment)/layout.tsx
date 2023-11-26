@@ -1,5 +1,6 @@
 import Provider from "@/redux/Provider";
 import RequireAuth from "@/components/RequireAuth";
+import "../globals.css";
 
 export const metadata = {
   title: "Next.js",
