@@ -21,7 +21,6 @@ services:
       dockerfile: Dockerfile
     restart: always
     command: python manage.py runserver 0.0.0.0:8000
-    image: newsltr-api:latest
     container_name: newsltr-api
     ports:
       - "127.0.0.1:8000:8000"
@@ -36,7 +35,6 @@ services:
   newsltr-migrations:
     build:
       dockerfile: Dockerfile
-    image: newsltr-migrations:latest
     container_name: newsltr-migrations
     restart: no
     command: python manage.py migrate
