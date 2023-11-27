@@ -2,7 +2,6 @@ from datetime import datetime
 
 import stripe
 from django.conf import settings
-from django.http import HttpResponseRedirect
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status, views, viewsets
 from rest_framework.decorators import action
