@@ -130,7 +130,11 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
 
 # Email
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" if DEBUG else "django_ses.SESBackend"
+EMAIL_BACKEND = (
+    "django.core.mail.backends.console.EmailBackend"
+    if DEBUG
+    else "django_ses.SESBackend"
+)
 DEFAULT_FROM_EMAIL = (
     f"Newsltr <{os.getenv('DEFAULT_FROM_EMAIL', 'newsltr@newsltr.io')}>"
 )
@@ -258,7 +262,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
-    "https://checkout.stripe.com"
+    "https://checkout.stripe.com",
 ]
 CORS_ALLOW_CREDENTIALS = True
 
