@@ -112,6 +112,7 @@ class MySubscriptions(viewsets.ViewSet):
         stripe_user = get_or_create_stripe_customer(request.user)
         user_subscriptions = stripe.Subscription.list(
             customer=stripe_user.customer_id,
+            status="active",
         )
 
         subscription_data = []
