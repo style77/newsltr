@@ -6,7 +6,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { setAuth } from "@/redux/features/authSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { useRetrieveSubscriptionsQuery } from "@/redux/features/paymentApiSlice";
 
 export const useLogin = () => {
   const route = useRouter();

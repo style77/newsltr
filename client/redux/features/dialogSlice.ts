@@ -1,16 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { DialogState } from "@/lib/types";
 
-interface DialogState {
-  isOpen: boolean;
-}
-
-const initialState: DialogState = {
+const subscriptionDialogInitialState: DialogState = {
   isOpen: false,
 };
 
 const dialogSlice = createSlice({
   name: "dialog",
-  initialState,
+  initialState: subscriptionDialogInitialState,
   reducers: {
     onOpen: (state) => {
       state.isOpen = true;

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -18,15 +18,21 @@ import {
 } from "@/redux/features/paymentApiSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { onClose } from "@/redux/features/dialogSlice";
+import { motion } from "framer-motion";
 
 const SubscriptionDialog = () => {
+  const [isYearly, setIsYearly] = useState(false);
+
   const dispatch = useAppDispatch();
   const { isOpen } = useAppSelector((state) => state.dialog);
   const { data: subscriptions, isLoading } = useRetrieveSubscriptionsQuery();
-  const [subscribe, { isLoading: isSubscribeLoading }] = useSubscribeMutation();
 
   const handleCloseDialog = () => {
     dispatch(onClose());
+  };
+
+  const togglePricing = () => {
+    setIsYearly((prevIsYearly) => !prevIsYearly);
   };
 
   return (
@@ -38,6 +44,26 @@ const SubscriptionDialog = () => {
             You need to be subscribed in order to be able to create workspaces.
           </DialogDescription>
         </DialogHeader>
+
+        <div className="flex mb-2">
+          <div
+            onClick={togglePricing}
+            className="px-2 relative flex w-40 h-11 items-center text-center bg-background2 rounded-full cursor-pointer"
+          >
+            <motion.div className="pr-2 flex-1 text-secondary">
+              Month
+            </motion.div>
+            <div className="pl-2 flex-1">Year</div>
+            <motion.div
+              layout
+              className={`absolute rounded-full flex items-center justify-center text-background2 ${
+                isYearly ? "right-0" : "left-0"
+              } h-full w-20 bg-secondary`}
+            >
+              {isYearly ? "Year" : "Month"}
+            </motion.div>
+          </div>
+        </div>
         <>
           <div className="flex flex-row-reverse gap-x-4 mb-2">
             {!isLoading ? (
@@ -46,7 +72,7 @@ const SubscriptionDialog = () => {
                   key={subscription.product_id}
                   subscription={subscription}
                   isPro={subscription.name === "Pro"}
-                  // isYearly={isYearly}
+                  isYearly={isYearly}
                 />
               ))
             ) : (

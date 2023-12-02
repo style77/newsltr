@@ -82,3 +82,7 @@ export interface Subscription {
   name: string;
   description: string;
 }
+
+export interface DialogState {
+  isOpen: boolean;
+}

@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Form from "./ui/form";
+import Form from "./ui/CustomForm";
 import Error from "./Error";
 import { useResetPasswordConfirm } from "@/hooks/useResetPasswordConfirm";
 import { ParamsType } from "@/lib/types";
