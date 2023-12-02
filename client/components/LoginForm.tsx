@@ -2,7 +2,7 @@
 import React from "react";
 import { useLogin } from "@/hooks/useLogin";
 import { useAppSelector } from "@/redux/hooks";
-import Form from "./ui/form";
+import Form from "./ui/CustomForm";
 import Error from "./Error";
 
 const config = [

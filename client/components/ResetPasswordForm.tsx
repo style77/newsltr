@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useAppSelector } from "@/redux/hooks";
-import Form from "./ui/form";
+import Form from "./ui/CustomForm";
 import Error from "./Error";
 import { useResetPassword } from "@/hooks/useResetPassword";
 

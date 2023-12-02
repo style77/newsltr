@@ -8,7 +8,6 @@ import RequireAuth from "@/components/RequireAuth";
 import Setup from "@/components/utils/Setup";
 import SideNav from "@/components/dashboard/Sidenav";
 import Topnav from "@/components/dashboard/Topnav";
-import SubscriptionDialog from "@/components/dashboard/SubscriptionDialog";
 
 const nunitoSans = Nunito_Sans({
   subsets: ["latin"],
@@ -33,7 +32,6 @@ const Layout = ({ children }: LayoutProps) => {
                   {children}
                 </div>
               </div>
-              <SubscriptionDialog />
             </RequireAuth>
             <Setup />
           </div>

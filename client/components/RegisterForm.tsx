@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Form from "./ui/form";
+import Form from "./ui/CustomForm";
 import { useRegister } from "@/hooks/useRegister";
 import SocialButtons from "./SocialButtons";
 
