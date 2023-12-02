@@ -10,7 +10,7 @@
 {% blocktrans %}
 You have been invited to join the {{ workspace_name }} workspace on Newsltr. To accept the invitation, click the link below:
 
-{{ protocol }}://{{ domain }}/{{ url|safe }}
+{{ url|safe }}
 
 If you have any questions or run into any issues, our support team is here to help. Feel free to reach out to us
 anytime.
@@ -80,7 +80,7 @@ The Newsltr Team
         <div class="content">
             <p>{% trans "Hello" %} {{ first_name }}, </p>
             <p>{% trans "You have been invited to join the {{ workspace_name }} workspace on Newsltr. To accept the invitation, click the link below:" %}</p>
-            <p><a href="{{ protocol }}://{{ domain }}/{{ url|safe }}" class="button">{% trans "Accept invitation" %}</a></p>
+            <p><a href="{{ url|safe }}" class="button">{% trans "Accept invitation" %}</a></p>
             <p>{% trans "If you have any questions or run into any issues, our support team is here to help. Feel free to reach out to us anytime." %}</p>
             <p>{% trans "We appreciate your trust in Newsltr. Thank you for choosing us!" %}</p>
         </div>

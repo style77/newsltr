@@ -2,7 +2,6 @@ from datetime import datetime
 
 import stripe
 from django.conf import settings
-from django.http import HttpResponseRedirect
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status, views, viewsets
 from rest_framework.decorators import action
@@ -112,6 +111,7 @@ class MySubscriptions(viewsets.ViewSet):
         stripe_user = get_or_create_stripe_customer(request.user)
         user_subscriptions = stripe.Subscription.list(
             customer=stripe_user.customer_id,
+            status="active",
         )
 
         subscription_data = []

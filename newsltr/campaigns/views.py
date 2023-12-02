@@ -4,13 +4,15 @@ from typing import Any, Type
 from drf_spectacular.utils import extend_schema
 from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import (CreateAPIView, GenericAPIView,
-                                     RetrieveUpdateDestroyAPIView)
+from rest_framework.generics import (
+    CreateAPIView,
+    GenericAPIView,
+    RetrieveUpdateDestroyAPIView,
+)
 from rest_framework.response import Response
 from rest_framework.serializers import BaseSerializer
 
-from authorization.authentication import (APIKeyAuthentication,
-                                          JWTCookiesAuthentication)
+from authorization.authentication import APIKeyAuthentication, JWTCookiesAuthentication
 
 from .models import CampaignSubscriber
 from .permissions import IsMemberOfWorkspace
