@@ -12,23 +12,20 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "../ui/button";
 import PlansCard from "./PlansCard";
 import { MdAdd } from "react-icons/md";
-import {
-  useRetrieveSubscriptionsQuery,
-  useSubscribeMutation,
-} from "@/redux/features/paymentApiSlice";
+import { useRetrieveSubscriptionsQuery } from "@/redux/features/paymentApiSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { onClose } from "@/redux/features/dialogSlice";
+import { closeSubscriptionDialog } from "@/redux/features/dialogSlice";
 import { motion } from "framer-motion";
 
 const SubscriptionDialog = () => {
   const [isYearly, setIsYearly] = useState(false);
 
   const dispatch = useAppDispatch();
-  const { isOpen } = useAppSelector((state) => state.dialog);
+  const { isSubscriptionDialogOpen } = useAppSelector((state) => state.dialog);
   const { data: subscriptions, isLoading } = useRetrieveSubscriptionsQuery();
 
   const handleCloseDialog = () => {
-    dispatch(onClose());
+    dispatch(closeSubscriptionDialog());
   };
 
   const togglePricing = () => {
@@ -36,7 +33,7 @@ const SubscriptionDialog = () => {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={handleCloseDialog}>
+    <Dialog open={isSubscriptionDialogOpen} onOpenChange={handleCloseDialog}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Can&apos;t create workspaces?</DialogTitle>

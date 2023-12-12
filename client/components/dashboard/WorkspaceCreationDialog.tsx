@@ -8,18 +8,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import WorkspaceCreationForm from "./WorkspaceCreationForm";
-import { onClose } from "@/redux/features/dialogSlice";
+import { closeCreateDialog } from "@/redux/features/dialogSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 
 const WorkspaceCreationDialog = () => {
   const dispatch = useAppDispatch();
-  const { isOpen } = useAppSelector((state) => state.dialog);
+  const { isCreateDialogOpen } = useAppSelector((state) => state.dialog);
 
   const handleCloseDialog = () => {
-    dispatch(onClose());
+    dispatch(closeCreateDialog());
   };
   return (
-    <Dialog open={isOpen} onOpenChange={handleCloseDialog}>
+    <Dialog open={isCreateDialogOpen} onOpenChange={handleCloseDialog}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Create workspace</DialogTitle>

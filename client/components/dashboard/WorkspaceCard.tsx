@@ -17,6 +17,8 @@ import { useAppDispatch } from "@/redux/hooks";
 import { openWorkspaceDeletion } from "@/redux/features/workspaceDeletionDialogSlice";
 import WorkspaceCreationForm from "./WorkspaceCreationForm";
 import WorkspaceDeletionDialog from "./WorkspaceDeletionDialog";
+import WorkspaceEditDialog from "./WorkspaceEditDialog";
+import { openDeleteDialog, openEditDialog } from "@/redux/features/dialogSlice";
 
 interface WorkspaceCardProps {
   workspace: WorkspaceResult;
@@ -31,12 +33,17 @@ const WorkspaceCard = ({ workspace }: WorkspaceCardProps) => {
   };
 
   const openWorkspaceDeletionDialog = () => {
-    dispatch(openWorkspaceDeletion());
+    dispatch(openDeleteDialog());
+  };
+
+  const openWorkspaceEditDialog = () => {
+    dispatch(openEditDialog());
   };
 
   return (
     <div>
       <WorkspaceDeletionDialog id={workspace.id} />
+      <WorkspaceEditDialog workspace={workspace} />
       <div className="bg-background border border-border w-[500px] h-80 p-6 rounded-md">
         <div className="flex justify-between">
           <h2 className="font-bold text-xl">{workspace.name}</h2>
@@ -50,7 +57,9 @@ const WorkspaceCard = ({ workspace }: WorkspaceCardProps) => {
               <DropdownMenuItem onClick={() => openWorkspace(workspace.id)}>
                 Open
               </DropdownMenuItem>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem onClick={openWorkspaceEditDialog}>
+                Edit
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={openWorkspaceDeletionDialog}>
                 Delete
               </DropdownMenuItem>

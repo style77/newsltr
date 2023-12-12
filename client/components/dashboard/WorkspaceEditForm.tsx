@@ -15,9 +15,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "../ui/textarea";
-import { useCreateWorkspaceMutation } from "@/redux/features/workspaceApiSlice";
+import {
+  WorkspaceResult,
+  usePartialUpdateWorkspaceMutation,
+} from "@/redux/features/workspaceApiSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { closeCreateDialog } from "@/redux/features/dialogSlice";
+import { closeEditDialog } from "@/redux/features/dialogSlice";
 import Spinner from "../ui/spinner";
 
 const formSchema = z.object({
@@ -31,26 +34,30 @@ type CreateWorspaceErrorType = {
   };
 };
 
-const WorkspaceCreationForm = () => {
+interface WorkspaceEditFormPorps {
+  workspace: WorkspaceResult;
+}
+
+const WorkspaceEditForm = ({ workspace }: WorkspaceEditFormPorps) => {
+  const { id, name, description } = workspace;
   const dispatch = useAppDispatch();
-  const [createWorkspace, { isLoading }] = useCreateWorkspaceMutation();
+  const [updateWorkspace, { isLoading }] = usePartialUpdateWorkspaceMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name,
+      description,
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    dispatch(closeCreateDialog());
+    dispatch(closeEditDialog());
     try {
       const { name, description } = values;
-      await createWorkspace({ name, description }).unwrap();
+      await updateWorkspace({ id, name, description }).unwrap();
     } catch (error) {
       return new Error(String(error));
     }
-    // dispatch(closeCreateDialog());
   };
 
   return (
@@ -87,11 +94,11 @@ const WorkspaceCreationForm = () => {
           )}
         />
         <Button className="w-full" type="submit">
-          {isLoading ? <Spinner /> : "Submit"}
+          Submmit
         </Button>
       </form>
     </Form>
   );
 };
 
-export default WorkspaceCreationForm;
+export default WorkspaceEditForm;

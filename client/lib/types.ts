@@ -83,6 +83,9 @@ export interface Subscription {
   description: string;
 }
 
-export interface DialogState {
-  isOpen: boolean;
+export interface WorkspaceDialogState {
+  isSubscriptionDialogOpen: boolean;
+  isCreateDialogOpen: boolean;
+  isEditDialogOpen: boolean;
+  isDeleteDialogOpen: boolean;
 }

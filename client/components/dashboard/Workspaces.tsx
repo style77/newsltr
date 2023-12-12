@@ -3,7 +3,7 @@ import React from "react";
 import { AlignJustify, LayoutGrid, MoreVertical, Users } from "lucide-react";
 import { Button } from "../ui/button";
 import { useAppDispatch } from "@/redux/hooks";
-import { onOpen } from "@/redux/features/dialogSlice";
+import { openCreateDialog } from "@/redux/features/dialogSlice";
 import { MdAdd } from "react-icons/md";
 import SubscriptionDialog from "./SubscriptionDialog";
 import WorkspaceCreationDialog from "./WorkspaceCreationDialog";
@@ -11,7 +11,6 @@ import { useRetrieveUserSubscriptionsQuery } from "@/redux/features/paymentApiSl
 import { useRetriveWorkspacesQuery } from "@/redux/features/workspaceApiSlice";
 import { useRouter } from "next/navigation";
 import WorkspaceCard from "./WorkspaceCard";
-import WorkspaceDeletionDialog from "./WorkspaceDeletionDialog";
 
 const Workspaces = () => {
   const dispatch = useAppDispatch();
@@ -25,7 +24,7 @@ const Workspaces = () => {
     useRetriveWorkspacesQuery();
 
   const handleDialogClick = () => {
-    dispatch(onOpen());
+    dispatch(openCreateDialog());
   };
 
   if (isLoading) {

@@ -20,22 +20,25 @@ const workspaceApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     retriveWorkspaces: builder.query<Workspace, void>({
       query: () => "/workspace/",
-      providesTags: ["Workspace"],
+      providesTags: [{ type: "Workspace" }],
     }),
     createWorkspace: builder.mutation({
-      query: ({ name, description }) => ({
+      query: ({ ...patch }) => ({
         url: "/workspace/",
         method: "POST",
-        body: { name, description },
+        body: patch,
       }),
-      invalidatesTags: ["Workspace"],
-      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+      async onQueryStarted({ ...patch }, { dispatch, queryFulfilled }) {
         const patchResult = dispatch(
           workspaceApiSlice.util.updateQueryData(
             "retriveWorkspaces",
-            id,
+            undefined,
             (draft) => {
-              Object.assign(draft);
+              return {
+                ...draft,
+                results: [{ ...patch }],
+              };
+              // Object.assign(draft, patch);
             },
           ),
         );
@@ -51,11 +54,13 @@ const workspaceApiSlice = apiSlice.injectEndpoints({
            */
         }
       },
+      // invalidatesTags: [{ type: "Workspace" }],
     }),
     retriveWorkspace: builder.query({
       query: ({ id }) => ({
         url: `/workspace/${id}`,
       }),
+      providesTags: ["Workspace"],
     }),
     updateWorkspace: builder.mutation({
       query: ({ id, name, description }) => ({
@@ -66,25 +71,29 @@ const workspaceApiSlice = apiSlice.injectEndpoints({
     }),
     partialUpdateWorkspace: builder.mutation({
       query: ({ id, name, description }) => ({
-        url: `workspace/${id}`,
-        method: "POST",
-        body: { id, name, description },
+        url: `workspace/${id}/`,
+        method: "PATCH",
+        body: { name, description },
       }),
-    }),
-    deleteWorkspace: builder.mutation({
-      query: ({ id }) => ({
-        url: `workspace/${id}`,
-        method: "DELETE",
-        body: { id },
-      }),
-      invalidatesTags: ["Workspace"],
-      async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+      // invalidatesTags: ["Workspace"],
+      async onQueryStarted({ id, ...patch }, { dispatch, queryFulfilled }) {
+        console.log(id, patch);
         const patchResult = dispatch(
           workspaceApiSlice.util.updateQueryData(
             "retriveWorkspaces",
-            id,
+            undefined,
             (draft) => {
-              Object.assign(draft);
+              const index = draft.results.findIndex(
+                (workspace) => workspace.id === id,
+              );
+              console.log(index);
+              const newValue = [...draft.results];
+              newValue[index] = { id, ...patch };
+              return {
+                ...draft,
+                results: newValue,
+              };
+              // Object.assign(draft, patch);
             },
           ),
         );
@@ -100,6 +109,36 @@ const workspaceApiSlice = apiSlice.injectEndpoints({
            */
         }
       },
+    }),
+    deleteWorkspace: builder.mutation({
+      query: ({ id }) => ({
+        url: `workspace/${id}`,
+        method: "DELETE",
+        body: { id },
+      }),
+      invalidatesTags: ["Workspace"],
+      // async onQueryStarted({ id }, { dispatch, queryFulfilled }) {
+      //   const patchResult = dispatch(
+      //     workspaceApiSlice.util.updateQueryData(
+      //       "retriveWorkspaces",
+      //       id,
+      //       (draft) => {
+      //         Object.assign(draft);
+      //       },
+      //     ),
+      //   );
+      //   try {
+      //     await queryFulfilled;
+      //   } catch {
+      //     patchResult.undo();
+      //
+      //     /**
+      //      * Alternatively, on failure you can invalidate the corresponding cache tags
+      //      * to trigger a re-fetch:
+      //      * dispatch(api.util.invalidateTags(['Post']))
+      //      */
+      //   }
+      // },
     }),
     inviteToWorkspace: builder.mutation({
       query: ({ id, email, role }) => ({

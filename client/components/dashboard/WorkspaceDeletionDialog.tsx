@@ -10,19 +10,18 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { closeWorkspaceDeletion } from "@/redux/features/workspaceDeletionDialogSlice";
-import { Button, buttonVariants } from "../ui/button";
+import { buttonVariants } from "../ui/button";
 import { useDeleteWorkspaceMutation } from "@/redux/features/workspaceApiSlice";
 import { cn } from "@/lib/utils";
+import { closeDeleteDialog } from "@/redux/features/dialogSlice";
 
 interface WorkspaceDeletionDialogProps {
-  // handleDeleteWorkspace: (id: string) => void;
   id: string;
 }
 
 const WorkspaceDeletionDialog = ({ id }: WorkspaceDeletionDialogProps) => {
   const dispatch = useAppDispatch();
-  const { isOpen } = useAppSelector((state) => state.workspaceDeletionDialog);
+  const { isDeleteDialogOpen } = useAppSelector((state) => state.dialog);
 
   const [deleteWorkspace, { isLoading }] = useDeleteWorkspaceMutation();
 
@@ -35,10 +34,11 @@ const WorkspaceDeletionDialog = ({ id }: WorkspaceDeletionDialogProps) => {
   };
 
   const handleCloseDialog = () => {
-    dispatch(closeWorkspaceDeletion());
+    dispatch(closeDeleteDialog());
   };
+
   return (
-    <AlertDialog open={isOpen} onOpenChange={handleCloseDialog}>
+    <AlertDialog open={isDeleteDialogOpen} onOpenChange={handleCloseDialog}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
