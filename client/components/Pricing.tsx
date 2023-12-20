@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import BillingCycleButton from "./BillingCycleButton";
 import PricingCard from "./PricingCard";
+import BestPricingCard from "./BestPricingCard";
 
 const Pricing = () => {
   const [selected, setSelected] = useState<"Month" | "Year">("Month");
@@ -14,7 +15,7 @@ const Pricing = () => {
         <h2 className="mb-8 text-6xl font-bold lg:text-center">
           Choose your plan
         </h2>
-        <p className="text-lg lg:text-xl">
+        <p className="text-lg lg:text-3xl">
           Explore our flexible pricing options and find the plan that aligns
           with your unique needs and budget.
         </p>
@@ -22,10 +23,10 @@ const Pricing = () => {
 
       <div className="mt-12 flex flex-col items-center justify-center">
         <BillingCycleButton value={selected} onClick={handleToggleCycle} />
-        <div className="mt-12 flex w-full flex-col items-center gap-5 px-4 lg:flex-row lg:justify-center">
-          <PricingCard />
-          <PricingCard />
-          <PricingCard />
+        <div className="mt-12 flex w-full flex-col items-center gap-5 px-4 lg:justify-center xl:flex-row">
+          <PricingCard name="Basic" price="$46" description="" />
+          <BestPricingCard name="Pro" price="$99" description="" />
+          <PricingCard name="Enterprise" price="$146" description="" />
         </div>
       </div>
     </section>

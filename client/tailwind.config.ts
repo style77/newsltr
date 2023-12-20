@@ -78,6 +78,7 @@ module.exports = {
       backgroundImage: {
         "bg-1": "url('/bg-1.svg')",
         "bg-2": "url('/mailbox.svg')",
+        pricing: "url('/pricing-bg.png')",
       },
     },
   },
