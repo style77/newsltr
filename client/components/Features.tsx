@@ -34,7 +34,7 @@ const Features = () => {
   return (
     <section className="bg-grey py-20 bg-bg-1 bg-no-repeat bg-right-top">
       <div className="max-w-6xl mx-auto pt-20 text-text px-4 ">
-        <h2 className="text-6xl font-bold mb-8">Features</h2>
+        <h2 className="text-6xl font-bold mb-8 lg:text-center">Features</h2>
         <div className="grid grid-cols-1 gap-20 md:grid-cols-2">
           {features.map((feature, index) => (
             <FeatureCard key={index} {...feature} />
