@@ -33,7 +33,7 @@ const Workspaces = () => {
   console.log(userSubscriptions);
 
   const isUserSubscribed =
-    isSuccess && userSubscriptions[0].status === "active";
+    isSuccess && userSubscriptions[0]?.status === "active";
 
   return (
     <div>
