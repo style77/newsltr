@@ -26,8 +26,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={nunitoSans.className}>
         <Provider>
-          <div className="flex justify-between h-screen min-h-[900px] w-full ">
-            <div className="grow flex justify-center">{children}</div>
+          <div className="flex h-screen min-h-[900px] w-full justify-between ">
+            <div className="flex grow justify-center">{children}</div>
             <Image className="h-full w-fit" src={formDecor} alt="login-decor" />
           </div>
           <Setup />

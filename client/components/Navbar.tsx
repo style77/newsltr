@@ -26,7 +26,7 @@ const Navbar = () => {
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink
-          className="border border-text py-2 px-4 rounded"
+          className="rounded border border-text px-4 py-2"
           href="register"
         >
           Sign up
@@ -46,7 +46,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="flex max-w-6xl mx-auto justify-between py-8 px-4">
+    <nav className="mx-auto flex max-w-6xl justify-between px-4 py-8">
       <div className="h-6 w-6 bg-zinc-200" />
       <NavigationMenu>
         <NavigationMenuList className="space-x-8">

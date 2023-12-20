@@ -35,7 +35,7 @@ const CustomInput = <T extends FieldValues>({
 
   return (
     <div className="min-h-[100px]">
-      <label className="text-text text-sm" htmlFor={id}>
+      <label className="text-sm text-text" htmlFor={id}>
         <div className="flex justify-between">
           <div>{label}</div>
           {id === "password" && pathname === "/login" && (
@@ -47,16 +47,16 @@ const CustomInput = <T extends FieldValues>({
       </label>
       <div className="mb-5 mt-1">
         <div
-          className={`flex items-center w-96 border rounded-md focus-within:outline-primary focus-within:outline ${
+          className={`flex w-96 items-center rounded-md border focus-within:outline focus-within:outline-primary ${
             errors[id]?.message
-              ? "border-error border-2 bg-red-100"
-              : "bg-slate-50 border-slate-300"
+              ? "border-2 border-error bg-red-100"
+              : "border-slate-300 bg-slate-50"
           }`}
         >
           <input
             {...register}
             id={id}
-            className="grow bg-transparent outline-0 py-2 px-4"
+            className="grow bg-transparent px-4 py-2 outline-0"
             type={type === "password" && !showPassword ? "password" : "text"}
           />
           {type === "password" && (
@@ -76,10 +76,10 @@ const CustomInput = <T extends FieldValues>({
             message &&
             message.split(".,").map((m, i) => (
               <div
-                className=" mt-1.5 text-error justify-between items-center text-sm"
+                className=" mt-1.5 items-center justify-between text-sm text-error"
                 key={m}
               >
-                <div className="inline-flex items-start gap-1 w-80">
+                <div className="inline-flex w-80 items-start gap-1">
                   <div className="pt-[1px]">
                     <AlertTriangle size={13} />
                   </div>

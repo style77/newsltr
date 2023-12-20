@@ -30,8 +30,8 @@ const Error = <T extends FieldValues>({ error, getValues }: ErrorProps<T>) => {
   return (
     <>
       {error && (
-        <div className="border border-error rounded-md p-2.5 bg-red-100 text-error mb-2 text-sm align-top">
-          <div className="flex gap-2 mb-2">
+        <div className="mb-2 rounded-md border border-error bg-red-100 p-2.5 align-top text-sm text-error">
+          <div className="mb-2 flex gap-2">
             <AlertTriangleIcon size={16} />
             <span>{errorMessage}</span>
           </div>
@@ -40,7 +40,7 @@ const Error = <T extends FieldValues>({ error, getValues }: ErrorProps<T>) => {
               <button
                 type="button"
                 onClick={resendActivationEmail}
-                className="text-sm text-secondary underline font-semibold"
+                className="text-sm font-semibold text-secondary underline"
               >
                 {isLoading ? <Spinner /> : "Resend activation email"}
               </button>

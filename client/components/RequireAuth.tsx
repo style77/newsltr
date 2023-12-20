@@ -23,7 +23,7 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center my-8">
+      <div className="my-8 flex justify-center">
         <Spinner />
       </div>
     );

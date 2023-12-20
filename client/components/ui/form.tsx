@@ -54,7 +54,7 @@ const Form = <T extends FieldValues>({
       <div>
         <Button
           size="lg"
-          className="bg-primary text-ltext w-full text-base"
+          className="text-ltext w-full bg-primary text-base"
           type="submit"
           disabled={isLoading}
         >

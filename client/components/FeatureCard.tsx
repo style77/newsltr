@@ -9,8 +9,8 @@ interface FeatureCardType {
 const FeatureCard = ({ title, description, icon }: FeatureCardType) => {
   // const { title, description, icon } = feature;
   return (
-    <div className="border border-border border-[#E4E4E4] border-2 p-10 rounded-lg bg-white">
-      <div className="flex items-center text-3xl font-semibold mb-4">
+    <div className="rounded-lg border-2 border-[#E4E4E4] border-border bg-white p-10">
+      <div className="mb-4 flex items-center text-3xl font-semibold">
         <span className="mr-2">{icon}</span>
         <h3>{title}</h3>
       </div>

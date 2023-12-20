@@ -6,11 +6,11 @@ import SocialButtons from "@/components/SocialButtons";
 const Page = () => {
   return (
     <div className="flex justify-between">
-      <div className="text-text flex flex-col justify-center">
-        <h2 className="text-text text-4xl font-bold mb-4">
+      <div className="flex flex-col justify-center text-text">
+        <h2 className="mb-4 text-4xl font-bold text-text">
           Welcome to Newsltr.
         </h2>
-        <p className="text-2xl font-semibold mb-4">
+        <p className="mb-4 text-2xl font-semibold">
           Create your Newsltr account
         </p>
         <RegisterForm />
@@ -18,7 +18,7 @@ const Page = () => {
           <p className="text-sm">
             Already have an account?{" "}
             <Link
-              className="text-secondary underline font-semibold"
+              className="font-semibold text-secondary underline"
               href="/login"
             >
               Log in

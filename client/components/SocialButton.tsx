@@ -15,7 +15,7 @@ export default function SocialButton({ provider, children, ...rest }: Props) {
 
   return (
     <Button className={className} {...rest}>
-      <span className="flex justify-start items-center">{children}</span>
+      <span className="flex items-center justify-start">{children}</span>
     </Button>
   );
 }
