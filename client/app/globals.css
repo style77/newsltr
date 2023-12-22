@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+.tiptap ul {
+  list-style-type: disc;
+  padding: 0 1rem;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+  padding: 0 1rem;
+}
+
+.tiptap code {
+  background-color: #6161611a;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  color: #616161;
+  padding: 0.2rem;
+}
+
+.tiptap a {
+  color: #68cef8;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
