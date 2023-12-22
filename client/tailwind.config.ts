@@ -33,6 +33,8 @@ module.exports = {
         grey: {
           DEFAULT: "var(--grey)",
         },
+        navy: "var(--navy)",
+        slategray: "var(--slate-gray)",
         text: "var(--text)",
         error: "var(--error)",
         destructive: {
