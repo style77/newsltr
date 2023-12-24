@@ -1,5 +1,5 @@
 import React from "react";
-import { useCurrentEditor } from "@tiptap/react";
+import { Editor, useCurrentEditor } from "@tiptap/react";
 import { Redo2, Undo2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ const undoRedoData: UndoRedoType[] = [
 
 const UndoRedoButtons = () => {
   const { editor } = useCurrentEditor();
-
+  console.log(editor);
   if (!editor) {
     return null;
   }
@@ -38,7 +38,7 @@ const UndoRedoButtons = () => {
       {undoRedoData.map(({ name, action, icon }) => (
         <Button
           key={name}
-          variant="icon"
+          variant="editor"
           size="icon"
           onClick={() => handleButtonClick(action)}
           className={editor.isActive(name) ? isActive : ""}

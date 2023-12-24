@@ -18,7 +18,7 @@ const EditorToolbar = () => {
   }
 
   return (
-    <div className="flex h-10">
+    <div className="flex border-b h-14 border-border p-2">
       <UndoRedoButtons />
       <Separator orientation="vertical" className="mx-2" />
       <SelectFont />
@@ -28,10 +28,11 @@ const EditorToolbar = () => {
       <FormattingButtons />
       <Separator orientation="vertical" className="mx-2" />
       <SelectColors />
-      <Separator orientation="vertical" />
+      <Separator orientation="vertical" className="mx-2" />
       <AlignmentButtons />
+      <Separator orientation="vertical" className="mx-2" />
       <ListButtons />
-      <Separator orientation="vertical" />
+      <Separator orientation="vertical" className="mx-2" />
       <AdditionalButtons />
     </div>
   );

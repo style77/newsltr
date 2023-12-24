@@ -4,6 +4,7 @@ import { useCurrentEditor } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
 import { ActionType, EditorButtonsType } from "./types";
 import { Bold, Italic, Underline } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type FormattingType = Omit<EditorButtonsType, "actionFunction">;
 
@@ -43,10 +44,10 @@ const FormattingButtons = () => {
       {formattingData.map(({ name, action, icon }) => (
         <Button
           key={name}
-          variant="icon"
+          variant="editor"
           size="icon"
           onClick={() => handleButtonClick(action)}
-          className={editor.isActive(name) ? isActive : ""}
+          className={cn(editor.isActive(name) ? isActive : "", "mr-1")}
         >
           {icon}
         </Button>

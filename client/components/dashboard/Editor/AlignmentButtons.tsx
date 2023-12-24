@@ -4,6 +4,7 @@ import { useCurrentEditor } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
 import { ActionType, EditorButtonsType } from "./types";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type AlignmentType = Omit<EditorButtonsType, "action">;
 
@@ -44,10 +45,10 @@ const AlignmentButtons = () => {
       {alignmentData.map(({ name, icon }) => (
         <Button
           key={name}
-          variant="icon"
+          variant="editor"
           size="icon"
           onClick={() => handleButtonClick(name)}
-          className={editor.isActive(name) ? isActive : ""}
+          className={cn(editor.isActive(name) ? isActive : "", "mr-1")}
         >
           {icon}
         </Button>

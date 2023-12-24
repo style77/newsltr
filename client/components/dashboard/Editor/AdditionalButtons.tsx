@@ -4,6 +4,7 @@ import { Code, Image, Link, Paperclip } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { EditorButtonsType } from "./types";
+import { cn } from "@/lib/utils";
 
 type AdditionalButtonsType = Omit<EditorButtonsType, "action">;
 
@@ -77,10 +78,10 @@ const AdditionalButtons = () => {
       {additionalData.map(({ name, actionFunction, icon }) => (
         <Button
           key={name}
-          variant="icon"
+          variant="editor"
           size="icon"
           onClick={actionFunction}
-          className={editor.isActive(name) ? isActive : ""}
+          className={cn(editor.isActive(name) ? isActive : "", "mr-1")}
         >
           {icon}
         </Button>

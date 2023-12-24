@@ -4,6 +4,7 @@ import { useCurrentEditor } from "@tiptap/react";
 import { Button } from "@/components/ui/button";
 import { ActionType, EditorButtonsType } from "./types";
 import { List, ListOrdered } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type ListType = Omit<EditorButtonsType, "actionFunction">;
 
@@ -38,10 +39,10 @@ const ListButtons = () => {
       {listData.map(({ name, action, icon }) => (
         <Button
           key={name}
-          variant="icon"
+          variant="editor"
           size="icon"
           onClick={() => handleButtonClick(action)}
-          className={editor.isActive(name) ? isActive : ""}
+          className={cn(editor.isActive(name) ? isActive : "", "mr-1")}
         >
           {icon}
         </Button>

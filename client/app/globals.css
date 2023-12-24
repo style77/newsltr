@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+.tiptap {
+  background-color: #f5f9fd;
+  height: 500px;
+  padding: 20px;
+}
+
 .tiptap ul {
   list-style-type: disc;
   padding: 0 1rem;

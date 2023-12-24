@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { EditorProvider, FloatingMenu, BubbleMenu } from "@tiptap/react";
+import { EditorProvider } from "@tiptap/react";
 import Underline from "@tiptap/extension-underline";
 import Heading from "@tiptap/extension-heading";
 import TextAlign from "@tiptap/extension-text-align";
@@ -42,12 +42,20 @@ const extensions = [
 const content = "<p>Hello World!</p>";
 
 const Editor = () => {
+  // const editor = useEditor({
+  //   extensions,
+  //   content,
+  // });
   return (
     <EditorProvider
       extensions={extensions}
       content={content}
-      slotBefore={<EditorToolbar />}
-      slotAfter={<p>footer</p>}
+      slotBefore={
+        <>
+          <EditorToolbar />
+          <div className="p-4">Object</div>
+        </>
+      }
     />
   );
 };
