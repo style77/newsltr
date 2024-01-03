@@ -12,6 +12,7 @@ class EmailTemplate(models.Model):
     campaign = models.ForeignKey(
         Campaign, on_delete=models.CASCADE, related_name="email_tempaltes"
     )
+    name = models.CharField(_("name"), max_length=250, default="Untitled")
     subject = models.CharField(_("subject"), max_length=998)  # Len set by RFC 2822
     content = TrixField()  # TextField under the hood
     extra_data = models.JSONField()
