@@ -69,25 +69,9 @@ class Subscriptions(views.APIView):
         """
         Get all subscription plans
         """
-        subscribed_product_ids = []
-        if request.user.is_authenticated:
-            stripe_user = get_or_create_stripe_customer(request.user)
-            customer_id = stripe_user.customer_id
-
-            user_subscriptions = stripe.Subscription.list(customer=customer_id)
-            subscribed_product_ids = set(
-                subscription["items"]["data"][0]["price"]["product"]
-                for subscription in user_subscriptions.data
-            )
-
         all_products = stripe.Product.list(active=True, expand=["data.price"])
-        available_products = [
-            product
-            for product in all_products.data
-            if product.id not in subscribed_product_ids
-        ]
 
-        serializer = self.serializer_class(available_products, many=True)
+        serializer = self.serializer_class(all_products.data, many=True)
 
         return Response(serializer.data)
 
