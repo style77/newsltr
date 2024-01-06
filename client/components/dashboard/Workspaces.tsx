@@ -3,7 +3,10 @@ import React from "react";
 import { AlignJustify, LayoutGrid, MoreVertical, Users } from "lucide-react";
 import { Button } from "../ui/button";
 import { useAppDispatch } from "@/redux/hooks";
-import { openCreateDialog } from "@/redux/features/dialogSlice";
+import {
+  openCreateDialog,
+  openSubscriptionDialog,
+} from "@/redux/features/dialogSlice";
 import { MdAdd } from "react-icons/md";
 import SubscriptionDialog from "./SubscriptionDialog";
 import WorkspaceCreationDialog from "./WorkspaceCreationDialog";
@@ -23,21 +26,26 @@ const Workspaces = () => {
   const { data: workspaces, isLoading: worspacesLoading } =
     useRetriveWorkspacesQuery();
 
+  const isUserSubscribed =
+    isSuccess && userSubscriptions[0]?.status === "active";
+
   const handleDialogClick = () => {
-    dispatch(openCreateDialog());
+    isUserSubscribed
+      ? dispatch(openCreateDialog())
+      : dispatch(openSubscriptionDialog());
   };
 
   if (isLoading) {
     return <div className="h-full">Loading...</div>;
   }
   console.log(userSubscriptions);
+  console.log(workspaces);
 
-  const isUserSubscribed =
-    isSuccess && userSubscriptions[0].status === "active";
+  console.log(isUserSubscribed);
 
   return (
     <div>
-      {!isUserSubscribed ? <SubscriptionDialog /> : <WorkspaceCreationDialog />}
+      {isUserSubscribed ? <WorkspaceCreationDialog /> : <SubscriptionDialog />}
       <div className="flex justify-between">
         <div className="flex items-center gap-x-2">
           <Button variant="icon" size="icon">

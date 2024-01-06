@@ -12,7 +12,7 @@ const topNavItems = [
 const Topnav = () => {
   return (
     <nav className="flex justify-between border-b border-border h-24 w-full">
-      <ul className="flex pl-8 bp:flex-row xs:flex-col md:flex-wrap sm:flex-nowrap gap-x-4 text-text h-full">
+      <ul className="flex pl-8 bp:flex-row xs:flex-col md:flex-wrap sm:flex-nowrap gap-x-4 text-text h-full list-none">
         {topNavItems.map(({ id, url, label }) => (
           <TopnavLink key={id} href={`/dashboard${url}`}>
             {label}

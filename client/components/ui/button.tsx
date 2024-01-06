@@ -23,6 +23,7 @@ const buttonVariants = cva(
         dashboard:
           "text-text border-border border bg-background hover:bg-background/60",
         icon: "bg-background border border-border hover:bg-background/60",
+        editor: "bg-background hover:bg-background2",
       },
       size: {
         default: "h-10 px-4 py-2",
