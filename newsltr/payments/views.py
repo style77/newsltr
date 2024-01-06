@@ -13,6 +13,7 @@ from .serializers import (
     CreateSubscriptionSerializer,
     ProductSerializer,
     SubscriptionSerializer,
+    ConfigSerializer,
 )
 
 
@@ -20,6 +21,7 @@ from .serializers import (
 class Config(views.APIView):
     permission_classes = [permissions.AllowAny]
 
+    @extend_schema(request=None, responses={200: ConfigSerializer})
     def get(self, request, *args, **kwargs):
         return Response({"publishable_key": settings.STRIPE_PUBLISHABLE_KEY})
 
