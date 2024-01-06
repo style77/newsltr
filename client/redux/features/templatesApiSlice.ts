@@ -1,4 +1,3 @@
-import { cache } from "react";
 import { apiSlice } from "../services/apiSlice";
 
 export interface WorkspaceResult {
@@ -17,10 +16,31 @@ interface Workspace {
   results: WorkspaceResult[];
 }
 
+type ExtraData = {
+  additionalProp1: string;
+  additionalProp2: string;
+  additionalProp3: string;
+};
+
+type Result = {
+  id: string;
+  subject: string;
+  content: string;
+  extra_data: ExtraData;
+  last_sent_at: string;
+};
+
+type TemplatesType = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Result[];
+};
+
 const templateApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
-    retrieveTemplates: build.query({
-      query: ({ campaignId }) => `email-templates/${campaignId}/`,
+    retrieveTemplates: build.query<TemplatesType, string>({
+      query: (campaignId) => `email-templates/${campaignId}/`,
     }),
     createTemplate: build.mutation({
       query: ({ campaignId, subject, content }) => ({

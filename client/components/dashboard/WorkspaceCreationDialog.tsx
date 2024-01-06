@@ -18,6 +18,7 @@ const WorkspaceCreationDialog = () => {
   const handleCloseDialog = () => {
     dispatch(closeCreateDialog());
   };
+
   return (
     <Dialog open={isCreateDialogOpen} onOpenChange={handleCloseDialog}>
       <DialogContent className="sm:max-w-[425px]">

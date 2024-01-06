@@ -7,6 +7,10 @@ import Spinner from "../ui/spinner";
 const Setup = () => {
   const isLoading = useVerify();
 
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
+
   return <Toaster />;
 };
 
