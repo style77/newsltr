@@ -33,6 +33,12 @@ class Checkout(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CreateSubscriptionSerializer
 
+    @extend_schema(responses={
+        200: {
+            "subscription_id": "string",
+            "client_secret": "string"
+        }
+    })
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)

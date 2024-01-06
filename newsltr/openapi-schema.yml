@@ -945,7 +945,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateSubscription'
+                subscription_id: string
+                client_secret: string
           description: ''
   /api/v1/payment/subscriptions/:
     get:
