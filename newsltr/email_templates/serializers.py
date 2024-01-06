@@ -7,6 +7,7 @@ class EmailTemplateSerializer(CampaignIdMixin):
         model = EmailTemplate
         fields = CampaignIdMixin.Meta.fields + [
             "id",
+            "name",
             "subject",
             "content",
             "extra_data",
