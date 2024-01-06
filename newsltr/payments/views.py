@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from .customers import get_or_create_stripe_customer
 from .serializers import (
-    CancelSubscriptionSerializer,
+    CancelResumeSubscriptionSerializer,
     CreateSubscriptionSerializer,
     ProductSerializer,
     SubscriptionSerializer,
@@ -85,7 +85,7 @@ class MySubscriptions(viewsets.ViewSet):
 
     def get_serializer_class(self):
         if self.action in ["cancel", "resume"]:
-            return CancelSubscriptionSerializer
+            return CancelResumeSubscriptionSerializer
         return self.serializer_class
 
     def list(self, request, *args, **kwargs):

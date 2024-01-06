@@ -26,7 +26,7 @@ class CreateSubscriptionSerializer(serializers.Serializer):
     price_id = serializers.CharField()
 
 
-class CancelSubscriptionSerializer(serializers.Serializer):
+class CancelResumeSubscriptionSerializer(serializers.Serializer):
     subscription_id = serializers.CharField()
 
 
