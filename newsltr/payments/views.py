@@ -95,9 +95,12 @@ class MySubscriptions(viewsets.ViewSet):
         Get all current user subscriptions
         """
         stripe_user = get_or_create_stripe_customer(request.user)
+
+        status = request.query_params.get("status", "all")
+
         user_subscriptions = stripe.Subscription.list(
             customer=stripe_user.customer_id,
-            status="all",
+            status=status,
         )
 
         subscription_data = []
