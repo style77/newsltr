@@ -13,6 +13,7 @@ from .serializers import (
     CreateSubscriptionSerializer,
     ProductSerializer,
     SubscriptionSerializer,
+    ConfigSerializer,
 )
 
 
@@ -20,6 +21,7 @@ from .serializers import (
 class Config(views.APIView):
     permission_classes = [permissions.AllowAny]
 
+    @extend_schema(request=None, responses={200: ConfigSerializer})
     def get(self, request, *args, **kwargs):
         return Response({"publishable_key": settings.STRIPE_PUBLISHABLE_KEY})
 
@@ -31,6 +33,12 @@ class Checkout(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = CreateSubscriptionSerializer
 
+    @extend_schema(responses={
+        200: {
+            "subscription_id": "string",
+            "client_secret": "string"
+        }
+    })
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -93,9 +101,12 @@ class MySubscriptions(viewsets.ViewSet):
         Get all current user subscriptions
         """
         stripe_user = get_or_create_stripe_customer(request.user)
+
+        status = request.query_params.get("status", "all")
+
         user_subscriptions = stripe.Subscription.list(
             customer=stripe_user.customer_id,
-            status="all",
+            status=status,
         )
 
         subscription_data = []

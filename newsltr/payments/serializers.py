@@ -2,6 +2,10 @@ import stripe
 from rest_framework import serializers
 
 
+class ConfigSerializer(serializers.Serializer):
+    publishable_key = serializers.CharField()
+
+
 class PriceSerializer(serializers.Serializer):
     price_id = serializers.CharField(source="id")
     unit_amount = serializers.IntegerField()

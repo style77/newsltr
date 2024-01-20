@@ -844,6 +844,20 @@ paths:
       responses:
         '204':
           description: No response body
+  /api/v1/payment/config/:
+    get:
+      operationId: api_v1_payment_config_retrieve
+      tags:
+      - config
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Config'
+          description: ''
   /api/v1/payment/me/subscriptions/:
     get:
       operationId: api_v1_payment_me_subscriptions_list
@@ -869,20 +883,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CancelSubscription'
+              $ref: '#/components/schemas/CancelResumeSubscription'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/CancelSubscription'
+              $ref: '#/components/schemas/CancelResumeSubscription'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CancelSubscription'
+              $ref: '#/components/schemas/CancelResumeSubscription'
         required: true
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CancelSubscription'
+                $ref: '#/components/schemas/CancelResumeSubscription'
           description: ''
   /api/v1/payment/me/subscriptions/resume/:
     post:
@@ -894,26 +908,24 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CancelSubscription'
+              $ref: '#/components/schemas/CancelResumeSubscription'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/CancelSubscription'
+              $ref: '#/components/schemas/CancelResumeSubscription'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/CancelSubscription'
+              $ref: '#/components/schemas/CancelResumeSubscription'
         required: true
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CancelSubscription'
+                $ref: '#/components/schemas/CancelResumeSubscription'
           description: ''
   /api/v1/payment/subscribe/:
     post:
       operationId: api_v1_payment_subscribe_create
-      description: Subscribe to plan, this endpoint will redirect user to checkout
-        session
       tags:
       - payments
       requestBody:
@@ -933,7 +945,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CreateSubscription'
+                subscription_id: string
+                client_secret: string
           description: ''
   /api/v1/payment/subscriptions/:
     get:
@@ -1441,13 +1454,20 @@ components:
       - email
       - id
       - joined_at
-    CancelSubscription:
+    CancelResumeSubscription:
       type: object
       properties:
         subscription_id:
           type: string
       required:
       - subscription_id
+    Config:
+      type: object
+      properties:
+        publishable_key:
+          type: string
+      required:
+      - publishable_key
     CreateSubscription:
       type: object
       properties:
@@ -1568,6 +1588,9 @@ components:
           type: string
           format: uuid
           readOnly: true
+        name:
+          type: string
+          maxLength: 250
         subject:
           type: string
           maxLength: 998
@@ -1781,6 +1804,9 @@ components:
           type: string
           format: uuid
           readOnly: true
+        name:
+          type: string
+          maxLength: 250
         subject:
           type: string
           maxLength: 998
