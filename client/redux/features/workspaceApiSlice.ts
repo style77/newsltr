@@ -1,3 +1,4 @@
+import { MdWorkspacePremium } from "react-icons/md";
 import { apiSlice } from "../services/apiSlice";
 
 export interface WorkspaceResult {
@@ -46,6 +47,7 @@ const workspaceApiSlice = apiSlice.injectEndpoints({
           await queryFulfilled;
         } catch {
           patchResult.undo();
+          dispatch(workspaceApiSlice.util.invalidateTags(["Workspace"]));
 
           /**
            * Alternatively, on failure you can invalidate the corresponding cache tags

@@ -6,10 +6,17 @@ import { afterEach, beforeAll, afterAll, describe, expect, it } from "vitest";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
+const mockUsePathname = vi.fn();
+
 vi.mock("next/navigation", () => ({
+  usePathname() {
+    return mockUsePathname();
+  },
+
   useRouter() {
     return {
-      prefetch: () => null,
+      push: () => vi.fn(),
+      replace: () => vi.fn(),
     };
   },
 }));
@@ -28,7 +35,7 @@ describe("Login Form", () => {
         <LoginPage />
       </Provider>,
     );
-    const loginButton = screen.getByText(/log in/i);
+    const loginButton = screen.getByRole("button", { name: /log in/i });
     await user.click(loginButton);
     const emailValidationError = screen.getByText(/invalid email/i);
     const passwordValidationError = screen.getByText(
@@ -61,7 +68,7 @@ describe("Login Form", () => {
     );
     const emailInput = screen.getByLabelText(/email/i);
     const passwordInput = screen.getByLabelText(/password/i);
-    const loginButton = screen.getByText(/log in/i);
+    const loginButton = screen.getByRole("button", { name: /log in/i });
     expect(screen.queryByText("an error has occurred")).not.toBeInTheDocument();
     await userEvent.type(emailInput, "za@hotmail.fr");
     await user.type(passwordInput, "12345678");

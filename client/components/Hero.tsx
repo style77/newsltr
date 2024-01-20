@@ -23,7 +23,13 @@ const Hero = () => {
       </section>
 
       <div className="absolute -z-10 top-0 w-full flex justify-end">
-        <Image className="w-[720px]" src={mailBox} alt="mailbox" />
+        <Image
+          className="w-[720px]"
+          width={100}
+          height={100}
+          src={mailBox}
+          alt="mailbox"
+        />
       </div>
     </section>
   );

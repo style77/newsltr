@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const CheckoutForm = () => {
   const [errorMessage, setErrorMessage] = useState<string | undefined>("");
-  const { data, isLoading } = useRetrieveUserSubscriptionsQuery({});
+  const { data, isLoading } = useRetrieveUserSubscriptionsQuery();
   const stripe = useStripe();
   const elements = useElements();
 
@@ -44,6 +44,11 @@ const CheckoutForm = () => {
 
   if (isLoading) {
     return <Spinner />;
+  }
+
+  if (!data || data.length === 0) {
+    console.log(data);
+    return <div>No subscription data found.</div>;
   }
 
   const { price, plan_name, currency } = data[0];

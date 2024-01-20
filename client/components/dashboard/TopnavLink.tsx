@@ -19,7 +19,7 @@ const TopnavLink = ({ href, children }: TopnavLinkProps) => {
         active ? " border-text font-bold" : "border-transparent"
       }`}
     >
-      <Link className="h-full align-middle flex items-center" href={href}>
+      <Link className="h-full align-middle flex items-center" href={`${href}`}>
         {children}
       </Link>
     </li>

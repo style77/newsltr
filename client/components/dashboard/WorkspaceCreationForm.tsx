@@ -19,6 +19,7 @@ import { useCreateWorkspaceMutation } from "@/redux/features/workspaceApiSlice";
 import { useAppDispatch } from "@/redux/hooks";
 import { closeCreateDialog } from "@/redux/features/dialogSlice";
 import Spinner from "../ui/spinner";
+import { useToast } from "../ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -32,6 +33,7 @@ type CreateWorspaceErrorType = {
 };
 
 const WorkspaceCreationForm = () => {
+  const { toast } = useToast();
   const dispatch = useAppDispatch();
   const [createWorkspace, { isLoading }] = useCreateWorkspaceMutation();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -48,7 +50,11 @@ const WorkspaceCreationForm = () => {
       const { name, description } = values;
       await createWorkspace({ name, description }).unwrap();
     } catch (error) {
-      return new Error(String(error));
+      toast({
+        variant: "destructive",
+        title: error.data.detail,
+      });
+      console.log(error);
     }
     // dispatch(closeCreateDialog());
   };

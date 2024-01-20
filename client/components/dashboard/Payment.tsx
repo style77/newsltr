@@ -9,7 +9,7 @@ import { useRetrieveUserSubscriptionsQuery } from "@/redux/features/paymentApiSl
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_KEY}`);
 
 const Payment = () => {
-  const { data } = useRetrieveUserSubscriptionsQuery({});
+  const { data } = useRetrieveUserSubscriptionsQuery();
   const { clientSecret } = useAppSelector((state) => state.payment);
   console.log(data);
 

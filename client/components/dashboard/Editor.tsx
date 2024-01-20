@@ -16,6 +16,7 @@ import BulletList from "@tiptap/extension-bullet-list";
 import { Color } from "@tiptap/extension-color";
 import EditorToolbar from "./EditorToolbar";
 import { FontSize } from "@/utils/tiptap/font-size";
+import { Input } from "../ui/input";
 
 const extensions = [
   StarterKit,
@@ -53,7 +54,7 @@ const Editor = () => {
       slotBefore={
         <>
           <EditorToolbar />
-          <div className="p-4">Object</div>
+          <Input className="p-4 border-b border-border " placeholder="Object" />
         </>
       }
     />
