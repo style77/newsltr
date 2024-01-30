@@ -1,6 +1,16 @@
 "use client";
-import React from "react";
-import { EditorProvider } from "@tiptap/react";
+import React, { useContext } from "react";
+import {
+  EditorProvider,
+  useEditor,
+  EditorContent,
+  EditorContext,
+  Content,
+  JSONContent,
+  HTMLContent,
+  Editor as EditorType,
+  useCurrentEditor,
+} from "@tiptap/react";
 import Underline from "@tiptap/extension-underline";
 import Heading from "@tiptap/extension-heading";
 import TextAlign from "@tiptap/extension-text-align";
@@ -40,13 +50,15 @@ const extensions = [
   Dropcursor,
 ];
 
-const content = "<p>Hello World!</p>";
+const Editor = ({
+  children,
+  content,
+}: {
+  children: React.ReactNode;
+  content: string;
+}) => {
+  // TODO: ADD TEMPLATE FORM INSIDE THE EDITOR PROVIDER
 
-const Editor = () => {
-  // const editor = useEditor({
-  //   extensions,
-  //   content,
-  // });
   return (
     <EditorProvider
       extensions={extensions}
@@ -54,10 +66,17 @@ const Editor = () => {
       slotBefore={
         <>
           <EditorToolbar />
-          <Input className="p-4 border-b border-border " placeholder="Object" />
+          {/* {children} */}
         </>
       }
-    />
+    >
+      {children}
+    </EditorProvider>
+    // <>
+    // <EditorToolbar editor={editor} />
+    // <Input className="border-b border-border2" placeholder="Object" />
+    // <EditorContent editor={editor} />
+    // </>
   );
 };
 

@@ -25,6 +25,7 @@ type ExtraData = {
 type Result = {
   id: string;
   subject: string;
+  name: string;
   content: string;
   extra_data: ExtraData;
   last_sent_at: string;
@@ -43,10 +44,10 @@ const templateApiSlice = apiSlice.injectEndpoints({
       query: (campaignId) => `email-templates/${campaignId}/`,
     }),
     createTemplate: build.mutation({
-      query: ({ campaignId, subject, content }) => ({
+      query: ({ campaignId, name, subject, content }) => ({
         url: `email-templates/${campaignId}/templates/`,
         method: "POST",
-        body: { campaignId, subject, content },
+        body: { campaignId, name, subject, content, extra_data: {} },
       }),
     }),
     retrieveTemplate: build.query({
@@ -54,17 +55,31 @@ const templateApiSlice = apiSlice.injectEndpoints({
         `email-templates/${campaignId}/templates/${templateId}/`,
     }),
     updateTemplate: build.mutation({
-      query: ({ campaignId, templateId, subject, content }) => ({
+      query: ({ campaignId, name, templateId, subject, content }) => ({
         url: `email-templates/${campaignId}/templates/${templateId}/`,
         method: "PUT",
-        body: { campaignId, templateId, subject, content },
+        body: {
+          campaignId,
+          name,
+          templateId,
+          subject,
+          content,
+          extra_data: {},
+        },
       }),
     }),
     partialUpdateTemplate: build.mutation({
-      query: ({ campaignId, templateId, subject, content }) => ({
+      query: ({ campaignId, name, templateId, subject, content }) => ({
         url: `email-templates/${campaignId}/templates/${templateId}/`,
         method: "PATCH",
-        body: { campaignId, templateId, subject, content },
+        body: {
+          campaignId,
+          name,
+          templateId,
+          subject,
+          content,
+          extra_data: {},
+        },
       }),
     }),
     deleteTemplate: build.mutation({

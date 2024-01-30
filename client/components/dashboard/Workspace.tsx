@@ -24,11 +24,11 @@ const Workspace = () => {
         </TabsList>
         <TabsContent value="campaign">
           <h2 className="text-3xl font-bold mb-6">Create Campaign</h2>
-          <Campaign campaign={campaign} />
+          <Campaign />
         </TabsContent>
         <TabsContent value="templates">
           <h2 className="text-3xl font-bold mb-6">Manage templates</h2>
-          <Templates campaign={campaign} />
+          <Templates />
         </TabsContent>
         <TabsContent value="subscribers"></TabsContent>
         <TabsContent value="members"></TabsContent>

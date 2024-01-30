@@ -4,6 +4,8 @@ import { useParams } from "next/navigation";
 
 import { useRetrieveTemplatesQuery } from "@/redux/features/templatesApiSlice";
 import { useRetriveWorkspaceQuery } from "@/redux/features/workspaceApiSlice";
+import { MoreVertical } from "lucide-react";
+import Link from "next/link";
 
 const Templates = () => {
   const { workspace } = useParams();
@@ -18,10 +20,15 @@ const Templates = () => {
     return <div className="text-red-400">loading</div>;
   }
 
+  console.log(templates);
+
   return (
     <ul>
-      {templates?.results.map((template) => (
-        <li key={template.id}>{template.id}</li>
+      {templates?.results.map(({ id, name }) => (
+        <Link href={id} className="bg-red-50 p-3 flex justify-between" key={id}>
+          <span>{name}</span>
+          <MoreVertical />
+        </Link>
       ))}
     </ul>
   );

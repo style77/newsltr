@@ -29,9 +29,6 @@ const SelectColors = () => {
 
   const selectedColor = selectedColorObj?.color;
 
-  console.log(selectedColor);
-  console.log(editor.isActive({ color: "red" }));
-
   return (
     <div>
       <Select

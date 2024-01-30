@@ -6,7 +6,7 @@ import { ActionType, EditorButtonsType } from "./types";
 import { AlignCenter, AlignJustify, AlignLeft, AlignRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-type AlignmentType = Omit<EditorButtonsType, "action">;
+type AlignmentType = Omit<EditorButtonsType, "action" | "actionFunction">;
 
 const alignmentData: AlignmentType[] = [
   {

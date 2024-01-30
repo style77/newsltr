@@ -49,10 +49,10 @@ const WorkspaceCreationForm = () => {
     try {
       const { name, description } = values;
       await createWorkspace({ name, description }).unwrap();
-    } catch (error) {
+    } catch (error: any) {
       toast({
         variant: "destructive",
-        title: error.data.detail,
+        title: error.data?.detail,
       });
       console.log(error);
     }

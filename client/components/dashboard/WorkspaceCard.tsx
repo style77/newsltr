@@ -14,7 +14,6 @@ import {
   useDeleteWorkspaceMutation,
 } from "@/redux/features/workspaceApiSlice";
 import { useAppDispatch } from "@/redux/hooks";
-import { openWorkspaceDeletion } from "@/redux/features/workspaceDeletionDialogSlice";
 import WorkspaceCreationForm from "./WorkspaceCreationForm";
 import WorkspaceDeletionDialog from "./WorkspaceDeletionDialog";
 import WorkspaceEditDialog from "./WorkspaceEditDialog";
