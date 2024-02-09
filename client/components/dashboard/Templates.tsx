@@ -9,6 +9,7 @@ import Link from "next/link";
 
 const Templates = () => {
   const { workspace } = useParams();
+  const url = `/dashboard/workspaces/${workspace}/templates/`;
   console.log(workspace);
   const { data, isLoading } = useRetriveWorkspaceQuery({ id: workspace });
 
@@ -25,7 +26,11 @@ const Templates = () => {
   return (
     <ul>
       {templates?.results.map(({ id, name }) => (
-        <Link href={id} className="bg-red-50 p-3 flex justify-between" key={id}>
+        <Link
+          href={`${url}/${id}`}
+          className="bg-red-50 p-3 flex justify-between"
+          key={id}
+        >
           <span>{name}</span>
           <MoreVertical />
         </Link>

@@ -1,7 +1,6 @@
 import React from "react";
 
 import AddTemplate from "@/components/dashboard/AddTemplate";
-import { Button } from "@/components/ui/button";
 
 const page = () => {
   return (

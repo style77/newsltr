@@ -16,7 +16,6 @@ const layout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <Templates />
         </div>
-
         {children}
       </div>
     </>
