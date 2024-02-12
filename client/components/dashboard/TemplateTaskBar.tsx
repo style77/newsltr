@@ -13,7 +13,7 @@ const TemplateTaskBar = () => {
   return (
     <div className="mb-4">
       <Button variant="dashboard">
-        <Link href={url}>
+        <Link className="flex" href={url}>
           <MdAdd className="mr-2" size={18} />
           Add a template
         </Link>

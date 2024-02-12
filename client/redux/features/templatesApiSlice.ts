@@ -83,10 +83,10 @@ const templateApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deleteTemplate: build.mutation({
-      query: ({ campaignId, templateId, subject, content }) => ({
+      query: ({ campaignId, templateId }) => ({
         url: `email-templates/${campaignId}/templates/${templateId}/`,
         method: "DELETE",
-        body: { campaignId, templateId, subject, content },
+        body: { campaignId, templateId },
       }),
     }),
   }),

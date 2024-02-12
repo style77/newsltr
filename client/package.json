@@ -57,7 +57,7 @@
     "dotenv": "^16.3.1",
     "framer-motion": "^10.16.5",
     "lucide-react": "^0.279.0",
-    "next": "latest",
+    "next": "^14.1.0",
     "npm-install": "^1.4.5",
     "react": "latest",
     "react-dom": "latest",
